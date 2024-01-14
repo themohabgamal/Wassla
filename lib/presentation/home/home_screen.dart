@@ -134,7 +134,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         height: 20,
                       ),
                       SizedBox(
-                        height: 70,
+                        height: 75,
                         child: ListView.separated(
                           physics: const ClampingScrollPhysics(),
                           scrollDirection: Axis.horizontal,
