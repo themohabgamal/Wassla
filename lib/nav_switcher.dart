@@ -3,6 +3,7 @@ import 'package:grad/presentation/home/home_screen.dart';
 import 'package:grad/presentation/settings/settings_screen.dart';
 import 'package:grad/presentation/categories/categories_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:grad/presentation/wishlist/wish_list_screen.dart';
 import 'package:iconly/iconly.dart';
 
 class NavSwitcher extends StatefulWidget {
@@ -17,9 +18,10 @@ class _NavSwitcherState extends State<NavSwitcher> {
   int selectedIndex = 0;
   List<Widget> screens = [
     const HomeScreen(),
-    CategoriesScreen(),
+    const CategoriesScreen(),
     const CartScreen(),
-    SettingsScreen()
+    WishListScreen(),
+    const SettingsScreen()
   ];
   @override
   Widget build(BuildContext context) {
@@ -40,11 +42,15 @@ class _NavSwitcherState extends State<NavSwitcher> {
                 backgroundColor: Colors.black),
             BottomNavigationBarItem(
               icon: Icon(IconlyLight.category),
-              label: "Wishlist",
+              label: "Category",
             ),
             BottomNavigationBarItem(
               icon: Icon(IconlyLight.bag),
               label: "cart",
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(IconlyLight.heart),
+              label: "Wishlist",
             ),
             BottomNavigationBarItem(
               icon: Icon(IconlyLight.profile),

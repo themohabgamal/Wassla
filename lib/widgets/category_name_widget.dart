@@ -15,9 +15,20 @@ class CategoryNameWidget extends StatelessWidget {
         width: 120,
         height: 55,
         decoration: BoxDecoration(
-            color:
-                isSelected ? MyTheme.mainColor : Theme.of(context).canvasColor,
-            borderRadius: BorderRadius.circular(12)),
+            boxShadow: isSelected
+                ? [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.5), // Shadow color
+                      spreadRadius: 2,
+                      blurRadius: 3,
+                      offset: const Offset(
+                          0, 2), // changes the direction of the shadow
+                    ),
+                  ]
+                : [],
+            color: isSelected ? MyTheme.mainColor : MyTheme.lightGreyColor,
+            border: isSelected ? null : Border.all(color: Colors.grey),
+            borderRadius: BorderRadius.circular(20)),
         child: Text(
           "$name  ",
           style: Theme.of(context).textTheme.titleLarge?.copyWith(

@@ -38,6 +38,14 @@ class CategoryTileWidget extends StatelessWidget {
         width: 180,
         height: MediaQuery.of(context).size.height * 0.4,
         decoration: BoxDecoration(
+            boxShadow: [
+              BoxShadow(
+                color: const Color(0xFFb4b4b4).withOpacity(0.3),
+                offset: const Offset(4, 4),
+                blurRadius: 10,
+                spreadRadius: 4,
+              ),
+            ],
             borderRadius: BorderRadius.circular(15),
             color: Theme.of(context).canvasColor),
         child: Column(

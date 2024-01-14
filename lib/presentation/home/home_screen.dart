@@ -1,9 +1,12 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables
 
+import 'package:flutter/widgets.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:grad/presentation/auth/authenticated_screen.dart';
 import 'package:grad/presentation/auth/non_authenticated_screen.dart';
 import 'package:grad/presentation/cart/cart_screen.dart';
 import 'package:grad/presentation/home/hot_deals_page.dart';
+import 'package:grad/presentation/home/widgets/my_search_widget.dart';
 import 'package:grad/presentation/wishlist/wish_list_screen.dart';
 import 'package:grad/theming/theme.dart';
 import 'package:grad/widgets/category_name_widget.dart';
@@ -92,139 +95,134 @@ class _HomeScreenState extends State<HomeScreen> {
               }
             },
           ),
-          appBar: AppBar(
-            title: const Text(
-              "MOJO",
-              style: TextStyle(fontSize: 30),
-            ),
-            centerTitle: true,
-            leading: Builder(
-              builder: (context) {
-                return IconButton(
-                    onPressed: () => Scaffold.of(context).openDrawer(),
-                    icon: const Icon(
-                      Icons.menu,
-                      size: 30,
-                    ));
-              },
-            ),
-            actions: [
-              IconButton(
-                icon: const Icon(IconlyLight.heart, size: 30),
-                onPressed: () {
-                  homeBloc.add(NavigateToWishlistEvent());
-                },
-              ),
-            ],
-          ),
           //*-------------------------------------------------------------body------------------------------------------------
-          body: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 12),
-              child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const SizedBox(height: 20),
-                    Text(
-                      "Select Category",
-                      style: Theme.of(context).textTheme.headlineSmall,
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    SizedBox(
-                      height: 70,
-                      child: ListView.separated(
-                        physics: const ClampingScrollPhysics(),
-                        scrollDirection: Axis.horizontal,
-                        itemBuilder: (context, index) {
-                          return GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                current = index;
-                                category = categories[index];
-                              });
-                            },
-                            child: CategoryNameWidget(
-                                name: categories[index],
-                                isSelected: index == current ? true : false),
-                          );
-                        },
-                        separatorBuilder: (context, index) =>
-                            const SizedBox(width: 10),
-                        itemCount: 4,
+          body: SafeArea(
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 12),
+                child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(
+                        height: 30,
                       ),
-                    ),
-                    const SizedBox(height: 20),
-                    Text(
-                      "Popular",
-                      style: Theme.of(context).textTheme.headlineSmall,
-                    ),
-                    const SizedBox(height: 20),
-                    SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.36,
-                        child: CustomizedApiHomeWidget(
-                            homeBloc: homeBloc, category: category)),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "Hot Deals",
-                          style: Theme.of(context).textTheme.headlineSmall,
-                        ),
-                        TextButton(
-                          onPressed: () {
-                            homeBloc.add(NavigateToHotDealsEvent());
-                          },
-                          child: Text(
-                            "View all",
-                            style: Theme.of(context)
-                                .textTheme
-                                .titleMedium
-                                ?.copyWith(
-                                    fontWeight: FontWeight.w600,
-                                    color: MyTheme.mainColor),
-                          ),
-                        )
-                      ],
-                    ),
-                    const SizedBox(height: 5),
-                    SizedBox(
-                      width: double.infinity,
-                      child: Stack(
+                      Align(
                         alignment: Alignment.center,
-                        children: [
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(12),
-                            child: Image.asset(
-                              "assets/images/pattern.jpg",
-                              height: 100,
-                              fit: BoxFit.cover,
-                              width: double.infinity,
-                            ),
-                          ),
-                          const Text(
-                            "50% off",
-                            style: TextStyle(
+                        child: Image.asset(
+                          "assets/images/bridgestone.png",
+                          width: 50,
+                        ),
+                      ),
+                      const SizedBox(height: 40),
+                      Text(
+                        "What are you looking for?",
+                        style: GoogleFonts.dmSans(
+                            textStyle: const TextStyle(
+                                letterSpacing: 0.25,
+                                fontSize: 34,
                                 fontWeight: FontWeight.w700,
-                                fontSize: 50,
-                                color: Colors.white),
+                                color: MyTheme.darkSec)),
+                      ),
+                      const SizedBox(height: 20),
+                      const MySearchWidget(),
+                      const SizedBox(height: 40),
+                      Text(
+                        "Select Category",
+                        style: Theme.of(context).textTheme.headlineSmall,
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      SizedBox(
+                        height: 70,
+                        child: ListView.separated(
+                          physics: const ClampingScrollPhysics(),
+                          scrollDirection: Axis.horizontal,
+                          itemBuilder: (context, index) {
+                            return GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  current = index;
+                                  category = categories[index];
+                                });
+                              },
+                              child: CategoryNameWidget(
+                                  name: categories[index],
+                                  isSelected: index == current ? true : false),
+                            );
+                          },
+                          separatorBuilder: (context, index) =>
+                              const SizedBox(width: 10),
+                          itemCount: 4,
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      const SizedBox(height: 20),
+                      SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.36,
+                          child: CustomizedApiHomeWidget(
+                              homeBloc: homeBloc, category: category)),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "Hot Deals",
+                            style: Theme.of(context).textTheme.headlineSmall,
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              homeBloc.add(NavigateToHotDealsEvent());
+                            },
+                            child: Text(
+                              "View all",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .titleMedium
+                                  ?.copyWith(
+                                      fontWeight: FontWeight.w600,
+                                      color: MyTheme.mainColor),
+                            ),
                           )
                         ],
                       ),
-                    ),
-                    const SizedBox(height: 20),
-                    Text(
-                      "Clothes",
-                      style: Theme.of(context).textTheme.headlineSmall,
-                    ),
-                    const SizedBox(height: 20),
-                    SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.35,
-                        child: CustomizedApiHomeWidget(
-                            homeBloc: homeBloc, category: "men's clothing")),
-                    const SizedBox(height: 20),
-                  ]),
+                      const SizedBox(height: 5),
+                      SizedBox(
+                        width: double.infinity,
+                        child: Stack(
+                          alignment: Alignment.center,
+                          children: [
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(12),
+                              child: Image.asset(
+                                "assets/images/pattern.jpg",
+                                height: 100,
+                                fit: BoxFit.cover,
+                                width: double.infinity,
+                              ),
+                            ),
+                            const Text(
+                              "50% off",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 50,
+                                  color: Colors.white),
+                            )
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      Text(
+                        "Clothes",
+                        style: Theme.of(context).textTheme.headlineSmall,
+                      ),
+                      const SizedBox(height: 20),
+                      SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.35,
+                          child: CustomizedApiHomeWidget(
+                              homeBloc: homeBloc, category: "men's clothing")),
+                      const SizedBox(height: 20),
+                    ]),
+              ),
             ),
           ),
         );
