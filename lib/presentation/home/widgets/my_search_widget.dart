@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:grad/theming/theme.dart';
 
 class MySearchWidget extends StatelessWidget {
   const MySearchWidget({super.key});
@@ -26,7 +27,7 @@ class MySearchWidget extends StatelessWidget {
             ),
             Icon(
               Icons.search,
-              color: Colors.orange,
+              color: MyTheme.mainColor,
               size: 30,
             ),
           ],

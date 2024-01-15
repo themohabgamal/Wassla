@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class MyTheme {
-  static const mainColor = Color(0xFFF26F3F);
+  static const mainColor = Color(0xFF496EFF);
   static const lightGreyColor = Color(0xFFF5F5F5);
   static const darkGreyColor = Color(0xFF222324);
   static const lighterColor = Color.fromARGB(255, 229, 229, 229);

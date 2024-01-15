@@ -1,3 +1,4 @@
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:grad/business_logic/theming/cubit/theming_cubit.dart';
 import 'package:grad/firebase_options.dart';
 import 'package:grad/nav_switcher.dart';
@@ -46,29 +47,35 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     ThemingCubit themingCubit =
         BlocProvider.of<ThemingCubit>(context, listen: true);
-    return MaterialApp(
-      navigatorKey: navigatorKey,
-      debugShowCheckedModeBanner: false,
-      title: 'MOJO',
-      theme: themingCubit.isDark ? MyTheme.darkTheme : MyTheme.lightTheme,
-      routes: {
-        HomeScreen.routeName: (context) => const HomeScreen(),
-        NavSwitcher.routeName: (context) => const NavSwitcher(),
-        SingleProductPage.routeName: (context) => SingleProductPage(),
-        CartSingleProductPage.routeName: (context) => CartSingleProductPage(),
-        HotDealsPage.routeName: (context) => const HotDealsPage(),
-        WishListScreen.routeName: (context) => WishListScreen(),
-        CategoriesSingleProductPage.routeName: (context) =>
-            CategoriesSingleProductPage(),
-        OnBoardingScreen.routeName: (context) => const OnBoardingScreen(),
-        HomeChecker.routeName: (context) => const HomeChecker(),
-        AboutUsScreen.routeName: (context) => AboutUsScreen(),
-        MapSample.routeName: (context) => const MapSample(),
-      },
-      // initialRoute: OnBoardingScreen.routeName,
-      initialRoute: isViewed == 0 || isViewed == null
-          ? OnBoardingScreen.routeName
-          : NavSwitcher.routeName,
+    return ScreenUtilInit(
+      designSize: const Size(360, 690),
+      minTextAdapt: true,
+      splitScreenMode: true,
+      child: MaterialApp(
+        navigatorKey: navigatorKey,
+        debugShowCheckedModeBanner: false,
+        title: 'MOJO',
+        theme: themingCubit.isDark ? MyTheme.darkTheme : MyTheme.lightTheme,
+        routes: {
+          HomeScreen.routeName: (context) => const HomeScreen(),
+          NavSwitcher.routeName: (context) => const NavSwitcher(),
+          SingleProductPage.routeName: (context) => const SingleProductPage(),
+          CartSingleProductPage.routeName: (context) =>
+              const CartSingleProductPage(),
+          HotDealsPage.routeName: (context) => const HotDealsPage(),
+          WishListScreen.routeName: (context) => WishListScreen(),
+          CategoriesSingleProductPage.routeName: (context) =>
+              const CategoriesSingleProductPage(),
+          OnBoardingScreen.routeName: (context) => const OnBoardingScreen(),
+          HomeChecker.routeName: (context) => const HomeChecker(),
+          AboutUsScreen.routeName: (context) => AboutUsScreen(),
+          MapSample.routeName: (context) => const MapSample(),
+        },
+        // initialRoute: OnBoardingScreen.routeName,
+        initialRoute: isViewed == 0 || isViewed == null
+            ? OnBoardingScreen.routeName
+            : NavSwitcher.routeName,
+      ),
     );
   }
 }

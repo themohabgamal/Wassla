@@ -40,7 +40,7 @@ class CategoryTileWidget extends StatelessWidget {
         decoration: BoxDecoration(
             boxShadow: [
               BoxShadow(
-                color: const Color(0xFFb4b4b4).withOpacity(0.3),
+                color: const Color(0xFFb4b4b4).withOpacity(0.8),
                 offset: const Offset(4, 4),
                 blurRadius: 10,
                 spreadRadius: 4,
