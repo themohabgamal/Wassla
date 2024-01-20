@@ -1,3 +1,4 @@
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:grad/nav_switcher.dart';
 import 'package:grad/theming/theme.dart';
 import 'package:flutter/material.dart';
@@ -58,7 +59,7 @@ class OnBoardingScreen extends StatelessWidget {
                     .headlineMedium!
                     .copyWith(
                         fontWeight: FontWeight.w100,
-                        fontSize: 17,
+                        fontSize: 17.sp,
                         color: Colors.white),
               ),
               body:
