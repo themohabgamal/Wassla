@@ -1,5 +1,5 @@
 import 'package:grad/main.dart';
-import 'package:grad/theming/theme.dart';
+import 'package:grad/core/theming/theme.dart';
 import 'package:grad/widgets/alert.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';

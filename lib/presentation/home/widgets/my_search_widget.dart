@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:grad/theming/theme.dart';
+import 'package:grad/core/theming/theme.dart';
 
 class MySearchWidget extends StatelessWidget {
   const MySearchWidget({super.key});

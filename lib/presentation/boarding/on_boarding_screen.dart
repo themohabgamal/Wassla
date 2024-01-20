@@ -1,6 +1,6 @@
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:grad/nav_switcher.dart';
-import 'package:grad/theming/theme.dart';
+import 'package:grad/core/theming/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:iconly/iconly.dart';
 import 'package:introduction_screen/introduction_screen.dart';

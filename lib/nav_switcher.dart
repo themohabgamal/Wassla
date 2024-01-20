@@ -4,7 +4,7 @@ import 'package:grad/presentation/settings/settings_screen.dart';
 import 'package:grad/presentation/categories/categories_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:grad/presentation/wishlist/wish_list_screen.dart';
-import 'package:grad/theming/theme.dart';
+import 'package:grad/core/theming/theme.dart';
 import 'package:iconly/iconly.dart';
 
 class NavSwitcher extends StatefulWidget {

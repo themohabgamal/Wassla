@@ -1,7 +1,7 @@
 // ignore_for_file: unnecessary_cast
 
 import 'package:grad/business_logic/home/bloc/home_bloc.dart';
-import 'package:grad/theming/theme.dart';
+import 'package:grad/core/theming/theme.dart';
 import 'package:grad/widgets/category_tile_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

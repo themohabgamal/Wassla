@@ -1,6 +1,6 @@
 import 'package:grad/business_logic/cart/bloc/cart_bloc.dart';
 import 'package:grad/business_logic/wishlist/bloc/wishlist_bloc.dart';
-import 'package:grad/theming/theme.dart';
+import 'package:grad/core/theming/theme.dart';
 import 'package:grad/widgets/cart_single_product_args.dart';
 import 'package:flutter/material.dart';
 import 'package:iconly/iconly.dart';

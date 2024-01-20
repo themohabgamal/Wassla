@@ -1,4 +1,4 @@
-import 'package:grad/theming/theme.dart';
+import 'package:grad/core/theming/theme.dart';
 import 'package:flutter/material.dart';
 
 // ignore: must_be_immutable
@@ -26,7 +26,7 @@ class CategoryNameWidget extends StatelessWidget {
                     ),
                   ]
                 : [],
-            color: isSelected ? MyTheme.mainColor : MyTheme.lightGreyColor,
+            color: isSelected ? MyTheme.orangeColor : MyTheme.lightGreyColor,
             border: isSelected ? null : Border.all(color: Colors.grey),
             borderRadius: BorderRadius.circular(20)),
         child: Text(

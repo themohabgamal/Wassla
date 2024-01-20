@@ -1,16 +1,19 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables
 
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:grad/core/helpers/constants/fonts/font_helper.dart';
 import 'package:grad/presentation/auth/authenticated_screen.dart';
 import 'package:grad/presentation/auth/non_authenticated_screen.dart';
 import 'package:grad/presentation/cart/cart_screen.dart';
 import 'package:grad/presentation/home/hot_deals_page.dart';
+import 'package:grad/presentation/home/widgets/carousel_slider_widget.dart';
 import 'package:grad/presentation/home/widgets/my_search_widget.dart';
 import 'package:grad/presentation/wishlist/wish_list_screen.dart';
-import 'package:grad/theming/theme.dart';
+import 'package:grad/core/theming/theme.dart';
 import 'package:grad/widgets/category_name_widget.dart';
 import 'package:grad/widgets/customized_api_home_widget.dart';
 import 'package:grad/widgets/home_single_product_args.dart';
@@ -128,8 +131,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.only(
-                              right: 16, left: 16, top: 20),
+                          padding: const EdgeInsets.all(8.0),
                           child: Column(
                             children: [
                               Row(
@@ -164,6 +166,44 @@ class _HomeScreenState extends State<HomeScreen> {
                               ),
                               SizedBox(height: 40.h),
                               const MySearchWidget(),
+                              SizedBox(
+                                height: 10.h,
+                              ),
+                              Align(
+                                alignment: Alignment.bottomLeft,
+                                child: Text(
+                                  "Select Category",
+                                  style: FontHelper.poppins18Regular()
+                                      .copyWith(color: Colors.white),
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 20,
+                              ),
+                              SizedBox(
+                                height: 75,
+                                child: ListView.separated(
+                                  physics: const ClampingScrollPhysics(),
+                                  scrollDirection: Axis.horizontal,
+                                  itemBuilder: (context, index) {
+                                    return GestureDetector(
+                                      onTap: () {
+                                        setState(() {
+                                          current = index;
+                                          category = categories[index];
+                                        });
+                                      },
+                                      child: CategoryNameWidget(
+                                          name: categories[index],
+                                          isSelected:
+                                              index == current ? true : false),
+                                    );
+                                  },
+                                  separatorBuilder: (context, index) =>
+                                      const SizedBox(width: 10),
+                                  itemCount: 4,
+                                ),
+                              ),
                             ],
                           ),
                         ),
@@ -178,48 +218,13 @@ class _HomeScreenState extends State<HomeScreen> {
                       child: Stack(
                         children: [
                           Padding(
-                            padding: const EdgeInsets.only(
-                                right: 12, left: 12, top: 20),
+                            padding: const EdgeInsets.only(right: 12, left: 12),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(
-                                  "Select Category",
-                                  style:
-                                      Theme.of(context).textTheme.headlineSmall,
-                                ),
-                                const SizedBox(
-                                  height: 20,
-                                ),
+                                const CarouselSliderBuilder(),
                                 SizedBox(
-                                  height: 75,
-                                  child: ListView.separated(
-                                    physics: const ClampingScrollPhysics(),
-                                    scrollDirection: Axis.horizontal,
-                                    itemBuilder: (context, index) {
-                                      return GestureDetector(
-                                        onTap: () {
-                                          setState(() {
-                                            current = index;
-                                            category = categories[index];
-                                          });
-                                        },
-                                        child: CategoryNameWidget(
-                                            name: categories[index],
-                                            isSelected: index == current
-                                                ? true
-                                                : false),
-                                      );
-                                    },
-                                    separatorBuilder: (context, index) =>
-                                        const SizedBox(width: 10),
-                                    itemCount: 4,
-                                  ),
-                                ),
-                                SizedBox(height: 40.h),
-                                SizedBox(
-                                    height: MediaQuery.of(context).size.height *
-                                        0.36,
+                                    height: MediaQuery.of(context).size.height,
                                     child: CustomizedApiHomeWidget(
                                         homeBloc: homeBloc,
                                         category: category)),

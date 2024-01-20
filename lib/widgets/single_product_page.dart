@@ -1,7 +1,7 @@
 import 'package:grad/business_logic/home/bloc/home_bloc.dart';
 import 'package:grad/business_logic/theming/cubit/theming_cubit.dart';
 import 'package:grad/presentation/cart/cart_screen.dart';
-import 'package:grad/theming/theme.dart';
+import 'package:grad/core/theming/theme.dart';
 import 'package:grad/widgets/home_single_product_args.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

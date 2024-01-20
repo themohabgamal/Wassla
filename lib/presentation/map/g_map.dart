@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:grad/presentation/cart/cart_screen.dart';
-import 'package:grad/theming/theme.dart';
+import 'package:grad/core/theming/theme.dart';
 import 'package:grad/widgets/alert.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';

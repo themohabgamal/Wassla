@@ -14,40 +14,36 @@ class CustomizedApiHomeWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        SizedBox(
-          height: 260,
-          width: double.infinity,
-          child: FutureBuilder(
-            future: HomeCategoryRepo.getSpeceficCategory(category),
-            builder: (context, snapshot) {
-              if (snapshot.hasError) {
-                return Center(
-                    child: Text(
-                        "Error fetching data from server ${snapshot.error.toString()}"));
-              } else if (snapshot.connectionState == ConnectionState.waiting) {
-                return const ProductLoadingTileWidget();
-              } else if (snapshot.hasData) {
-                return ListView.separated(
-                    scrollDirection: Axis.horizontal,
-                    itemBuilder: (context, index) {
-                      return CategoryTileWidget(
-                        homeBloc: homeBloc,
-                        categoryResponseModel: snapshot.data![index],
-                        isHotDeal: false,
-                      );
-                    },
-                    separatorBuilder: (context, index) {
-                      return const SizedBox(width: 10);
-                    },
-                    itemCount: snapshot.data!.length);
-              } else
-                return const SizedBox();
+    return FutureBuilder(
+      future: HomeCategoryRepo.getSpeceficCategory(category),
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          return Center(
+              child: Text(
+                  "Error fetching data from server ${snapshot.error.toString()}"));
+        } else if (snapshot.connectionState == ConnectionState.waiting) {
+          return const ProductLoadingTileWidget();
+        } else if (snapshot.hasData) {
+          return GridView.builder(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: snapshot.data!.length,
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                childAspectRatio: 2 / 3,
+                crossAxisSpacing: 2,
+                mainAxisSpacing: 2),
+            itemBuilder: (context, index) {
+              return CategoryTileWidget(
+                categoryResponseModel: snapshot.data![index],
+                homeBloc: homeBloc,
+                isHotDeal: false,
+              );
             },
-          ),
-        )
-      ],
+          );
+        } else
+          return const SizedBox();
+      },
     );
   }
 }

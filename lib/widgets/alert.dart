@@ -1,4 +1,4 @@
-import 'package:grad/theming/theme.dart';
+import 'package:grad/core/theming/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 

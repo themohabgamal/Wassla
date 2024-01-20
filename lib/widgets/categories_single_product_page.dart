@@ -1,5 +1,5 @@
 import 'package:grad/business_logic/categories/bloc/categories_bloc.dart';
-import 'package:grad/theming/theme.dart';
+import 'package:grad/core/theming/theme.dart';
 import 'package:grad/widgets/categories_single_product_args.dart';
 import 'package:flutter/material.dart';
 import 'package:iconly/iconly.dart';

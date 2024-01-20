@@ -1,7 +1,7 @@
 import 'package:grad/business_logic/cart/bloc/cart_bloc.dart';
 import 'package:grad/models/category_response_model.dart';
 import 'package:grad/presentation/map/g_map.dart';
-import 'package:grad/theming/theme.dart';
+import 'package:grad/core/theming/theme.dart';
 import 'package:grad/widgets/cart_single_product_args.dart';
 import 'package:grad/widgets/cart_single_product_page.dart';
 import 'package:grad/widgets/cart_tile_widget.dart';

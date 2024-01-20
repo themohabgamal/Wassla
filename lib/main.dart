@@ -10,7 +10,7 @@ import 'package:grad/presentation/home/hot_deals_page.dart';
 import 'package:grad/presentation/home_checker.dart';
 import 'package:grad/presentation/map/g_map.dart';
 import 'package:grad/presentation/wishlist/wish_list_screen.dart';
-import 'package:grad/theming/theme.dart';
+import 'package:grad/core/theming/theme.dart';
 import 'package:grad/widgets/cart_single_product_page.dart';
 import 'package:grad/widgets/categories_single_product_page.dart';
 import 'package:grad/widgets/single_product_page.dart';
