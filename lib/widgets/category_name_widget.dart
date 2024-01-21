@@ -26,7 +26,7 @@ class CategoryNameWidget extends StatelessWidget {
                     ),
                   ]
                 : [],
-            color: isSelected ? MyTheme.orangeColor : MyTheme.lightGreyColor,
+            color: isSelected ? Colors.black : MyTheme.lightGreyColor,
             border: isSelected ? null : Border.all(color: Colors.grey),
             borderRadius: BorderRadius.circular(20)),
         child: Text(

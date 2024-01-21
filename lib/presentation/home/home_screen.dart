@@ -116,17 +116,17 @@ class _HomeScreenState extends State<HomeScreen> {
                           height: 200.h,
                         ),
                         const Positioned(
-                          right: -120,
+                          right: -150,
                           child: CircleAvatar(
-                            radius: 120,
-                            backgroundColor: Colors.white12,
+                            radius: 160,
+                            backgroundColor: Colors.white24,
                           ),
                         ),
                         const Positioned(
-                          right: -120,
+                          right: -150,
                           top: 25,
                           child: CircleAvatar(
-                            radius: 100,
+                            radius: 140,
                             backgroundColor: Colors.white12,
                           ),
                         ),

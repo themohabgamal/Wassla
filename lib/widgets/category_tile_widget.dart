@@ -1,6 +1,9 @@
 // ignore_for_file: must_be_immutable
 
+import 'package:flutter/widgets.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:grad/business_logic/categories/bloc/categories_bloc.dart';
+import 'package:grad/core/helpers/constants/fonts/font_helper.dart';
 import 'package:grad/models/category_response_model.dart';
 import 'package:grad/core/theming/theme.dart';
 import 'package:flutter/material.dart';
@@ -33,10 +36,9 @@ class CategoryTileWidget extends StatelessWidget {
         }
       },
       child: Container(
-        padding: const EdgeInsets.all(5),
+        padding: const EdgeInsets.all(1),
         margin: const EdgeInsets.all(7),
-        width: 180,
-        height: MediaQuery.of(context).size.height * 0.4,
+        width: 200,
         decoration: BoxDecoration(
             boxShadow: [
               BoxShadow(
@@ -51,108 +53,116 @@ class CategoryTileWidget extends StatelessWidget {
         child: Column(
           children: [
             Expanded(
+                flex: 2,
                 child: Image.network(
-              "${categoryResponseModel.image}",
-              width: 150,
-              fit: BoxFit.contain,
-            )),
+                  "${categoryResponseModel.image}",
+                  width: 150,
+                  fit: BoxFit.contain,
+                )),
             const SizedBox(height: 20),
             Expanded(
+                flex: 3,
                 child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Text(
-                  isHotDeal ? "HOT DEAL" : "BEST SELLER",
-                  style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                      fontSize: 15,
-                      color: isHotDeal ? Colors.red : MyTheme.mainColor),
-                ),
-                const SizedBox(height: 10),
-                Text(
-                  "${categoryTitleBuilder(categoryResponseModel.title)}",
-                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      fontWeight: FontWeight.w500,
-                      fontSize: 16,
-                      color: Theme.of(context).textTheme.titleLarge?.color),
-                ),
-                const SizedBox(height: 10),
-                Expanded(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      isHotDeal
-                          ? Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  "\$ ${categoryResponseModel.price}",
-                                  style: const TextStyle(
-                                      fontWeight: FontWeight.w300,
-                                      fontSize: 18,
-                                      decorationColor: Colors.red,
-                                      decorationStyle:
-                                          TextDecorationStyle.solid,
-                                      decorationThickness: 2,
-                                      decoration: TextDecoration.lineThrough),
-                                ),
-                                Text(
-                                  "\$ ${categoryResponseModel.price}",
-                                  style: const TextStyle(
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 18),
-                                )
-                              ],
-                            )
-                          : Text(
-                              "\$ ${categoryResponseModel.price.toString().length > 3 ? categoryResponseModel.price.toString().substring(0, 3) : categoryResponseModel.price}",
-                              style: Theme.of(context).textTheme.titleLarge,
-                            ),
-                      Row(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Text(
+                      isHotDeal ? "HOT DEAL" : "BEST SELLER",
+                      style: FontHelper.poppins16Bold().copyWith(
+                          fontSize: 15,
+                          color: isHotDeal ? Colors.red : MyTheme.mainColor),
+                    ),
+                    const SizedBox(height: 10),
+                    Text(
+                      "${categoryTitleBuilder(categoryResponseModel.title)}",
+                      style: FontHelper.poppins16Regular(),
+                    ),
+                    const SizedBox(height: 10),
+                    Expanded(
+                      flex: 1,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
-                          IconButton(
-                              onPressed: () {
-                                if (homeBloc != null) {
-                                  homeBloc?.add(HomeAddToWishlistEvent(
-                                      categoryResponseModel:
-                                          categoryResponseModel));
-                                } else {
-                                  categoriesBloc?.add(
-                                      CategoriesAddToWishlistEvent(
+                          isHotDeal
+                              ? Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      "\$ ${categoryResponseModel.price}",
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.w300,
+                                          fontSize: 18,
+                                          decorationColor: Colors.red,
+                                          decorationStyle:
+                                              TextDecorationStyle.solid,
+                                          decorationThickness: 2,
+                                          decoration:
+                                              TextDecoration.lineThrough),
+                                    ),
+                                    Text(
+                                      "\$ ${categoryResponseModel.price}",
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 18),
+                                    )
+                                  ],
+                                )
+                              : Text(
+                                  "\$ ${categoryResponseModel.price.toString().length > 3 ? categoryResponseModel.price.toString().substring(0, 3) : categoryResponseModel.price}",
+                                  style: FontHelper.poppins18Bold(),
+                                ),
+                          Row(
+                            children: [
+                              IconButton(
+                                  onPressed: () {
+                                    if (homeBloc != null) {
+                                      homeBloc?.add(HomeAddToWishlistEvent(
                                           categoryResponseModel:
                                               categoryResponseModel));
-                                }
-                              },
-                              icon: Icon(
-                                IconlyLight.heart,
-                                color: Theme.of(context)
-                                    .textTheme
-                                    .titleLarge
-                                    ?.color,
-                              )),
-                          IconButton(
-                              onPressed: () {
-                                if (homeBloc != null) {
-                                  homeBloc?.add(HomeAddToCartEvent(
-                                      categoryResponseModel:
-                                          categoryResponseModel));
-                                } else {
-                                  categoriesBloc?.add(CategoriesAddToCartEvent(
-                                      categoryResponseModel:
-                                          categoryResponseModel));
-                                }
-                              },
-                              icon: Icon(IconlyLight.bag,
-                                  color: Theme.of(context)
-                                      .textTheme
-                                      .titleLarge
-                                      ?.color)),
+                                    } else {
+                                      categoriesBloc?.add(
+                                          CategoriesAddToWishlistEvent(
+                                              categoryResponseModel:
+                                                  categoryResponseModel));
+                                    }
+                                  },
+                                  icon: Icon(
+                                    IconlyLight.heart,
+                                    color: Theme.of(context)
+                                        .textTheme
+                                        .titleLarge
+                                        ?.color,
+                                  )),
+                              IconButton(
+                                  onPressed: () {
+                                    if (homeBloc != null) {
+                                      homeBloc?.add(HomeAddToCartEvent(
+                                          categoryResponseModel:
+                                              categoryResponseModel));
+                                    } else {
+                                      categoriesBloc?.add(
+                                          CategoriesAddToCartEvent(
+                                              categoryResponseModel:
+                                                  categoryResponseModel));
+                                    }
+                                  },
+                                  icon: Container(
+                                    width: 40,
+                                    height: 60,
+                                    decoration: const BoxDecoration(
+                                        color: MyTheme.mainColor,
+                                        borderRadius: BorderRadius.only(
+                                            topLeft: Radius.circular(20),
+                                            bottomRight: Radius.circular(10))),
+                                    child: const Icon(Icons.add,
+                                        size: 25, color: Colors.white),
+                                  )),
+                            ],
+                          ),
                         ],
-                      )
-                    ],
-                  ),
-                ),
-              ],
-            ))
+                      ),
+                    ),
+                  ],
+                ))
           ],
         ),
       ),
@@ -160,8 +170,8 @@ class CategoryTileWidget extends StatelessWidget {
   }
 
   String? categoryTitleBuilder(String? title) {
-    if (title!.length > 20) {
-      return title.substring(0, 20);
+    if (title!.length > 25) {
+      return "${title.substring(0, 25)}...";
     } else {
       return title;
     }
