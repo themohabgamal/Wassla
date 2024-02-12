@@ -210,6 +210,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       onPressed: () {
                                         homeBloc.add(NavigateToHotDealsEvent());
                                       },
+                                      //fake commit
                                       child: Text(
                                         "View all",
                                         style: Theme.of(context)
