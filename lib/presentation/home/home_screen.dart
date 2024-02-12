@@ -11,6 +11,7 @@ import 'package:grad/presentation/auth/non_authenticated_screen.dart';
 import 'package:grad/presentation/cart/cart_screen.dart';
 import 'package:grad/presentation/home/hot_deals_page.dart';
 import 'package:grad/presentation/home/widgets/carousel_slider_widget.dart';
+import 'package:grad/presentation/home/widgets/home_categories.dart';
 import 'package:grad/presentation/home/widgets/my_search_widget.dart';
 import 'package:grad/presentation/wishlist/wish_list_screen.dart';
 import 'package:grad/core/theming/theme.dart';
@@ -37,10 +38,18 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   HomeBloc homeBloc = HomeBloc();
   List<String> categories = [
-    "electronics",
-    "jewelery",
-    "men's clothing",
-    "women's clothing"
+    "Sports",
+    "Clothes",
+    "Electronics",
+    "Furniture",
+    "Shoes",
+  ];
+  List<String> categoriesIcons = [
+    "assets/icons/sports.png",
+    "assets/icons/clothes.png",
+    "assets/icons/electronics.png",
+    "assets/icons/furniture.png",
+    "assets/icons/shoes.png"
   ];
 
   int current = 0;
@@ -91,17 +100,6 @@ class _HomeScreenState extends State<HomeScreen> {
       builder: (context, state) {
         return Scaffold(
           backgroundColor: MyTheme.mainColor,
-          // drawer: StreamBuilder<User?>(
-          //   stream: FirebaseAuth.instance.authStateChanges(),
-          //   builder: (context, snapshot) {
-          //     if (snapshot.hasData) {
-          //       return const AuthenticatedScreen();
-          //     } else {
-          //       return const NonAuthenticatedScreen();
-          //     }
-          //   },
-          // ),
-
           //*-------------------------------------------------------------body------------------------------------------------
           body: SafeArea(
             child: SingleChildScrollView(
@@ -116,17 +114,18 @@ class _HomeScreenState extends State<HomeScreen> {
                           height: 200.h,
                         ),
                         const Positioned(
-                          right: -150,
+                          right: -200,
+                          top: -110,
                           child: CircleAvatar(
-                            radius: 160,
-                            backgroundColor: Colors.white24,
+                            radius: 200,
+                            backgroundColor: Colors.white12,
                           ),
                         ),
                         const Positioned(
-                          right: -150,
-                          top: 25,
+                          right: -200,
+                          top: 50,
                           child: CircleAvatar(
-                            radius: 140,
+                            radius: 200,
                             backgroundColor: Colors.white12,
                           ),
                         ),
@@ -167,43 +166,12 @@ class _HomeScreenState extends State<HomeScreen> {
                               SizedBox(height: 40.h),
                               const MySearchWidget(),
                               SizedBox(
-                                height: 10.h,
+                                height: 20.h,
                               ),
-                              Align(
-                                alignment: Alignment.bottomLeft,
-                                child: Text(
-                                  "Select Category",
-                                  style: FontHelper.poppins18Regular()
-                                      .copyWith(color: Colors.white),
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 20,
-                              ),
-                              SizedBox(
-                                height: 75,
-                                child: ListView.separated(
-                                  physics: const ClampingScrollPhysics(),
-                                  scrollDirection: Axis.horizontal,
-                                  itemBuilder: (context, index) {
-                                    return GestureDetector(
-                                      onTap: () {
-                                        setState(() {
-                                          current = index;
-                                          category = categories[index];
-                                        });
-                                      },
-                                      child: CategoryNameWidget(
-                                          name: categories[index],
-                                          isSelected:
-                                              index == current ? true : false),
-                                    );
-                                  },
-                                  separatorBuilder: (context, index) =>
-                                      const SizedBox(width: 10),
-                                  itemCount: 4,
-                                ),
-                              ),
+                              HomeCategories(
+                                  categoriesIcons: categoriesIcons,
+                                  categories: categories,
+                                  current: current)
                             ],
                           ),
                         ),
