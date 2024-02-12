@@ -210,7 +210,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                       onPressed: () {
                                         homeBloc.add(NavigateToHotDealsEvent());
                                       },
-                                      //
                                       child: Text(
                                         "View all",
                                         style: Theme.of(context)
