@@ -1,4 +1,7 @@
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:grad/business_logic/categories/bloc/categories_bloc.dart';
+import 'package:grad/core/helpers/constants/fonts/font_helper.dart';
+import 'package:grad/presentation/home/widgets/my_search_widget.dart';
 import 'package:grad/repositories/home_category_repo.dart';
 import 'package:grad/core/theming/theme.dart';
 import 'package:grad/widgets/categories_single_product_args.dart';
@@ -24,15 +27,25 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: MyTheme.mainColor,
+        toolbarHeight: 60.h,
+        backgroundColor: Colors.white,
         title: Text(
-          "Browse Our Categories",
-          style: Theme.of(context)
-              .textTheme
-              .headlineMedium
-              ?.copyWith(color: Colors.white, fontSize: 25),
+          "Store",
+          style: FontHelper.poppins24Bold().copyWith(fontSize: 26.sp),
         ),
+        centerTitle: false,
+        actions: [
+          IconButton(
+            icon: const Icon(
+              IconlyLight.bag,
+              color: Colors.black,
+              size: 30,
+            ),
+            onPressed: () {},
+          )
+        ],
       ),
       body: BlocConsumer<CategoriesBloc, CategoriesState>(
         bloc: categoriesBloc,
@@ -62,63 +75,113 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
               Container(
                 padding: const EdgeInsets.all(20),
                 decoration: const BoxDecoration(
-                    color: MyTheme.mainColor,
+                    color: Colors.transparent,
                     borderRadius: BorderRadius.only(
                         bottomLeft: Radius.circular(15),
                         bottomRight: Radius.circular(15))),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                child: Column(
                   children: [
-                    const Expanded(child: SearchBarWidget()),
-                    PopupMenuButton(
-                      position: PopupMenuPosition.under,
-                      color: MyTheme.mainColor,
-                      onSelected: (value) {
-                        setState(() {
-                          selectedCategory = value;
-                        });
-                      },
-                      shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(15.0),
-                        ),
-                      ),
-                      child: Container(
-                        padding: const EdgeInsets.all(10),
-                        child: const Icon(
-                          IconlyBold.filter,
-                          color: Colors.white,
-                          size: 28,
-                        ),
-                      ),
-                      itemBuilder: (context) {
-                        return [
-                          const PopupMenuItem(
-                              value: "electronics",
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                            child: MySearchWidget(
+                          iconColor: Colors.black,
+                          border: Border.all(color: Colors.black26),
+                        )),
+                        PopupMenuButton(
+                          position: PopupMenuPosition.under,
+                          color: MyTheme.mainColor,
+                          onSelected: (value) {
+                            setState(() {
+                              selectedCategory = value;
+                            });
+                          },
+                          shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(2.0),
+                            ),
+                          ),
+                          child: Container(
+                            padding: const EdgeInsets.all(10),
+                            child: const Icon(
+                              IconlyBold.filter,
+                              color: Colors.black,
+                              size: 40,
+                            ),
+                          ),
+                          itemBuilder: (context) {
+                            return [
+                              PopupMenuItem(
+                                  value: "electronics",
+                                  child: Text(
+                                    "Electronics",
+                                    style: FontHelper.poppins18Regular()
+                                        .copyWith(color: Colors.white),
+                                  )),
+                              PopupMenuItem(
+                                  value: "jewelery",
+                                  child: Text(
+                                    "Jewelery",
+                                    style: FontHelper.poppins18Regular()
+                                        .copyWith(color: Colors.white),
+                                  )),
+                              PopupMenuItem(
+                                  value: "men's clothing",
+                                  child: Text(
+                                    "Men's clothing",
+                                    style: FontHelper.poppins18Regular()
+                                        .copyWith(color: Colors.white),
+                                  )),
+                              PopupMenuItem(
+                                  value: "women's clothing",
+                                  child: Text(
+                                    "Women's clothing",
+                                    style: FontHelper.poppins18Regular()
+                                        .copyWith(color: Colors.white),
+                                  )),
+                            ];
+                          },
+                        )
+                      ],
+                    ),
+                    SizedBox(
+                      height: 20.h,
+                    ),
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "Featured Brands",
+                            style: FontHelper.poppins20Bold(),
+                          ),
+                          TextButton(
+                              onPressed: () {},
                               child: Text(
-                                "Electronics",
-                                style: TextStyle(color: Colors.white),
-                              )),
-                          const PopupMenuItem(
-                              value: "jewelery",
-                              child: Text(
-                                "Jewelery",
-                                style: TextStyle(color: Colors.white),
-                              )),
-                          const PopupMenuItem(
-                              value: "men's clothing",
-                              child: Text(
-                                "Men's clothing",
-                                style: TextStyle(color: Colors.white),
-                              )),
-                          const PopupMenuItem(
-                              value: "women's clothing",
-                              child: Text(
-                                "Women's clothing",
-                                style: TextStyle(color: Colors.white),
-                              )),
-                        ];
-                      },
+                                "View All",
+                                style: FontHelper.poppins16Regular().copyWith(
+                                    color:
+                                        const Color.fromARGB(255, 50, 1, 213)),
+                              ))
+                        ]),
+                    SizedBox(
+                      height: 20.h,
+                    ),
+                    SizedBox(
+                      height: 200,
+                      child: GridView.builder(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: 4,
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 2,
+                                  childAspectRatio: 8 / 4,
+                                  crossAxisSpacing: 10,
+                                  mainAxisSpacing: 10),
+                          itemBuilder: (context, index) {
+                            return const BrandTab();
+                          }),
                     )
                   ],
                 ),
@@ -135,27 +198,18 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                               "Error fetching data from server ${snapshot.error.toString()}"));
                     } else if (snapshot.connectionState ==
                         ConnectionState.waiting) {
-                      return GridView.builder(
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 2,
-                                childAspectRatio: 6 / 10,
-                                crossAxisSpacing: 5,
-                                mainAxisSpacing: 8),
+                      return ListView.builder(
+                        scrollDirection: Axis.horizontal,
                         itemBuilder: (context, index) {
                           return const ProductLoadingTileWidget();
                         },
                         itemCount: snapshot.data?.length,
                       );
                     } else if (snapshot.hasData) {
-                      return GridView.builder(
-                        padding: const EdgeInsets.all(10),
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 2,
-                                childAspectRatio: 6 / 9,
-                                crossAxisSpacing: 0,
-                                mainAxisSpacing: 0),
+                      return ListView.builder(
+                        padding: const EdgeInsets.only(left: 20, bottom: 10),
+                        scrollDirection: Axis.horizontal,
+                        itemCount: snapshot.data!.length,
                         itemBuilder: (context, index) {
                           return CategoryTileWidget(
                             categoryResponseModel: snapshot.data![index],
@@ -163,7 +217,6 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                             isHotDeal: false,
                           );
                         },
-                        itemCount: snapshot.data!.length,
                       );
                     } else
                       return const SizedBox();
@@ -173,6 +226,70 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
             ],
           );
         },
+      ),
+    );
+  }
+}
+
+class BrandTab extends StatelessWidget {
+  const BrandTab({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {},
+      child: Container(
+        decoration: BoxDecoration(
+          border: Border.all(color: Colors.black26, width: 1),
+          borderRadius: BorderRadius.circular(12),
+        ),
+        padding: const EdgeInsets.all(7),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            const CircleAvatar(
+              radius: 30,
+              backgroundColor: Colors.transparent,
+              backgroundImage: NetworkImage(
+                  'https://pngimg.com/uploads/nike/nike_PNG18.png'),
+            ),
+            SizedBox(width: 12.w),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    const Text(
+                      'Nike',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(
+                      width: 2.w,
+                    ),
+                    Image.asset(
+                      'assets/icons/verified.png',
+                      width: 15,
+                    )
+                  ],
+                ),
+                const SizedBox(height: 8),
+                const Text(
+                  '22 Products',
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.black45,
+                  ),
+                ),
+              ],
+            )
+          ],
+        ),
       ),
     );
   }
