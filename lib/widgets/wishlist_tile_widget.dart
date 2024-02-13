@@ -1,5 +1,7 @@
 // ignore_for_file: must_be_immutable
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:grad/business_logic/wishlist/bloc/wishlist_bloc.dart';
+import 'package:grad/core/helpers/constants/fonts/font_helper.dart';
 import 'package:grad/models/category_response_model.dart';
 import 'package:flutter/material.dart';
 
@@ -27,7 +29,7 @@ class _WishlistTileWidget extends State<WishlistTileWidget> {
       child: Container(
         padding: const EdgeInsets.all(10),
         width: 220,
-        height: 100,
+        height: 100.h,
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(15),
             color: Theme.of(context).canvasColor),
@@ -47,9 +49,8 @@ class _WishlistTileWidget extends State<WishlistTileWidget> {
                 Container(
                   child: Text(
                     "${categoryTitleBuilder(widget.categoryResponseModel.title)}",
-                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                    style: FontHelper.poppins16Bold().copyWith(
                         fontWeight: FontWeight.w600,
-                        fontSize: 16,
                         color: Theme.of(context).textTheme.titleLarge?.color),
                   ),
                 ),
@@ -60,7 +61,7 @@ class _WishlistTileWidget extends State<WishlistTileWidget> {
                     children: [
                       Text(
                         "\$ ${widget.categoryResponseModel.price.toString().length > 3 ? widget.categoryResponseModel.price.toString().substring(0, 3) : widget.categoryResponseModel.price.toString()}",
-                        style: Theme.of(context).textTheme.titleLarge,
+                        style: FontHelper.poppins20Regular(),
                       ),
                     ],
                   ),
