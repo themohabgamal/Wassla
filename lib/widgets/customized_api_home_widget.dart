@@ -34,6 +34,7 @@ class CustomizedApiHomeWidget extends StatelessWidget {
                 crossAxisSpacing: 2,
                 mainAxisSpacing: 2),
             itemBuilder: (context, index) {
+              //
               return CategoryTileWidget(
                 categoryResponseModel: snapshot.data![index],
                 homeBloc: homeBloc,
