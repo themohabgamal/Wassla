@@ -21,14 +21,8 @@ class WishListScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text("My Wishlist"),
-          leading: IconButton(
-            icon: Icon(IconlyLight.arrow_left_2,
-                color: Theme.of(context).textTheme.titleLarge?.color),
-            onPressed: () {
-              wishlistBloc.add(WishlistNavigateBackEvent());
-            },
-          ),
+          title: const Text("Wishlist"),
+          centerTitle: false,
         ),
         body: BlocConsumer<WishlistBloc, WishlistState>(
           bloc: wishlistBloc,
@@ -58,7 +52,10 @@ class WishListScreen extends StatelessWidget {
                   height: 10,
                 ),
                 itemBuilder: (context, index) {
-                  return const SizedBox();
+                  // return Container(
+                  //   color: Colors.red,
+                  //   height: 100,
+                  // );
                   // return Slidable(
                   //   closeOnScroll: true,
                   //   endActionPane: ActionPane(
@@ -76,18 +73,17 @@ class WishListScreen extends StatelessWidget {
                   //           },
                   //         ),
                   //       ]),
-                  //   child: Row(
-                  //     children: [
-                  //       Expanded(
-                  //         child: WishlistTileWidget(
-                  //           categoryResponseModel:
-                  //               WishListScreen.wishListList[index],
-                  //           wishlistBloc: wishlistBloc,
-                  //         ),
-                  //       ),
-                  //     ],
-                  //   ),
-                  // );
+                  return Row(
+                    children: [
+                      Expanded(
+                        child: WishlistTileWidget(
+                          categoryResponseModel:
+                              WishListScreen.wishListList[index],
+                          wishlistBloc: wishlistBloc,
+                        ),
+                      ),
+                    ],
+                  );
                 },
                 itemCount: WishListScreen.wishListList.length,
               ));
