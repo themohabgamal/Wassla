@@ -130,39 +130,11 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.all(8.0),
+                          padding: const EdgeInsets.only(
+                              top: 30, right: 10, left: 10),
                           child: Column(
                             children: [
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  const Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text("Good day for shopping",
-                                          style: TextStyle(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w400,
-                                              color: Colors.white)),
-                                      Text("Mohab Gamal",
-                                          style: TextStyle(
-                                              fontSize: 22,
-                                              fontWeight: FontWeight.w800,
-                                              color: Colors.white)),
-                                    ],
-                                  ),
-                                  IconButton(
-                                    icon: const Icon(
-                                      IconlyLight.bag,
-                                      color: Colors.white,
-                                      size: 30,
-                                    ),
-                                    onPressed: () {},
-                                  )
-                                ],
-                              ),
+                              const HeaderWidget(),
                               SizedBox(height: 40.h),
                               const MySearchWidget(),
                               SizedBox(
@@ -191,17 +163,12 @@ class _HomeScreenState extends State<HomeScreen> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 const CarouselSliderBuilder(),
-                                SizedBox(
-                                    height: MediaQuery.of(context).size.height,
-                                    child: CustomizedApiHomeWidget(
-                                        homeBloc: homeBloc,
-                                        category: category)),
                                 Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
-                                      "Hot Deals",
+                                      "Popular Products",
                                       style: Theme.of(context)
                                           .textTheme
                                           .headlineSmall,
@@ -223,41 +190,23 @@ class _HomeScreenState extends State<HomeScreen> {
                                     )
                                   ],
                                 ),
-                                const SizedBox(height: 5),
                                 SizedBox(
-                                  width: double.infinity,
-                                  child: Stack(
-                                    alignment: Alignment.center,
-                                    children: [
-                                      ClipRRect(
-                                        borderRadius: BorderRadius.circular(12),
-                                        child: Image.asset(
-                                          "assets/images/pattern.jpg",
-                                          height: 100,
-                                          fit: BoxFit.cover,
-                                          width: double.infinity,
-                                        ),
-                                      ),
-                                      const Text(
-                                        "50% off",
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.w700,
-                                            fontSize: 50,
-                                            color: Colors.white),
-                                      )
-                                    ],
-                                  ),
+                                    height: MediaQuery.of(context).size.height,
+                                    child: CustomizedApiHomeWidget(
+                                        homeBloc: homeBloc,
+                                        category: category)),
+                                SizedBox(height: 20.h),
+                                HotDealsSection(
+                                  homeBloc: homeBloc,
                                 ),
-                                const SizedBox(height: 20),
+                                SizedBox(height: 20.h),
                                 Text(
                                   "Clothes",
                                   style:
                                       Theme.of(context).textTheme.headlineSmall,
                                 ),
-                                const SizedBox(height: 20),
+                                SizedBox(height: 20.h),
                                 SizedBox(
-                                    height: MediaQuery.of(context).size.height *
-                                        0.35,
                                     child: CustomizedApiHomeWidget(
                                         homeBloc: homeBloc,
                                         category: "men's clothing")),
@@ -273,6 +222,102 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         );
       },
+    );
+  }
+}
+
+class HotDealsSection extends StatelessWidget {
+  final HomeBloc? homeBloc;
+  const HotDealsSection({super.key, this.homeBloc});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              "Hot Deals",
+              style: Theme.of(context).textTheme.headlineSmall,
+            ),
+            TextButton(
+              onPressed: () {
+                homeBloc?.add(NavigateToHotDealsEvent());
+              },
+              //fake commit
+              child: Text(
+                "View all",
+                style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.w600, color: MyTheme.mainColor),
+              ),
+            )
+          ],
+        ),
+        const SizedBox(height: 5),
+        SizedBox(
+          width: double.infinity,
+          child: Stack(
+            alignment: Alignment.center,
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(12),
+                child: Image.asset(
+                  "assets/images/pattern.jpg",
+                  height: 100,
+                  fit: BoxFit.cover,
+                  width: double.infinity,
+                ),
+              ),
+              const Text(
+                "50% off",
+                style: TextStyle(
+                    fontWeight: FontWeight.w700,
+                    fontSize: 50,
+                    color: Colors.white),
+              )
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class HeaderWidget extends StatelessWidget {
+  const HeaderWidget({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        const Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text("Good day for shopping",
+                style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w400,
+                    color: Colors.white)),
+            Text("Mohab Gamal",
+                style: TextStyle(
+                    fontSize: 22,
+                    fontWeight: FontWeight.w800,
+                    color: Colors.white)),
+          ],
+        ),
+        IconButton(
+          icon: const Icon(
+            IconlyLight.bag,
+            color: Colors.white,
+            size: 30,
+          ),
+          onPressed: () {},
+        )
+      ],
     );
   }
 }

@@ -3,7 +3,6 @@
 import 'package:grad/business_logic/home/bloc/home_bloc.dart';
 import 'package:grad/repositories/home_category_repo.dart';
 import 'package:grad/widgets/category_tile_widget.dart';
-import 'package:grad/widgets/product_loading_tile_widget.dart';
 import 'package:flutter/material.dart';
 
 class CustomizedApiHomeWidget extends StatelessWidget {
@@ -22,7 +21,8 @@ class CustomizedApiHomeWidget extends StatelessWidget {
               child: Text(
                   "Error fetching data from server ${snapshot.error.toString()}"));
         } else if (snapshot.connectionState == ConnectionState.waiting) {
-          return const ProductLoadingTileWidget();
+          // return const ProductLoadingTileWidget();
+          return const SizedBox();
         } else if (snapshot.hasData) {
           return GridView.builder(
             shrinkWrap: true,
