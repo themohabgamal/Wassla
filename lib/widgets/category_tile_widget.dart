@@ -59,28 +59,37 @@ class CategoryTileWidget extends StatelessWidget {
                   width: 150,
                   fit: BoxFit.contain,
                 )),
-            const SizedBox(height: 20),
+            SizedBox(height: 20.h),
             Expanded(
                 flex: 3,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    Text(
-                      isHotDeal ? "HOT DEAL" : "BEST SELLER",
-                      style: FontHelper.poppins16Bold().copyWith(
-                          fontSize: 15,
-                          color: isHotDeal ? Colors.red : MyTheme.mainColor),
-                    ),
-                    const SizedBox(height: 10),
-                    Text(
-                      "${categoryTitleBuilder(categoryResponseModel.title)}",
-                      style: FontHelper.poppins16Regular(),
+                    Padding(
+                      padding: const EdgeInsets.all(5),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            isHotDeal ? "HOT DEAL" : "BEST SELLER",
+                            style: FontHelper.poppins16Bold().copyWith(
+                                fontSize: 15,
+                                color:
+                                    isHotDeal ? Colors.red : MyTheme.mainColor),
+                          ),
+                          SizedBox(height: 10.h),
+                          Text(
+                            "${categoryTitleBuilder(categoryResponseModel.title)}",
+                            style: FontHelper.poppins16Regular(),
+                          ),
+                        ],
+                      ),
                     ),
                     const SizedBox(height: 10),
                     Expanded(
                       flex: 1,
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           isHotDeal
                               ? Column(
@@ -108,9 +117,10 @@ class CategoryTileWidget extends StatelessWidget {
                                 )
                               : Text(
                                   "\$ ${categoryResponseModel.price.toString().length > 3 ? categoryResponseModel.price.toString().substring(0, 3) : categoryResponseModel.price}",
-                                  style: FontHelper.poppins18Bold(),
+                                  style: FontHelper.poppins20Bold(),
                                 ),
                           Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
                             children: [
                               IconButton(
                                   onPressed: () {
