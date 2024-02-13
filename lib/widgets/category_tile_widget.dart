@@ -42,9 +42,9 @@ class CategoryTileWidget extends StatelessWidget {
         decoration: BoxDecoration(
             boxShadow: [
               BoxShadow(
-                color: const Color(0xFFb4b4b4).withOpacity(0.8),
+                color: const Color(0xFFb4b4b4).withOpacity(0.2),
                 offset: const Offset(4, 4),
-                blurRadius: 10,
+                blurRadius: 7,
                 spreadRadius: 4,
               ),
             ],
@@ -80,14 +80,12 @@ class CategoryTileWidget extends StatelessWidget {
                           SizedBox(height: 10.h),
                           Text(
                             "${categoryTitleBuilder(categoryResponseModel.title)}",
-                            style: FontHelper.poppins16Regular(),
+                            style: FontHelper.poppins18Regular(),
                           ),
                         ],
                       ),
                     ),
-                    const SizedBox(height: 10),
                     Expanded(
-                      flex: 1,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -180,7 +178,7 @@ class CategoryTileWidget extends StatelessWidget {
   }
 
   String? categoryTitleBuilder(String? title) {
-    if (title!.length > 25) {
+    if (title!.length > 30) {
       return "${title.substring(0, 25)}...";
     } else {
       return title;

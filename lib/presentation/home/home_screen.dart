@@ -163,6 +163,33 @@ class _HomeScreenState extends State<HomeScreen> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 const CarouselSliderBuilder(),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      "Popular Products",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .headlineSmall,
+                                    ),
+                                    TextButton(
+                                      onPressed: () {
+                                        homeBloc.add(NavigateToHotDealsEvent());
+                                      },
+                                      //fake commit
+                                      child: Text(
+                                        "View all",
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .titleMedium
+                                            ?.copyWith(
+                                                fontWeight: FontWeight.w600,
+                                                color: MyTheme.mainColor),
+                                      ),
+                                    )
+                                  ],
+                                ),
                                 SizedBox(
                                     height: MediaQuery.of(context).size.height,
                                     child: CustomizedApiHomeWidget(
