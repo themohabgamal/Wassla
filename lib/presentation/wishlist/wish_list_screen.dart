@@ -1,6 +1,8 @@
 // ignore_for_file: must_be_immutable
 
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:grad/business_logic/wishlist/bloc/wishlist_bloc.dart';
+import 'package:grad/core/helpers/constants/fonts/font_helper.dart';
 import 'package:grad/models/category_response_model.dart';
 import 'package:grad/presentation/cart/cart_screen.dart';
 import 'package:grad/core/theming/theme.dart';
@@ -21,7 +23,11 @@ class WishListScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text("Wishlist"),
+          toolbarHeight: 100,
+          title: Text(
+            "Wishlist",
+            style: FontHelper.poppins24Bold(),
+          ),
           centerTitle: false,
         ),
         body: BlocConsumer<WishlistBloc, WishlistState>(
@@ -56,34 +62,34 @@ class WishListScreen extends StatelessWidget {
                   //   color: Colors.red,
                   //   height: 100,
                   // );
-                  // return Slidable(
-                  //   closeOnScroll: true,
-                  //   endActionPane: ActionPane(
-                  //       extentRatio: .2,
-                  //       motion: BehindMotion(),
-                  //       children: [
-                  //         SlidableAction(
-                  //           borderRadius: BorderRadius.circular(15),
-                  //           icon: IconlyLight.delete,
-                  //           backgroundColor: MyTheme.orangeColor,
-                  //           onPressed: (context) {
-                  //             wishlistBloc.add(WishlistRemoveItemEvent(
-                  //                 categoryResponseModel:
-                  //                     WishListScreen.wishListList[index]));
-                  //           },
-                  //         ),
-                  //       ]),
-                  return Row(
-                    children: [
-                      Expanded(
-                        child: WishlistTileWidget(
-                          categoryResponseModel:
-                              WishListScreen.wishListList[index],
-                          wishlistBloc: wishlistBloc,
-                        ),
-                      ),
-                    ],
-                  );
+                  return Slidable(
+                      closeOnScroll: true,
+                      endActionPane: ActionPane(
+                          extentRatio: .2,
+                          motion: const BehindMotion(),
+                          children: [
+                            SlidableAction(
+                              borderRadius: BorderRadius.circular(15),
+                              icon: IconlyLight.delete,
+                              backgroundColor: MyTheme.orangeColor,
+                              onPressed: (context) {
+                                wishlistBloc.add(WishlistRemoveItemEvent(
+                                    categoryResponseModel:
+                                        WishListScreen.wishListList[index]));
+                              },
+                            ),
+                          ]),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: WishlistTileWidget(
+                              categoryResponseModel:
+                                  WishListScreen.wishListList[index],
+                              wishlistBloc: wishlistBloc,
+                            ),
+                          ),
+                        ],
+                      ));
                 },
                 itemCount: WishListScreen.wishListList.length,
               ));
