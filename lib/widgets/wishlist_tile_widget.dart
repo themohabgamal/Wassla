@@ -49,6 +49,8 @@ class _WishlistTileWidget extends State<WishlistTileWidget> {
                 Container(
                   child: Text(
                     "${categoryTitleBuilder(widget.categoryResponseModel.title)}",
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                     style: FontHelper.poppins16Bold().copyWith(
                         fontWeight: FontWeight.w600,
                         color: Theme.of(context).textTheme.titleLarge?.color),
@@ -60,7 +62,7 @@ class _WishlistTileWidget extends State<WishlistTileWidget> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        "\$ ${widget.categoryResponseModel.price.toString().length > 3 ? widget.categoryResponseModel.price.toString().substring(0, 3) : widget.categoryResponseModel.price.toString()}",
+                        "\$ ${widget.categoryResponseModel.price.toString()}",
                         style: FontHelper.poppins20Regular(),
                       ),
                     ],
