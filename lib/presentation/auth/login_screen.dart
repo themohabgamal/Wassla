@@ -1,5 +1,10 @@
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/widgets.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:grad/main.dart';
 import 'package:grad/core/theming/theme.dart';
+import 'package:grad/nav_switcher.dart';
 import 'package:grad/widgets/alert.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -24,21 +29,23 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 32.0),
+        padding:
+            EdgeInsets.only(left: 32.0.w, right: 32.w, bottom: 70.h, top: 10.h),
         child: Form(
           key: _formKey,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(height: 18),
+              SizedBox(height: 100.h),
               const Text(
-                'Welcome back!',
+                'Welcome back !',
                 style: TextStyle(
                     fontSize: 32,
                     fontWeight: FontWeight.bold,
                     color: MyTheme.mainColor),
               ),
-              const SizedBox(height: 16),
+              SizedBox(height: 7.h),
               Text(
                 'Log in to your account',
                 style: TextStyle(
@@ -51,7 +58,9 @@ class _LoginScreenState extends State<LoginScreen> {
                 controller: emailController,
                 keyboardType: TextInputType.emailAddress,
                 decoration: const InputDecoration(
-                  labelText: 'Email ID',
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(30))),
+                  labelText: 'Email',
                   prefixIcon: Icon(IconlyLight.message),
                 ),
                 validator: (value) {
@@ -61,12 +70,15 @@ class _LoginScreenState extends State<LoginScreen> {
                   return null;
                 },
               ),
-              const SizedBox(height: 16),
+              SizedBox(height: 16.h),
               TextFormField(
                 controller: passwordController,
                 obscureText: true,
                 decoration: const InputDecoration(
-                    labelText: 'Password', prefixIcon: Icon(IconlyLight.lock)),
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(30))),
+                    labelText: 'Password',
+                    prefixIcon: Icon(IconlyLight.lock)),
                 validator: (value) {
                   if (value!.isEmpty) {
                     return 'Please enter your password';
@@ -98,34 +110,43 @@ class _LoginScreenState extends State<LoginScreen> {
                         child: Text(
                           'Log in',
                           style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                          ),
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white),
                         ),
                       ),
                     ),
                   ),
                 ],
               ),
-              const SizedBox(
-                height: 25,
+              SizedBox(
+                height: 25.h,
               ),
-              Text('or Sign in with google',
-                  style: Theme.of(context)
-                      .textTheme
-                      .titleLarge
-                      ?.copyWith(fontSize: 16)),
-              const SizedBox(
-                height: 16,
+              Align(
+                alignment: Alignment.center,
+                child: Text('or Sign in with google',
+                    style: Theme.of(context)
+                        .textTheme
+                        .titleLarge
+                        ?.copyWith(fontSize: 16)),
               ),
-              TextButton(
-                  onPressed: () {
-                    SignInWithGoogle();
-                  },
-                  child: Image.asset(
-                    "assets/images/google.png",
-                    width: 30,
-                  )),
+              SizedBox(
+                height: 16.h,
+              ),
+              Align(
+                alignment: Alignment.center,
+                child: TextButton(
+                    onPressed: () {
+                      SignInWithGoogle();
+                    },
+                    child: Image.asset(
+                      "assets/images/google.png",
+                      width: 30,
+                    )),
+              ),
+              SizedBox(
+                height: 20.h,
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -166,17 +187,28 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Future logIn() async {
     Alert.showAlert(
-        context, "assets/animations/loading.json", "Authenticating");
+        context: context,
+        animation: "assets/animations/loading.json",
+        text: "Authenticating");
     try {
       await FirebaseAuth.instance.signInWithEmailAndPassword(
           email: emailController.text.trim(),
           password: passwordController.text.trim());
+
       navigatorKey.currentState!.pop();
       Alert.showAlert(
-          context, "assets/animations/success.json", "Logged in successfully");
+        context: context,
+        animation: "assets/animations/success.json",
+        text: "Logged in successfully",
+        onContinue: () =>
+            Navigator.pushReplacementNamed(context, NavSwitcher.routeName),
+      );
     } on FirebaseAuthException catch (e) {
       navigatorKey.currentState!.pop();
-      Alert.showAlert(context, "assets/animations/error.json", "${e.message}");
+      Alert.showAlert(
+          context: context,
+          animation: "assets/animations/error.json",
+          text: "${e.message}");
     }
   }
 }

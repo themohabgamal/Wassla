@@ -1,5 +1,8 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:grad/main.dart';
 import 'package:grad/core/theming/theme.dart';
+import 'package:grad/nav_switcher.dart';
 import 'package:grad/widgets/alert.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -25,23 +28,25 @@ class _SignupScreenState extends State<SignupScreen> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 32.0, vertical: 70),
+        padding:
+            EdgeInsets.only(left: 32.0.w, right: 32.w, bottom: 70.h, top: 10.h),
         child: SingleChildScrollView(
           child: SafeArea(
             child: Form(
               key: _formKey,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const SizedBox(height: 18),
+                  SizedBox(height: 100.h),
                   const Text(
-                    'Hi There! ',
+                    'Welcome To Wassla',
                     style: TextStyle(
                         fontSize: 32,
                         fontWeight: FontWeight.bold,
                         color: MyTheme.mainColor),
                   ),
-                  const SizedBox(height: 16),
+                  SizedBox(height: 7.h),
                   Text(
                     'Join now and be a member of our family',
                     style: TextStyle(
@@ -54,6 +59,8 @@ class _SignupScreenState extends State<SignupScreen> {
                     controller: usernameController,
                     keyboardType: TextInputType.name,
                     decoration: const InputDecoration(
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(30))),
                       labelText: 'Username',
                       prefixIcon: Icon(IconlyLight.user),
                     ),
@@ -64,10 +71,15 @@ class _SignupScreenState extends State<SignupScreen> {
                       return null;
                     },
                   ),
+                  SizedBox(
+                    height: 16.h,
+                  ),
                   TextFormField(
                     controller: emailController,
                     keyboardType: TextInputType.emailAddress,
                     decoration: const InputDecoration(
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(30))),
                       labelText: 'Email ID',
                       prefixIcon: Icon(IconlyLight.message),
                     ),
@@ -78,11 +90,14 @@ class _SignupScreenState extends State<SignupScreen> {
                       return null;
                     },
                   ),
-                  const SizedBox(height: 16),
+                  SizedBox(height: 16.h),
                   TextFormField(
                     controller: passwordController,
                     obscureText: true,
                     decoration: const InputDecoration(
+                        border: OutlineInputBorder(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(30))),
                         labelText: 'Password',
                         prefixIcon: Icon(IconlyLight.lock)),
                     validator: (value) {
@@ -92,10 +107,16 @@ class _SignupScreenState extends State<SignupScreen> {
                       return null;
                     },
                   ),
+                  SizedBox(
+                    height: 16.h,
+                  ),
                   TextFormField(
                     controller: passwordConfirmationController,
                     obscureText: true,
                     decoration: const InputDecoration(
+                        border: OutlineInputBorder(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(30))),
                         labelText: 'Password Confirmation',
                         prefixIcon: Icon(IconlyLight.password)),
                     validator: (value) {
@@ -129,9 +150,9 @@ class _SignupScreenState extends State<SignupScreen> {
                             child: Text(
                               'Sign up',
                               style: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                              ),
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white),
                             ),
                           ),
                         ),
@@ -173,7 +194,9 @@ class _SignupScreenState extends State<SignupScreen> {
 
   Future signUp() async {
     Alert.showAlert(
-        context, "assets/animations/loading.json", "Authenticating");
+        context: context,
+        animation: "assets/animations/loading.json",
+        text: "Authenticating");
     try {
       await FirebaseAuth.instance.createUserWithEmailAndPassword(
           email: emailController.text.trim(),
@@ -181,10 +204,18 @@ class _SignupScreenState extends State<SignupScreen> {
 
       navigatorKey.currentState!.pop();
       Alert.showAlert(
-          context, "assets/animations/success.json", "Signed up successfully");
+        context: context,
+        animation: "assets/animations/success.json",
+        text: "Signed up successfully",
+        onContinue: () =>
+            Navigator.pushReplacementNamed(context, NavSwitcher.routeName),
+      );
     } on FirebaseAuthException catch (e) {
       navigatorKey.currentState!.pop();
-      Alert.showAlert(context, "assets/animations/error.json", e.message!);
+      Alert.showAlert(
+          context: context,
+          animation: "assets/animations/error.json",
+          text: e.message!);
     }
   }
 }

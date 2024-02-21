@@ -58,10 +58,11 @@ class MapSampleState extends State<MapSample> {
                         MaterialStateProperty.all(MyTheme.mainColor)),
                 onPressed: () {
                   CartScreen.cartList.clear();
-
                   Navigator.pop(context);
-                  Alert.showAlert(context, "assets/animations/order.json",
-                      "Order Was Placed Successfully");
+                  Alert.showAlert(
+                      animation: "assets/animations/order.json",
+                      text: "Order Was Placed Successfully",
+                      context: context);
                 },
                 child: const Row(
                   children: [

@@ -1,116 +1,129 @@
-import 'package:grad/business_logic/theming/cubit/theming_cubit.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:grad/core/helpers/constants/fonts/font_helper.dart';
+import 'package:grad/presentation/settings/edit_profile_screen.dart';
 
-class SettingsScreen extends StatefulWidget {
+class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
 
   @override
-  _SettingsScreenState createState() => _SettingsScreenState();
-}
-
-class _SettingsScreenState extends State<SettingsScreen> {
-  bool _notificationsEnabled = true;
-  bool _darkModeEnabled = false;
-  @override
-  void initState() {
-    super.initState();
-    _loadTheme();
-  }
-
-  void _loadTheme() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    bool isDarkMode = prefs.getBool('isDarkMode') ?? false;
-    setState(() {
-      _darkModeEnabled = isDarkMode;
-    });
-  }
-
-  void _toggleTheme() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    setState(() {
-      _darkModeEnabled = !_darkModeEnabled;
-      prefs.setBool('isDarkMode', _darkModeEnabled);
-    });
-  }
-
-  String _selectedLanguage = 'English';
-
-  @override
   Widget build(BuildContext context) {
-    ThemingCubit themingCubit = BlocProvider.of<ThemingCubit>(context);
-    final theme = _darkModeEnabled
-        ? themingCubit.changeToDark()
-        : themingCubit.changeToLight();
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Settings'),
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SizedBox(height: 20),
-            ListTile(
-              title: Text(
-                'Notifications',
-                style: Theme.of(context).textTheme.titleLarge,
-              ),
-              trailing: Switch(
-                value: _notificationsEnabled,
-                onChanged: (value) {
-                  setState(() {
-                    _notificationsEnabled = value;
-                  });
-                },
-              ),
-            ),
-            const Divider(),
-            ListTile(
-              title: Text(
-                'Dark Mode',
-                style: Theme.of(context).textTheme.titleLarge,
-              ),
-              trailing: Switch(
-                value: _darkModeEnabled,
-                onChanged: (value) {
-                  _toggleTheme();
-                },
-              ),
-            ),
-            const Divider(),
-            ListTile(
-              title: Text(
-                'Language',
-                style: Theme.of(context).textTheme.titleLarge,
-              ),
-              trailing: DropdownButton<String>(
-                value: _selectedLanguage,
-                items: <String>[
-                  'English',
-                  'Spanish',
-                  'French',
-                  'German',
-                  'Italian'
-                ].map<DropdownMenuItem<String>>((String value) {
-                  return DropdownMenuItem<String>(
-                    value: value,
-                    child: Text(
-                      value,
-                      style: Theme.of(context).textTheme.titleLarge,
-                    ),
-                  );
-                }).toList(),
-                onChanged: (value) {
-                  setState(() {
-                    _selectedLanguage = value!;
-                  });
-                },
-              ),
-            ),
-          ],
+        toolbarHeight: 100,
+        title: Text(
+          'Account',
+          style: FontHelper.poppins24Bold(),
         ),
+        centerTitle: false,
+      ),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          // Header with user avatar, name, and email
+          Container(
+            padding: const EdgeInsets.all(16),
+            color: Colors.grey[200],
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        const CircleAvatar(
+                          backgroundImage: AssetImage('assets/images/auth.png'),
+                          radius: 30,
+                        ),
+                        const SizedBox(width: 16),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'User Name',
+                              style: FontHelper.poppins18Bold(),
+                            ),
+                            const Text('user@email.com'),
+                          ],
+                        ),
+                      ],
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.pushNamed(
+                            context, EditProfileScreen.routeName);
+                      },
+                      child: const Icon(
+                        Icons.edit,
+                        size: 30,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          // Account settings
+          Container(
+            color: Colors.white,
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                ListTile(
+                  leading: const Icon(Icons.home),
+                  title: const Text('My Addresses'),
+                  onTap: () {
+                    // Navigate to my addresses screen
+                  },
+                ),
+                ListTile(
+                  leading: const Icon(Icons.shopping_cart),
+                  title: const Text('My Cart'),
+                  onTap: () {
+                    // Navigate to my cart screen
+                  },
+                ),
+                ListTile(
+                  leading: const Icon(Icons.assignment),
+                  title: const Text('My Orders'),
+                  onTap: () {
+                    // Navigate to my orders screen
+                  },
+                ),
+                ListTile(
+                  leading: const Icon(Icons.account_balance),
+                  title: const Text('Bank Account'),
+                  onTap: () {
+                    // Navigate to bank account screen
+                  },
+                ),
+                ListTile(
+                  leading: const Icon(Icons.card_giftcard),
+                  title: const Text('My Coupons'),
+                  onTap: () {
+                    // Navigate to my coupons screen
+                  },
+                ),
+                ListTile(
+                  leading: const Icon(Icons.notifications),
+                  title: const Text('Notifications'),
+                  onTap: () {
+                    // Navigate to notifications screen
+                  },
+                ),
+                ListTile(
+                  leading: const Icon(Icons.lock),
+                  title: const Text('Account Privacy'),
+                  onTap: () {
+                    // Navigate to account privacy screen
+                  },
+                ),
+              ],
+            ),
+          ),
+          // App settings
+        ],
       ),
     );
   }

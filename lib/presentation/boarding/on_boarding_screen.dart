@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:iconly/iconly.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 
+import '../auth/auth_page.dart';
+
 class OnBoardingScreen extends StatelessWidget {
   const OnBoardingScreen({super.key});
   static const String routeName = 'boardingScreen';
@@ -29,7 +31,7 @@ class OnBoardingScreen extends StatelessWidget {
           ),
         ),
         onDone: () {
-          Navigator.pushReplacementNamed(context, NavSwitcher.routeName);
+          Navigator.pushReplacementNamed(context, AuthPage.routeName);
         },
         animationDuration: 10,
         dotsDecorator:

@@ -3,12 +3,14 @@ import 'package:grad/business_logic/theming/cubit/theming_cubit.dart';
 import 'package:grad/firebase_options.dart';
 import 'package:grad/nav_switcher.dart';
 import 'package:grad/presentation/about_us.dart';
+import 'package:grad/presentation/auth/auth_page.dart';
 
 import 'package:grad/presentation/boarding/on_boarding_screen.dart';
 import 'package:grad/presentation/home/home_screen.dart';
 import 'package:grad/presentation/home/hot_deals_page.dart';
 import 'package:grad/presentation/home_checker.dart';
 import 'package:grad/presentation/map/g_map.dart';
+import 'package:grad/presentation/settings/edit_profile_screen.dart';
 import 'package:grad/presentation/wishlist/wish_list_screen.dart';
 import 'package:grad/core/theming/theme.dart';
 import 'package:grad/widgets/cart_single_product_page.dart';
@@ -54,11 +56,12 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         navigatorKey: navigatorKey,
         debugShowCheckedModeBanner: false,
-        title: 'MOJO',
+        title: 'Wassla',
         theme: themingCubit.isDark ? MyTheme.darkTheme : MyTheme.lightTheme,
         routes: {
           HomeScreen.routeName: (context) => const HomeScreen(),
           NavSwitcher.routeName: (context) => const NavSwitcher(),
+          AuthPage.routeName: (context) => const AuthPage(),
           SingleProductPage.routeName: (context) => const SingleProductPage(),
           CartSingleProductPage.routeName: (context) =>
               const CartSingleProductPage(),
@@ -70,11 +73,12 @@ class MyApp extends StatelessWidget {
           HomeChecker.routeName: (context) => const HomeChecker(),
           AboutUsScreen.routeName: (context) => AboutUsScreen(),
           MapSample.routeName: (context) => const MapSample(),
+          EditProfileScreen.routeName: (context) => const EditProfileScreen(),
         },
         // initialRoute: OnBoardingScreen.routeName,
         initialRoute: isViewed == 0 || isViewed == null
             ? OnBoardingScreen.routeName
-            : NavSwitcher.routeName,
+            : AuthPage.routeName,
       ),
     );
   }

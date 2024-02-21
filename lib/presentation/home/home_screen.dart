@@ -6,7 +6,6 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:grad/core/helpers/constants/fonts/font_helper.dart';
-import 'package:grad/presentation/auth/authenticated_screen.dart';
 import 'package:grad/presentation/auth/non_authenticated_screen.dart';
 import 'package:grad/presentation/cart/cart_screen.dart';
 import 'package:grad/presentation/home/hot_deals_page.dart';

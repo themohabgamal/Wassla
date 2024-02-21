@@ -3,7 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
 class Alert {
-  static showAlert(BuildContext context, String animation, String text) {
+  static showAlert(
+      {void Function()? onContinue,
+      required BuildContext context,
+      required String animation,
+      required String text}) {
     showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -27,7 +31,7 @@ class Alert {
                     style: Theme.of(context)
                         .textTheme
                         .titleLarge
-                        ?.copyWith(color: Colors.grey[800]),
+                        ?.copyWith(color: Colors.black),
                   ),
                 ),
                 const SizedBox(height: 10),
@@ -35,7 +39,7 @@ class Alert {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     TextButton(
-                        onPressed: () => Navigator.pop(context),
+                        onPressed: onContinue ?? () {},
                         child: Text(
                           "Continue",
                           style: Theme.of(context)

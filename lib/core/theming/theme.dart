@@ -13,10 +13,9 @@ class MyTheme {
   static final lightTheme = ThemeData(
       canvasColor: Colors.white,
       appBarTheme: AppBarTheme(
-        backgroundColor: lightGreyColor,
+        backgroundColor: Colors.white,
         elevation: 0,
         iconTheme: const IconThemeData(color: darkColor),
-        centerTitle: true,
         titleTextStyle: GoogleFonts.raleway(
             fontSize: 16, fontWeight: FontWeight.w600, color: darkColor),
       ),
@@ -48,7 +47,7 @@ class MyTheme {
             decoration: TextDecoration.none),
       ),
       bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-          backgroundColor: Colors.white70,
+          backgroundColor: Colors.white,
           showSelectedLabels: false,
           showUnselectedLabels: false,
           selectedIconTheme: IconThemeData(size: 30, color: mainColor),
