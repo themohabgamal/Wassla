@@ -29,6 +29,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
+        leading: const SizedBox.shrink(),
         toolbarHeight: 60.h,
         backgroundColor: Colors.white,
         title: Text(

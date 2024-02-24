@@ -23,6 +23,7 @@ class WishListScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
+          leading: const SizedBox.shrink(),
           toolbarHeight: 100,
           title: Text(
             "Wishlist",

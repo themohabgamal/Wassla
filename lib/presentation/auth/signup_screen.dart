@@ -1,7 +1,11 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:grad/core/networking/firebase_helper.dart';
+import 'package:grad/core/widgets/my_text_form_field.dart';
 import 'package:grad/main.dart';
 import 'package:grad/core/theming/theme.dart';
+import 'package:grad/models/user.dart';
 import 'package:grad/nav_switcher.dart';
 import 'package:grad/widgets/alert.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -17,10 +21,13 @@ class SignupScreen extends StatefulWidget {
 }
 
 class _SignupScreenState extends State<SignupScreen> {
+  FirebaseHelper firebaseHelper = FirebaseHelper();
   final _formKey = GlobalKey<FormState>();
   final emailController = TextEditingController();
-  final usernameController = TextEditingController();
+  final firstNameController = TextEditingController();
+  final lastNameController = TextEditingController();
   final passwordController = TextEditingController();
+  final phoneController = TextEditingController();
   final passwordConfirmationController = TextEditingController();
 
   @override
@@ -29,7 +36,7 @@ class _SignupScreenState extends State<SignupScreen> {
       resizeToAvoidBottomInset: false,
       body: Padding(
         padding:
-            EdgeInsets.only(left: 32.0.w, right: 32.w, bottom: 70.h, top: 10.h),
+            EdgeInsets.only(left: 32.0.w, right: 32.w, bottom: 10.h, top: 90.h),
         child: SingleChildScrollView(
           child: SafeArea(
             child: Form(
@@ -38,7 +45,6 @@ class _SignupScreenState extends State<SignupScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(height: 100.h),
                   const Text(
                     'Welcome To Wassla',
                     style: TextStyle(
@@ -54,78 +60,102 @@ class _SignupScreenState extends State<SignupScreen> {
                       color: Colors.grey[600],
                     ),
                   ),
-                  const SizedBox(height: 32),
-                  TextFormField(
-                    controller: usernameController,
-                    keyboardType: TextInputType.name,
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(30))),
-                      labelText: 'Username',
-                      prefixIcon: Icon(IconlyLight.user),
-                    ),
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return 'Please enter your username';
-                      }
-                      return null;
-                    },
+                  SizedBox(height: 32.h),
+                  Row(
+                    children: [
+                      Expanded(
+                        flex: 1,
+                        child: MyTextFormField(
+                            controller: firstNameController,
+                            labelText: "First Name",
+                            prefixIcon: const Icon(IconlyLight.add_user),
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return 'Please enter your first name';
+                              }
+                              return null;
+                            },
+                            obscureText: false),
+                      ),
+                      SizedBox(
+                        width: 7.w,
+                      ),
+                      Expanded(
+                        flex: 1,
+                        child: MyTextFormField(
+                            controller: lastNameController,
+                            labelText: "Last Name",
+                            prefixIcon: const Icon(IconlyLight.add_user),
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return 'Please enter your last name';
+                              }
+                              return null;
+                            },
+                            obscureText: false),
+                      ),
+                    ],
                   ),
                   SizedBox(
                     height: 16.h,
                   ),
-                  TextFormField(
-                    controller: emailController,
-                    keyboardType: TextInputType.emailAddress,
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(30))),
-                      labelText: 'Email ID',
-                      prefixIcon: Icon(IconlyLight.message),
-                    ),
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return 'Please enter your email';
-                      }
-                      return null;
-                    },
-                  ),
+                  MyTextFormField(
+                      controller: emailController,
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return 'Email Can\'t be empty';
+                        }
+                        return null;
+                      },
+                      keyboardType: TextInputType.emailAddress,
+                      labelText: "Email Adress",
+                      prefixIcon: const Icon(IconlyLight.message),
+                      obscureText: false),
                   SizedBox(height: 16.h),
-                  TextFormField(
-                    controller: passwordController,
-                    obscureText: true,
-                    decoration: const InputDecoration(
-                        border: OutlineInputBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(30))),
-                        labelText: 'Password',
-                        prefixIcon: Icon(IconlyLight.lock)),
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return 'Please enter your password';
-                      }
-                      return null;
-                    },
-                  ),
+                  MyTextFormField(
+                      controller: phoneController,
+                      labelText: "Phone Number",
+                      keyboardType: TextInputType.number,
+                      prefixIcon: const Icon(IconlyLight.call),
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return 'Phone Number Can\'t be empty';
+                        } else if (value.length < 11) {
+                          return 'Phone Number is too short';
+                        } else if (value.length > 11) {
+                          return 'Phone Number is too long';
+                        }
+                        return null;
+                      },
+                      obscureText: false),
                   SizedBox(
                     height: 16.h,
                   ),
-                  TextFormField(
-                    controller: passwordConfirmationController,
-                    obscureText: true,
-                    decoration: const InputDecoration(
-                        border: OutlineInputBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(30))),
-                        labelText: 'Password Confirmation',
-                        prefixIcon: Icon(IconlyLight.password)),
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return 'Please enter your password again';
-                      }
-                      return null;
-                    },
-                  ),
+                  MyTextFormField(
+                      controller: passwordController,
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return 'This Field Can\'t be empty';
+                        }
+                        return null;
+                      },
+                      labelText: "Password",
+                      prefixIcon: const Icon(IconlyLight.lock),
+                      obscureText: true),
+                  SizedBox(height: 16.h),
+                  MyTextFormField(
+                      controller: passwordConfirmationController,
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return 'This Field Can\'t be empty';
+                        } else if (value != passwordController.text) {
+                          return 'Passwords do not match';
+                        }
+                        return null;
+                      },
+                      labelText: "Password Confirmation",
+                      prefixIcon: const Icon(IconlyLight.lock),
+                      obscureText: true),
                   const SizedBox(height: 32),
                   Row(
                     children: [
@@ -198,10 +228,16 @@ class _SignupScreenState extends State<SignupScreen> {
         animation: "assets/animations/loading.json",
         text: "Authenticating");
     try {
-      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+      var authResult = await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(
+              email: emailController.text.trim(),
+              password: passwordController.text.trim());
+      firebaseHelper.saveUserData(MyUser(
+          userId: authResult.user!.uid,
+          firstName: firstNameController.text.trim(),
+          lastName: lastNameController.text.trim(),
           email: emailController.text.trim(),
-          password: passwordController.text.trim());
-
+          phone: phoneController.text.trim()));
       navigatorKey.currentState!.pop();
       Alert.showAlert(
         context: context,
