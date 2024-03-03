@@ -60,6 +60,7 @@ class MapSampleState extends State<MapSample> {
                   CartScreen.cartList.clear();
                   Navigator.pop(context);
                   Alert.showAlert(
+                      isLoading: false,
                       animation: "assets/animations/order.json",
                       text: "Order Was Placed Successfully",
                       context: context);

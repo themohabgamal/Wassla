@@ -19,7 +19,7 @@ class MyTheme {
         titleTextStyle: GoogleFonts.raleway(
             fontSize: 16, fontWeight: FontWeight.w600, color: darkColor),
       ),
-      scaffoldBackgroundColor: lightGreyColor,
+      scaffoldBackgroundColor: Colors.white,
       textTheme: TextTheme(
         titleLarge: GoogleFonts.raleway(
             fontSize: 18,

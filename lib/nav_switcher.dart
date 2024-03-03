@@ -21,7 +21,7 @@ class _NavSwitcherState extends State<NavSwitcher> {
     const HomeScreen(),
     const CategoriesScreen(),
     WishListScreen(),
-    const SettingsScreen()
+    SettingsScreen()
   ];
   @override
   Widget build(BuildContext context) {

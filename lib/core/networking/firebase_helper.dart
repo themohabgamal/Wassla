@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:grad/models/admin/my_admin.dart';
 import 'package:grad/models/user.dart';
 
 class FirebaseHelper {
@@ -17,9 +18,61 @@ class FirebaseHelper {
       'phone': user.phone,
       'userId': user.userId
     };
-
     //* Add user data to Firestore collection
     firebaseFirestore.collection('users').doc(user.userId).set(userData);
     log('User data saved successfully');
+  }
+
+  Future<void> saveAdminData(MyAdmin admin) async {
+    //* Convert user data to a Map
+    Map<String, dynamic> adminData = {
+      'name': admin.name,
+      'email': admin.email,
+      'adminId': admin.adminId
+    };
+    //* Add user data to Firestore collection
+    firebaseFirestore.collection('admins').doc(admin.adminId).set(adminData);
+    log('admin data saved successfully');
+  }
+
+  logout() async {
+    await FirebaseAuth.instance.signOut();
+  }
+
+  Future<void> resetPassword(String email) async {
+    await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
+  }
+
+  Future<MyUser?> getCurrentUserData() async {
+    final userId = firebaseAuth.currentUser!.uid;
+    return await getUserDataFromFirestore(userId);
+  }
+
+  Future<MyUser?> getUserDataFromFirestore(String userId) async {
+    try {
+      DocumentSnapshot userSnapshot = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(userId)
+          .get();
+      if (userSnapshot.exists) {
+        // User data found, create a User object and return it
+        Map<String, dynamic> userData =
+            userSnapshot.data() as Map<String, dynamic>;
+        return MyUser(
+          userId: userData['userId'],
+          firstName: userData['firstName'],
+          lastName: userData['lastName'],
+          email: userData['email'],
+          phone: userData['phone'],
+        );
+      } else {
+        // User data not found
+        return null;
+      }
+    } catch (e) {
+      // Error occurred while fetching user data
+      log('Error fetching user data: $e');
+      return null;
+    }
   }
 }

@@ -1,14 +1,13 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:grad/core/networking/firebase_helper.dart';
+import 'package:grad/core/widgets/my_button.dart';
 import 'package:grad/main.dart';
 import 'package:grad/core/theming/theme.dart';
-import 'package:grad/nav_switcher.dart';
+import 'package:grad/presentation/auth/forgot_password_screen.dart';
 import 'package:grad/widgets/alert.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:iconly/iconly.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 
 class LoginScreen extends StatefulWidget {
   static const String routeName = 'login';
@@ -19,6 +18,7 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  FirebaseHelper firebaseHelper = FirebaseHelper();
   final _formKey = GlobalKey<FormState>();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
@@ -36,7 +36,7 @@ class _LoginScreenState extends State<LoginScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(height: 100.h),
+              SizedBox(height: 80.h),
               const Text(
                 'Welcome back !',
                 style: TextStyle(
@@ -89,67 +89,41 @@ class _LoginScreenState extends State<LoginScreen> {
               Row(
                 children: [
                   Expanded(
-                    child: ElevatedButton(
-                      style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all<Color>(
-                              MyTheme.mainColor),
-                          shape:
-                              MaterialStateProperty.all<RoundedRectangleBorder>(
-                                  RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(18.0),
-                          ))),
+                    child: MyButton(
+                      text: 'Log in',
                       onPressed: () {
                         if (_formKey.currentState!.validate()) {
                           _formKey.currentState!.save();
                           logIn();
                         }
                       },
-                      child: const Padding(
-                        padding: EdgeInsets.symmetric(vertical: 16),
-                        child: Text(
-                          'Log in',
-                          style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white),
-                        ),
-                      ),
                     ),
                   ),
                 ],
               ),
               SizedBox(
-                height: 25.h,
+                height: 10.h,
               ),
               Align(
-                alignment: Alignment.center,
-                child: Text('or Sign in with google',
-                    style: Theme.of(context)
-                        .textTheme
-                        .titleLarge
-                        ?.copyWith(fontSize: 16)),
-              ),
-              SizedBox(
-                height: 16.h,
-              ),
-              Align(
-                alignment: Alignment.center,
+                alignment: Alignment.centerRight,
                 child: TextButton(
                     onPressed: () {
-                      SignInWithGoogle();
+                      Navigator.pushNamed(
+                          context, ForgotPasswordScreen.routeName);
                     },
-                    child: Image.asset(
-                      "assets/images/google.png",
-                      width: 30,
-                    )),
+                    child: Text('Forgot Password?',
+                        style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: MyTheme.mainColor))),
               ),
               SizedBox(
-                height: 20.h,
+                height: 5.h,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text('No Account?',
+                  Text('Don\'t have an account ?',
                       style: Theme.of(context)
                           .textTheme
                           .titleLarge
@@ -158,7 +132,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     onPressed: () {
                       widget.clickedRegister();
                     },
-                    child: Text('Create An Account',
+                    child: Text('Sign up',
                         style: Theme.of(context).textTheme.titleLarge?.copyWith(
                             fontSize: 16,
                             color: MyTheme.mainColor,
@@ -173,19 +147,9 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  SignInWithGoogle() async {
-    final GoogleSignInAccount? googleUser =
-        await GoogleSignIn(scopes: <String>["email"]).signIn();
-    final GoogleSignInAuthentication googleSignInAuthentication =
-        await googleUser!.authentication;
-    final credential = GoogleAuthProvider.credential(
-        accessToken: googleSignInAuthentication.accessToken,
-        idToken: googleSignInAuthentication.idToken);
-    return await FirebaseAuth.instance.signInWithCredential(credential);
-  }
-
   Future logIn() async {
     Alert.showAlert(
+        isLoading: true,
         context: context,
         animation: "assets/animations/loading.json",
         text: "Authenticating");
@@ -196,15 +160,15 @@ class _LoginScreenState extends State<LoginScreen> {
 
       navigatorKey.currentState!.pop();
       Alert.showAlert(
+        isLoading: false,
         context: context,
         animation: "assets/animations/success.json",
         text: "Logged in successfully",
-        onContinue: () =>
-            Navigator.pushReplacementNamed(context, NavSwitcher.routeName),
       );
     } on FirebaseAuthException catch (e) {
       navigatorKey.currentState!.pop();
       Alert.showAlert(
+          isLoading: false,
           context: context,
           animation: "assets/animations/error.json",
           text: "${e.message}");

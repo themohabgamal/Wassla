@@ -40,7 +40,9 @@ dependencies:
   flutter_launcher_icons: ^0.13.1
   flutter_screenutil: ^5.9.0
   flutter_slidable: ^3.0.1
+  flutter_spinkit: ^5.2.0
   geolocator: ^10.1.0
+  get_it: ^7.6.7
   google_fonts: ^6.1.0
   google_maps_flutter: ^2.5.3
   google_sign_in: ^6.2.1
@@ -59,7 +61,7 @@ dev_dependencies:
 flutter_launcher_icons:
   android: "launcher_icon"
   ios: true
-  image_path: "assets/images/logo.png"
+  image_path: "assets/icons/wassla.png"
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 # The following section is specific to Flutter packages.

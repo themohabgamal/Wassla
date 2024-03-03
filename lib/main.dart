@@ -1,9 +1,12 @@
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:grad/business_logic/theming/cubit/theming_cubit.dart';
+import 'package:grad/core/DI/dependency_injection.dart';
 import 'package:grad/firebase_options.dart';
+import 'package:grad/home_or_auth.dart';
 import 'package:grad/nav_switcher.dart';
 import 'package:grad/presentation/about_us.dart';
 import 'package:grad/presentation/auth/auth_page.dart';
+import 'package:grad/presentation/auth/forgot_password_screen.dart';
 
 import 'package:grad/presentation/boarding/on_boarding_screen.dart';
 import 'package:grad/presentation/home/home_screen.dart';
@@ -34,6 +37,7 @@ Future<void> main() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   isViewed = prefs.getInt('onBoard');
   await prefs.setInt('onBoard', 1);
+  setupDependencyInjection();
   runApp(BlocProvider(
     create: (context) => ThemingCubit(),
     child: const MyApp(),
@@ -62,6 +66,7 @@ class MyApp extends StatelessWidget {
           HomeScreen.routeName: (context) => const HomeScreen(),
           NavSwitcher.routeName: (context) => const NavSwitcher(),
           AuthPage.routeName: (context) => const AuthPage(),
+          HomeOrAuth.routeName: (context) => const HomeOrAuth(),
           SingleProductPage.routeName: (context) => const SingleProductPage(),
           CartSingleProductPage.routeName: (context) =>
               const CartSingleProductPage(),
@@ -73,12 +78,13 @@ class MyApp extends StatelessWidget {
           HomeChecker.routeName: (context) => const HomeChecker(),
           AboutUsScreen.routeName: (context) => AboutUsScreen(),
           MapSample.routeName: (context) => const MapSample(),
+          ForgotPasswordScreen.routeName: (context) => ForgotPasswordScreen(),
           EditProfileScreen.routeName: (context) => const EditProfileScreen(),
         },
         // initialRoute: OnBoardingScreen.routeName,
         initialRoute: isViewed == 0 || isViewed == null
             ? OnBoardingScreen.routeName
-            : AuthPage.routeName,
+            : HomeOrAuth.routeName,
       ),
     );
   }

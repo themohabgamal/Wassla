@@ -224,6 +224,7 @@ class _SignupScreenState extends State<SignupScreen> {
 
   Future signUp() async {
     Alert.showAlert(
+        isLoading: true,
         context: context,
         animation: "assets/animations/loading.json",
         text: "Authenticating");
@@ -240,15 +241,15 @@ class _SignupScreenState extends State<SignupScreen> {
           phone: phoneController.text.trim()));
       navigatorKey.currentState!.pop();
       Alert.showAlert(
+        isLoading: false,
         context: context,
         animation: "assets/animations/success.json",
         text: "Signed up successfully",
-        onContinue: () =>
-            Navigator.pushReplacementNamed(context, NavSwitcher.routeName),
       );
     } on FirebaseAuthException catch (e) {
       navigatorKey.currentState!.pop();
       Alert.showAlert(
+          isLoading: false,
           context: context,
           animation: "assets/animations/error.json",
           text: e.message!);

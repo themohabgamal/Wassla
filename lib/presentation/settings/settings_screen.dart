@@ -1,29 +1,55 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:grad/core/helpers/constants/fonts/font_helper.dart';
+import 'package:grad/core/networking/firebase_helper.dart';
 import 'package:grad/presentation/settings/edit_profile_screen.dart';
 
-class SettingsScreen extends StatelessWidget {
+class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
+
+  @override
+  State<SettingsScreen> createState() => _SettingsScreenState();
+}
+
+class _SettingsScreenState extends State<SettingsScreen> {
+  final FirebaseHelper firebaseHelper = FirebaseHelper();
+  String firstName = '';
+  String lastName = '';
+  String email = '';
+  @override
+  void initState() {
+    super.initState();
+    firebaseHelper.getCurrentUserData().then((user) {
+      if (user != null) {
+        setState(() {
+          firstName = user.firstName;
+          lastName = user.lastName;
+          email = user.email;
+        });
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: const SizedBox.shrink(),
         toolbarHeight: 100,
         title: Text(
           'Account',
           style: FontHelper.poppins24Bold(),
         ),
-        centerTitle: false,
+        centerTitle:
+            false, // Set centerTitle to false to align the title to the left
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           // Header with user avatar, name, and email
           Container(
-            padding: const EdgeInsets.all(16),
-            color: Colors.grey[200],
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+            color: Colors.grey[100],
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -32,19 +58,17 @@ class SettingsScreen extends StatelessWidget {
                   children: [
                     Row(
                       children: [
-                        const CircleAvatar(
-                          backgroundImage: AssetImage('assets/images/auth.png'),
-                          radius: 30,
-                        ),
                         const SizedBox(width: 16),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'User Name',
+                              firstName == ''
+                                  ? ''
+                                  : "${firstName[0].toUpperCase() + firstName.substring(1)} $lastName",
                               style: FontHelper.poppins18Bold(),
                             ),
-                            const Text('user@email.com'),
+                            Text(email == '' ? '' : email),
                           ],
                         ),
                       ],
@@ -118,6 +142,13 @@ class SettingsScreen extends StatelessWidget {
                   title: const Text('Account Privacy'),
                   onTap: () {
                     // Navigate to account privacy screen
+                  },
+                ),
+                ListTile(
+                  leading: const Icon(Icons.logout),
+                  title: const Text('Logout'),
+                  onTap: () {
+                    firebaseHelper.logout();
                   },
                 ),
               ],

@@ -23,7 +23,6 @@ class WishListScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          leading: const SizedBox.shrink(),
           toolbarHeight: 100,
           title: Text(
             "Wishlist",
@@ -59,10 +58,6 @@ class WishListScreen extends StatelessWidget {
                   height: 10,
                 ),
                 itemBuilder: (context, index) {
-                  // return Container(
-                  //   color: Colors.red,
-                  //   height: 100,
-                  // );
                   return Slidable(
                       closeOnScroll: true,
                       endActionPane: ActionPane(

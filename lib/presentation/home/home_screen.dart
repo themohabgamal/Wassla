@@ -1,12 +1,11 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables
 
-import 'package:carousel_slider/carousel_slider.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/widgets.dart';
+import 'dart:developer';
+
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:grad/core/helpers/constants/fonts/font_helper.dart';
-import 'package:grad/presentation/auth/non_authenticated_screen.dart';
+import 'package:get_it/get_it.dart';
+import 'package:grad/core/DI/dependency_injection.dart';
+import 'package:grad/core/networking/firebase_helper.dart';
 import 'package:grad/presentation/cart/cart_screen.dart';
 import 'package:grad/presentation/home/hot_deals_page.dart';
 import 'package:grad/presentation/home/widgets/carousel_slider_widget.dart';
@@ -14,16 +13,15 @@ import 'package:grad/presentation/home/widgets/home_categories.dart';
 import 'package:grad/presentation/home/widgets/my_search_widget.dart';
 import 'package:grad/presentation/wishlist/wish_list_screen.dart';
 import 'package:grad/core/theming/theme.dart';
-import 'package:grad/widgets/category_name_widget.dart';
+import 'package:grad/repos/category/category_repo.dart';
 import 'package:grad/widgets/customized_api_home_widget.dart';
 import 'package:grad/widgets/home_single_product_args.dart';
 import 'package:grad/widgets/single_product_page.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconly/iconly.dart';
-
 import '../../business_logic/home/bloc/home_bloc.dart';
+import '../../models/category/category_model.dart';
 
 class HomeScreen extends StatefulWidget {
   static const String routeName = 'Home';
@@ -36,6 +34,10 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   HomeBloc homeBloc = HomeBloc();
+  FirebaseHelper firebaseHelper = FirebaseHelper();
+  String firstName = '';
+  String lastName = '';
+  List<CategoryModel> categoriesList = [];
   List<String> categories = [
     "Sports",
     "Clothes",
@@ -50,9 +52,22 @@ class _HomeScreenState extends State<HomeScreen> {
     "assets/icons/furniture.png",
     "assets/icons/shoes.png"
   ];
-
   int current = 0;
   String category = "electronics";
+  @override
+  void initState() {
+    super.initState();
+    getIt.get<FirebaseHelper>().getCurrentUserData().then((user) {
+      if (user != null) {
+        setState(() {
+          firstName = user.firstName;
+          lastName = user.lastName;
+        });
+      }
+    });
+    getAllCategories();
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<HomeBloc, HomeState>(
@@ -133,7 +148,8 @@ class _HomeScreenState extends State<HomeScreen> {
                               top: 30, right: 10, left: 10),
                           child: Column(
                             children: [
-                              const HeaderWidget(),
+                              HeaderWidget(
+                                  firstName: firstName, lastName: lastName),
                               SizedBox(height: 40.h),
                               const MySearchWidget(),
                               SizedBox(
@@ -223,6 +239,11 @@ class _HomeScreenState extends State<HomeScreen> {
       },
     );
   }
+
+  getAllCategories() async {
+    categoriesList = await getIt<CategoryRepo>().getAllCategories();
+    log(categoriesList.toString());
+  }
 }
 
 class HotDealsSection extends StatelessWidget {
@@ -284,8 +305,12 @@ class HotDealsSection extends StatelessWidget {
 }
 
 class HeaderWidget extends StatelessWidget {
+  final String firstName;
+  final String lastName;
   const HeaderWidget({
     super.key,
+    required this.firstName,
+    required this.lastName,
   });
 
   @override
@@ -293,16 +318,19 @@ class HeaderWidget extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        const Column(
+        Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text("Good day for shopping",
+            const Text("Good day for shopping",
                 style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w400,
                     color: Colors.white)),
-            Text("Mohab Gamal",
-                style: TextStyle(
+            Text(
+                firstName == ''
+                    ? ""
+                    : "${firstName[0].toUpperCase() + firstName.substring(1)} $lastName",
+                style: const TextStyle(
                     fontSize: 22,
                     fontWeight: FontWeight.w800,
                     color: Colors.white)),

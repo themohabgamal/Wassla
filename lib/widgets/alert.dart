@@ -1,10 +1,12 @@
 import 'package:grad/core/theming/theme.dart';
 import 'package:flutter/material.dart';
+import 'package:grad/main.dart';
 import 'package:lottie/lottie.dart';
 
 class Alert {
   static showAlert(
-      {void Function()? onContinue,
+      {required bool isLoading,
+      void Function()? onContinue,
       required BuildContext context,
       required String animation,
       required String text}) {
@@ -38,17 +40,22 @@ class Alert {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    TextButton(
-                        onPressed: onContinue ?? () {},
-                        child: Text(
-                          "Continue",
-                          style: Theme.of(context)
-                              .textTheme
-                              .titleLarge
-                              ?.copyWith(
-                                  color: MyTheme.mainColor,
-                                  fontWeight: FontWeight.w600),
-                        )),
+                    isLoading
+                        ? const SizedBox.shrink()
+                        : TextButton(
+                            onPressed: onContinue ??
+                                () {
+                                  navigatorKey.currentState!.pop();
+                                },
+                            child: Text(
+                              "Continue",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .titleLarge
+                                  ?.copyWith(
+                                      color: MyTheme.mainColor,
+                                      fontWeight: FontWeight.w600),
+                            )),
                   ],
                 )
               ],
