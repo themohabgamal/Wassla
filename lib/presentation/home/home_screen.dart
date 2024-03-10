@@ -1,9 +1,5 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables
-
-import 'dart:developer';
-
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get_it/get_it.dart';
 import 'package:grad/core/DI/dependency_injection.dart';
 import 'package:grad/core/networking/firebase_helper.dart';
 import 'package:grad/presentation/cart/cart_screen.dart';
@@ -14,6 +10,7 @@ import 'package:grad/presentation/home/widgets/my_search_widget.dart';
 import 'package:grad/presentation/wishlist/wish_list_screen.dart';
 import 'package:grad/core/theming/theme.dart';
 import 'package:grad/repos/category/category_repo.dart';
+import 'package:grad/widgets/category_list_view.dart';
 import 'package:grad/widgets/customized_api_home_widget.dart';
 import 'package:grad/widgets/home_single_product_args.dart';
 import 'package:grad/widgets/single_product_page.dart';
@@ -38,22 +35,31 @@ class _HomeScreenState extends State<HomeScreen> {
   String firstName = '';
   String lastName = '';
   List<CategoryModel> categoriesList = [];
-  List<String> categories = [
-    "Sports",
-    "Clothes",
-    "Electronics",
-    "Furniture",
-    "Shoes",
-  ];
-  List<String> categoriesIcons = [
-    "assets/icons/sports.png",
-    "assets/icons/clothes.png",
-    "assets/icons/electronics.png",
-    "assets/icons/furniture.png",
-    "assets/icons/shoes.png"
-  ];
   int current = 0;
-  String category = "electronics";
+  String category = "Clothes";
+  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
+      GlobalKey<RefreshIndicatorState>();
+  getAllCategories() async {
+    categoriesList = await getIt<CategoryRepo>().getAllCategories();
+  }
+
+  Future<void> refresh() async {
+    // Use a small delay to allow the pop animation to complete
+    await Future.delayed(const Duration(milliseconds: 10));
+
+    Navigator.pushReplacement(
+      context,
+      PageRouteBuilder(
+        pageBuilder: (context, animation, secondaryAnimation) =>
+            const HomeScreen(),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          return const HomeScreen();
+        },
+        transitionDuration: const Duration(seconds: 0),
+      ),
+    );
+  }
+
   @override
   void initState() {
     super.initState();
@@ -114,135 +120,138 @@ class _HomeScreenState extends State<HomeScreen> {
       builder: (context, state) {
         return Scaffold(
           backgroundColor: MyTheme.mainColor,
-          //*-------------------------------------------------------------body------------------------------------------------
           body: SafeArea(
-            child: SingleChildScrollView(
-              child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Stack(
-                      children: [
-                        Container(
-                          color: MyTheme.mainColor,
-                          width: double.infinity,
-                          height: 200.h,
-                        ),
-                        const Positioned(
-                          right: -200,
-                          top: -110,
-                          child: CircleAvatar(
-                            radius: 200,
-                            backgroundColor: Colors.white12,
-                          ),
-                        ),
-                        const Positioned(
-                          right: -200,
-                          top: 50,
-                          child: CircleAvatar(
-                            radius: 200,
-                            backgroundColor: Colors.white12,
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(
-                              top: 30, right: 10, left: 10),
-                          child: Column(
-                            children: [
-                              HeaderWidget(
-                                  firstName: firstName, lastName: lastName),
-                              SizedBox(height: 40.h),
-                              const MySearchWidget(),
-                              SizedBox(
-                                height: 20.h,
-                              ),
-                              HomeCategories(
-                                  categoriesIcons: categoriesIcons,
-                                  categories: categories,
-                                  current: current)
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                    Container(
-                      decoration: const BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(20),
-                              topRight: Radius.circular(20))),
-                      child: Stack(
+            child: RefreshIndicator(
+              key: _refreshIndicatorKey,
+              onRefresh: refresh,
+              child: SingleChildScrollView(
+                child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Stack(
                         children: [
+                          Container(
+                            color: MyTheme.mainColor,
+                            width: double.infinity,
+                            height: 200.h,
+                          ),
+                          const Positioned(
+                            right: -200,
+                            top: -110,
+                            child: CircleAvatar(
+                              radius: 200,
+                              backgroundColor: Colors.white12,
+                            ),
+                          ),
+                          const Positioned(
+                            right: -200,
+                            top: 50,
+                            child: CircleAvatar(
+                              radius: 200,
+                              backgroundColor: Colors.white12,
+                            ),
+                          ),
                           Padding(
-                            padding: const EdgeInsets.only(right: 12, left: 12),
+                            padding: const EdgeInsets.only(
+                                top: 30, right: 10, left: 10),
                             child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                const CarouselSliderBuilder(),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      "Popular Products",
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .headlineSmall,
-                                    ),
-                                    TextButton(
-                                      onPressed: () {
-                                        homeBloc.add(NavigateToHotDealsEvent());
-                                      },
-                                      //fake commit
-                                      child: Text(
-                                        "View all",
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .titleMedium
-                                            ?.copyWith(
-                                                fontWeight: FontWeight.w600,
-                                                color: MyTheme.mainColor),
-                                      ),
-                                    )
-                                  ],
-                                ),
+                                HeaderWidget(
+                                    firstName: firstName, lastName: lastName),
+                                SizedBox(height: 40.h),
+                                const MySearchWidget(),
                                 SizedBox(
-                                    height: MediaQuery.of(context).size.height,
-                                    child: CustomizedApiHomeWidget(
-                                        homeBloc: homeBloc,
-                                        category: category)),
-                                SizedBox(height: 20.h),
-                                HotDealsSection(
-                                  homeBloc: homeBloc,
+                                  height: 20.h,
                                 ),
-                                SizedBox(height: 20.h),
-                                Text(
-                                  "Clothes",
-                                  style:
-                                      Theme.of(context).textTheme.headlineSmall,
-                                ),
-                                SizedBox(height: 20.h),
-                                SizedBox(
-                                    child: CustomizedApiHomeWidget(
-                                        homeBloc: homeBloc,
-                                        category: "men's clothing")),
-                                const SizedBox(height: 20),
+                                HomeCategories(
+                                    categories: categoriesList,
+                                    current: current)
                               ],
                             ),
                           ),
                         ],
                       ),
-                    )
-                  ]),
+                      Container(
+                        decoration: const BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(20),
+                                topRight: Radius.circular(20))),
+                        child: Stack(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  right: 16, left: 16, top: 25),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const CarouselSliderBuilder(),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        "This Week Drop",
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .headlineSmall,
+                                      ),
+
+                                      // TextButton(
+                                      //   onPressed: () {
+                                      //     homeBloc
+                                      //         .add(NavigateToHotDealsEvent());
+                                      //   },
+                                      //   child: Text(
+                                      //     "View all",
+                                      //     style: Theme.of(context)
+                                      //         .textTheme
+                                      //         .titleMedium
+                                      //         ?.copyWith(
+                                      //             fontWeight: FontWeight.w600,
+                                      //             color: MyTheme.mainColor),
+                                      //   ),
+                                      // )
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: 10.h,
+                                  ),
+                                  SizedBox(
+                                      height: 100,
+                                      child: CategoryListView(
+                                          category: "Clothes",
+                                          homeBloc: homeBloc)),
+                                  SizedBox(height: 20.h),
+                                  HotDealsSection(
+                                    homeBloc: homeBloc,
+                                  ),
+                                  SizedBox(height: 20.h),
+                                  Text(
+                                    "Clothes",
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .headlineSmall,
+                                  ),
+                                  SizedBox(height: 20.h),
+                                  SizedBox(
+                                      child: CustomizedApiHomeWidget(
+                                          homeBloc: homeBloc,
+                                          category: "Clothes")),
+                                  const SizedBox(height: 20),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      )
+                    ]),
+              ),
             ),
           ),
         );
       },
     );
-  }
-
-  getAllCategories() async {
-    categoriesList = await getIt<CategoryRepo>().getAllCategories();
-    log(categoriesList.toString());
   }
 }
 

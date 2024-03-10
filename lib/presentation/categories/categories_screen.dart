@@ -190,7 +190,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                 flex: 1,
                 child: FutureBuilder(
                   future:
-                      HomeCategoryRepo.getSpeceficCategory(selectedCategory),
+                      HomeCategoryRepo.getSpecificCategory(selectedCategory),
                   builder: (context, snapshot) {
                     if (snapshot.hasError) {
                       return Center(
@@ -214,7 +214,6 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                           return CategoryTileWidget(
                             categoryResponseModel: snapshot.data![index],
                             categoriesBloc: categoriesBloc,
-                            isHotDeal: false,
                           );
                         },
                       );

@@ -1,39 +1,40 @@
-// ignore_for_file: invalid_return_type_for_catch_error
+import 'dart:developer';
 
-import 'dart:convert';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:grad/core/networking/firebase_helper.dart';
 import 'package:grad/models/category_response_model.dart';
-import 'package:http/http.dart' as http;
 
 class HomeCategoryRepo {
-  static Future<List<CategoryResponseModel>?> getSpeceficCategory(
-      String category) {
-    return http
-        .get(Uri.parse('https://fakestoreapi.com/products/category/$category'))
-        .then((data) {
-      final products = <CategoryResponseModel>[];
-      if (data.statusCode == 200) {
-        final jsonData = json.decode(data.body);
-        for (var product in jsonData) {
-          products.add(CategoryResponseModel.fromJson(product));
-        }
-        return products;
-      }
-    }).catchError((error) => print(error));
+  final FirebaseHelper firebaseHelper = FirebaseHelper();
+  static Future<List<CategoryResponseModel>?> getSpecificCategory(
+      String category) async {
+    try {
+      // Reference to the category document
+      DocumentReference categoryRef =
+          FirebaseFirestore.instance.collection('products').doc(category);
+
+      // Get the products collection inside the category document
+      QuerySnapshot productSnapshot =
+          await categoryRef.collection('products').get();
+      // Parse the data
+      List<CategoryResponseModel> products = productSnapshot.docs.map((doc) {
+        return CategoryResponseModel.fromJson(
+            doc.data() as Map<String, dynamic>);
+      }).toList();
+
+      return products;
+    } catch (error) {
+      print(error);
+      return null;
+    }
   }
 
-  static Future<List<CategoryResponseModel>?> getAllProcuts() {
-    return http
-        .get(Uri.parse("https://fakestoreapi.com/products"))
-        .then((data) {
-      final products = <CategoryResponseModel>[];
-      if (data.statusCode == 200) {
-        final jsonData = json.decode(data.body);
-        for (var product in jsonData) {
-          products.add(CategoryResponseModel.fromJson(product));
-        }
-        return products;
-      }
-    }).catchError((error) => print(error));
+  Future<List<CategoryResponseModel>?> getAllProcuts() async {
+    try {
+      await firebaseHelper.getAllProducts();
+    } catch (error) {
+      print(error);
+    }
+    return null;
   }
 }

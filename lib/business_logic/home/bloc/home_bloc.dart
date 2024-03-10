@@ -45,7 +45,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   FutureOr<void> hotDealsLoadedEvent(
       HotDealsLoadedEvent event, Emitter<HomeState> emit) async {
     emit(HotDealsLoadingState());
-    var response = await HomeCategoryRepo.getAllProcuts();
+    var response = await HomeCategoryRepo().getAllProcuts();
     emit(HotDealsLoadedState(list: response!));
   }
 

@@ -8,7 +8,7 @@ class CategoryRepo {
   //* get all categories
   Future<List<CategoryModel>> getAllCategories() async {
     try {
-      final snapshot = await firestore.collection('Categories').get();
+      final snapshot = await firestore.collection('categories').get();
       final list = snapshot.docs
           .map((document) => CategoryModel.fromSnapshot(document))
           .toList();

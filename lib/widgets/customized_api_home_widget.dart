@@ -1,7 +1,9 @@
 // ignore_for_file: must_be_immutable
 
 import 'package:grad/business_logic/home/bloc/home_bloc.dart';
-import 'package:grad/repositories/home_category_repo.dart';
+import 'package:grad/core/DI/dependency_injection.dart';
+import 'package:grad/core/networking/firebase_helper.dart';
+import 'package:grad/models/category_response_model.dart';
 import 'package:grad/widgets/category_tile_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:grad/widgets/product_loading_tile_widget.dart';
@@ -14,8 +16,8 @@ class CustomizedApiHomeWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: HomeCategoryRepo.getSpeceficCategory(category),
+    return FutureBuilder<List<CategoryResponseModel>>(
+      future: getIt<FirebaseHelper>().getCategoryProducts(category),
       builder: (context, snapshot) {
         if (snapshot.hasError) {
           return Center(
@@ -43,20 +45,21 @@ class CustomizedApiHomeWidget extends StatelessWidget {
             itemCount: snapshot.data!.length,
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
-                childAspectRatio: 2 / 3,
-                crossAxisSpacing: 2,
+                childAspectRatio: 0.7,
+                crossAxisSpacing: 1,
                 mainAxisSpacing: 2),
             itemBuilder: (context, index) {
               //
               return CategoryTileWidget(
                 categoryResponseModel: snapshot.data![index],
                 homeBloc: homeBloc,
-                isHotDeal: false,
               );
             },
           );
-        } else
+        } else {
+          print("wewwewwaa");
           return const SizedBox();
+        }
       },
     );
   }

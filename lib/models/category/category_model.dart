@@ -1,25 +1,18 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class CategoryModel {
-  final String id;
-  final String name;
+  final String title;
   final String image;
-  final bool isFeatured;
-  final String? parentId;
 
-  CategoryModel(
-      {required this.id,
-      required this.name,
-      required this.image,
-      required this.isFeatured,
-      this.parentId = ''});
+  CategoryModel({
+    required this.title,
+    required this.image,
+  });
 
   static CategoryModel empty() {
     return CategoryModel(
-      id: '',
-      name: '',
+      title: '',
       image: '',
-      isFeatured: false,
     );
   }
 
@@ -28,11 +21,8 @@ class CategoryModel {
     if (document.data() != null) {
       final data = document.data();
       return CategoryModel(
-        id: document.id,
-        name: data?['name'],
+        title: data?['title'],
         image: data?['image'],
-        isFeatured: data?['isFeatured'],
-        parentId: data?['parentId'],
       );
     } else {
       return CategoryModel.empty();
@@ -41,11 +31,8 @@ class CategoryModel {
 
   Map<String, dynamic> toJson() {
     return {
-      'id': id,
-      'name': name,
+      'title': title,
       'image': image,
-      'isFeatured': isFeatured,
-      'parentId': parentId,
     };
   }
 }

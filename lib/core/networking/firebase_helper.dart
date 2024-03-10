@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:grad/models/admin/my_admin.dart';
+import 'package:grad/models/category_response_model.dart';
 import 'package:grad/models/user.dart';
 
 class FirebaseHelper {
@@ -74,5 +75,69 @@ class FirebaseHelper {
       log('Error fetching user data: $e');
       return null;
     }
+  }
+
+  static Future<List<String>> getBannerImages() async {
+    List<String> bannerUrls = [];
+
+    try {
+      FirebaseFirestore firestore = FirebaseFirestore.instance;
+      CollectionReference bannersCollection = firestore.collection('banners');
+      QuerySnapshot querySnapshot = await bannersCollection.get();
+      for (var document in querySnapshot.docs) {
+        Map<String, dynamic> data = document.data() as Map<String, dynamic>;
+        String imageUrl = data['imageUrl'];
+        bannerUrls.add(imageUrl);
+      }
+      log(bannerUrls.toString());
+      return bannerUrls;
+    } catch (error) {
+      print('Error getting banner images: $error');
+      return [];
+    }
+  }
+
+  Future<List<CategoryResponseModel>> getAllProducts() async {
+    List<String> categories = await getCategories();
+    List<CategoryResponseModel> allProducts = [];
+    for (var category in categories) {
+      List<CategoryResponseModel> categoryProducts =
+          await getCategoryProducts(category);
+      allProducts.addAll(categoryProducts);
+    }
+    log("FirebaseHelper got all prods : ${allProducts.length}");
+
+    return allProducts;
+  }
+
+  static Future<List<String>> getCategories() async {
+    final QuerySnapshot querySnapshot =
+        await FirebaseFirestore.instance.collection('categories').get();
+    final List<String> categoryList =
+        querySnapshot.docs.map((doc) => doc['title'] as String).toList();
+    return categoryList;
+  }
+
+  Future<List<CategoryResponseModel>> getCategoryProducts(
+      String category) async {
+    QuerySnapshot productSnapshots = await firebaseFirestore
+        .collection('products')
+        .doc(category)
+        .collection('products')
+        .get();
+    List<CategoryResponseModel> products = [];
+    for (var productDoc in productSnapshots.docs) {
+      Map<String, dynamic> data = productDoc.data() as Map<String, dynamic>;
+      CategoryResponseModel product = CategoryResponseModel(
+        title: data['title'],
+        quantity: data['quantity'],
+        description: data['description'],
+        image: data['image'],
+        price: data['price'],
+        category: data['category'],
+      );
+      products.add(product);
+    }
+    return products;
   }
 }

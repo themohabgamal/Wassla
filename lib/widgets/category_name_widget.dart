@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/material.dart';
@@ -21,8 +22,8 @@ class CategoryNameWidget extends StatelessWidget {
           radius: 30,
           child: Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Image.asset(
-              image,
+            child: CachedNetworkImage(
+              imageUrl: image,
               fit: BoxFit.cover,
               width: 40.w,
             ),
