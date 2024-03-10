@@ -5,30 +5,31 @@ import 'package:grad/core/helpers/constants/fonts/font_helper.dart';
 import 'package:grad/core/networking/firebase_helper.dart';
 import 'package:grad/core/theming/theme.dart';
 import 'package:grad/models/category_response_model.dart';
+import 'package:grad/models/hot_deal_model.dart';
 import 'package:grad/widgets/category_tile_widget.dart';
+import 'package:grad/widgets/hot_deal_tile_widget.dart';
 import 'package:grad/widgets/product_loading_tile_widget.dart';
 
-class CustomizedApiHomeWidget extends StatefulWidget {
+class HotDealGridView extends StatefulWidget {
   final String category;
   final HomeBloc homeBloc;
-  const CustomizedApiHomeWidget({
+  const HotDealGridView({
     super.key,
     required this.category,
     required this.homeBloc,
   });
 
   @override
-  _CustomizedApiHomeWidgetState createState() =>
-      _CustomizedApiHomeWidgetState();
+  _HotDealGridViewState createState() => _HotDealGridViewState();
 }
 
-class _CustomizedApiHomeWidgetState extends State<CustomizedApiHomeWidget> {
+class _HotDealGridViewState extends State<HotDealGridView> {
   bool viewAll = false;
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<CategoryResponseModel>>(
-      future: getIt<FirebaseHelper>().getCategoryProducts(widget.category),
+    return FutureBuilder<List<HotDealModel>>(
+      future: getIt<FirebaseHelper>().getHotDealsCollection(),
       builder: (context, snapshot) {
         if (snapshot.hasError) {
           return Center(
@@ -51,11 +52,6 @@ class _CustomizedApiHomeWidgetState extends State<CustomizedApiHomeWidget> {
             },
           );
         } else if (snapshot.hasData) {
-          if (snapshot.data!.isEmpty) {
-            return Center(
-              child: Text("No products found for ${widget.category}"),
-            );
-          }
           return Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
@@ -84,8 +80,8 @@ class _CustomizedApiHomeWidgetState extends State<CustomizedApiHomeWidget> {
                   mainAxisSpacing: 2,
                 ),
                 itemBuilder: (context, index) {
-                  return CategoryTileWidget(
-                    categoryResponseModel: snapshot.data![index],
+                  return HotDealTileWidget(
+                    hotDealModel: snapshot.data![index],
                     homeBloc: widget.homeBloc,
                   );
                 },

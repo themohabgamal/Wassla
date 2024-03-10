@@ -16,8 +16,10 @@ class CategoriesLoadingState extends CategoriesState {}
 class CategoriesErrorState extends CategoriesState {}
 
 class CategoriesNavigateToSingleProductState extends CategoriesActionState {
-  CategoryResponseModel categoryResponseModel;
-  CategoriesNavigateToSingleProductState({required this.categoryResponseModel});
+  CategoryResponseModel? categoryResponseModel;
+  HotDealModel? hotDealModel;
+  CategoriesNavigateToSingleProductState(
+      {this.hotDealModel, this.categoryResponseModel});
 }
 
 class CategoriesAddToCartState extends CategoriesActionState {}

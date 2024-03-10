@@ -13,6 +13,7 @@ import 'package:grad/repos/category/category_repo.dart';
 import 'package:grad/widgets/category_list_view.dart';
 import 'package:grad/widgets/customized_api_home_widget.dart';
 import 'package:grad/widgets/home_single_product_args.dart';
+import 'package:grad/widgets/hot_deal_grid_view.dart';
 import 'package:grad/widgets/single_product_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -191,7 +192,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         MainAxisAlignment.spaceBetween,
                                     children: [
                                       Text(
-                                        "This Week Drop",
+                                        "Hot Deals",
                                         style: Theme.of(context)
                                             .textTheme
                                             .headlineSmall,
@@ -215,11 +216,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     ],
                                   ),
                                   SizedBox(
-                                    height: 10.h,
-                                  ),
-                                  SizedBox(
-                                      height: 100,
-                                      child: CategoryListView(
+                                      child: HotDealGridView(
                                           category: "Clothes",
                                           homeBloc: homeBloc)),
                                   SizedBox(height: 20.h),

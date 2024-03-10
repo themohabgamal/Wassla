@@ -56,7 +56,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
             Navigator.pushNamed(context, CategoriesSingleProductPage.routeName,
                 arguments: CategoriesToSingleProductArgs(
                     categoriesBloc: categoriesBloc,
-                    categoryResponseModel: state.categoryResponseModel));
+                    categoryResponseModel: state.categoryResponseModel!));
           } else if (state is CategoriesNavigateBackState) {
             Navigator.pop(context);
           } else if (state is CategoriesAddToCartState) {

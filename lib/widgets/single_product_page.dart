@@ -1,5 +1,7 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:grad/business_logic/home/bloc/home_bloc.dart';
 import 'package:grad/business_logic/theming/cubit/theming_cubit.dart';
+import 'package:grad/core/helpers/constants/fonts/font_helper.dart';
 import 'package:grad/presentation/cart/cart_screen.dart';
 import 'package:grad/core/theming/theme.dart';
 import 'package:grad/widgets/home_single_product_args.dart';
@@ -16,8 +18,6 @@ class SingleProductPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final args =
         ModalRoute.of(context)?.settings.arguments as HomeToSingleProductArgs;
-    ThemingCubit themingCubit =
-        BlocProvider.of<ThemingCubit>(context, listen: true);
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -25,7 +25,7 @@ class SingleProductPage extends StatelessWidget {
           icon: Icon(IconlyLight.arrow_left_2,
               color: Theme.of(context).textTheme.headlineSmall?.color),
           onPressed: () {
-            args.homeBloc.add(GoBackEvent());
+            Navigator.pop(context);
           },
         ),
       ),
@@ -38,22 +38,16 @@ class SingleProductPage extends StatelessWidget {
               const SizedBox(height: 20),
               Text(
                 "${args.categoryResponseModel?.title}",
-                style: Theme.of(context)
-                    .textTheme
-                    .headlineMedium
-                    ?.copyWith(fontWeight: FontWeight.w600),
+                style: FontHelper.poppins24Bold().copyWith(fontSize: 27),
               ),
               const SizedBox(height: 10),
               Text(
                 "${args.categoryResponseModel?.category}",
-                style: Theme.of(context)
-                    .textTheme
-                    .titleLarge
-                    ?.copyWith(fontSize: 22, fontWeight: FontWeight.w500),
+                style: FontHelper.poppins18Regular(),
               ),
               const SizedBox(height: 10),
-              Image.network(
-                "${args.categoryResponseModel?.image}",
+              CachedNetworkImage(
+                imageUrl: "${args.categoryResponseModel?.image}",
                 width: double.infinity,
                 height: 300,
                 fit: BoxFit.contain,
@@ -61,10 +55,7 @@ class SingleProductPage extends StatelessWidget {
               const SizedBox(height: 10),
               Text(
                 "\$ ${args.categoryResponseModel?.price}",
-                style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                    fontSize: 28,
-                    color: MyTheme.mainColor,
-                    fontWeight: FontWeight.w600),
+                style: FontHelper.poppins24Bold().copyWith(fontSize: 30),
               ),
               const SizedBox(height: 10),
               ReadMoreText(

@@ -7,17 +7,17 @@ import 'package:grad/business_logic/categories/bloc/categories_bloc.dart';
 import 'package:grad/business_logic/home/bloc/home_bloc.dart';
 import 'package:grad/core/helpers/constants/fonts/font_helper.dart';
 import 'package:grad/core/theming/theme.dart';
-import 'package:grad/models/category_response_model.dart';
+import 'package:grad/models/hot_deal_model.dart';
 import 'package:iconly/iconly.dart';
 
-class CategoryTileWidget extends StatelessWidget {
-  final CategoryResponseModel categoryResponseModel;
+class HotDealTileWidget extends StatelessWidget {
+  final HotDealModel hotDealModel;
   final HomeBloc? homeBloc;
   final CategoriesBloc? categoriesBloc;
 
-  const CategoryTileWidget({
+  const HotDealTileWidget({
     super.key,
-    required this.categoryResponseModel,
+    required this.hotDealModel,
     this.homeBloc,
     this.categoriesBloc,
   });
@@ -27,11 +27,11 @@ class CategoryTileWidget extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         if (homeBloc != null) {
-          homeBloc?.add(NavigateToSingleProductEvent(
-              categoryResponseModel: categoryResponseModel));
+          homeBloc
+              ?.add(NavigateToSingleProductEvent(hotDealModel: hotDealModel));
         } else {
           categoriesBloc?.add(CategoriesNavigateToSingleProductPageEvent(
-              categoryResponseModel: categoryResponseModel));
+              hotDealModel: hotDealModel));
         }
       },
       child: Container(
@@ -55,7 +55,7 @@ class CategoryTileWidget extends StatelessWidget {
             Expanded(
               flex: 2,
               child: CachedNetworkImage(
-                imageUrl: categoryResponseModel.image!,
+                imageUrl: hotDealModel.image,
                 placeholder: (context, url) => const Center(
                   child: CircularProgressIndicator(),
                 ),
@@ -83,11 +83,11 @@ class CategoryTileWidget extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "${categoryTitleBuilder(categoryResponseModel.title)}",
+                          "${categoryTitleBuilder(hotDealModel.title)}",
                           style: FontHelper.poppins18Regular(),
                         ),
                         Text(
-                          "${categoryResponseModel.description}",
+                          hotDealModel.description,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: FontHelper.poppins16Bold().copyWith(
@@ -98,12 +98,14 @@ class CategoryTileWidget extends StatelessWidget {
                         ),
                         SizedBox(height: 10.h),
                         Text(
-                          "Quantity: ${categoryResponseModel.quantity}",
+                          "${hotDealModel.originalPrice}",
                           style: FontHelper.poppins16Bold().copyWith(
-                            fontWeight: FontWeight.w400,
-                            fontSize: 15,
-                            color: MyTheme.mainColor,
-                          ),
+                              fontWeight: FontWeight.w400,
+                              fontSize: 18,
+                              color: Colors.black,
+                              decorationThickness: 2,
+                              decorationColor: Colors.red,
+                              decoration: TextDecoration.lineThrough),
                         ),
                       ],
                     ),
@@ -114,7 +116,7 @@ class CategoryTileWidget extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
                           Text(
-                            "${formatPrice(categoryResponseModel.price!)} EGP",
+                            "${formatPrice(hotDealModel.discountedPrice)} EGP",
                             style: FontHelper.poppins20Bold(),
                             maxLines: 1,
                           ),
@@ -123,19 +125,19 @@ class CategoryTileWidget extends StatelessWidget {
                             children: [
                               GestureDetector(
                                 onTap: () {
-                                  if (homeBloc != null) {
-                                    homeBloc?.add(HomeAddToWishlistEvent(
-                                      categoryResponseModel:
-                                          categoryResponseModel,
-                                    ));
-                                  } else {
-                                    categoriesBloc?.add(
-                                      CategoriesAddToWishlistEvent(
-                                        categoryResponseModel:
-                                            categoryResponseModel,
-                                      ),
-                                    );
-                                  }
+                                  // if (homeBloc != null) {
+                                  //   homeBloc?.add(HomeAddToWishlistEvent(
+                                  //     categoryResponseModel:
+                                  //         categoryResponseModel,
+                                  //   ));
+                                  // } else {
+                                  //   categoriesBloc?.add(
+                                  //     CategoriesAddToWishlistEvent(
+                                  //       categoryResponseModel:
+                                  //           categoryResponseModel,
+                                  //     ),
+                                  //   );
+                                  // }
                                 },
                                 child: const Icon(
                                   IconlyLight.heart,
@@ -146,19 +148,19 @@ class CategoryTileWidget extends StatelessWidget {
                               SizedBox(width: 5.w),
                               GestureDetector(
                                 onTap: () {
-                                  if (homeBloc != null) {
-                                    homeBloc?.add(HomeAddToCartEvent(
-                                      categoryResponseModel:
-                                          categoryResponseModel,
-                                    ));
-                                  } else {
-                                    categoriesBloc?.add(
-                                      CategoriesAddToCartEvent(
-                                        categoryResponseModel:
-                                            categoryResponseModel,
-                                      ),
-                                    );
-                                  }
+                                  // if (homeBloc != null) {
+                                  //   homeBloc?.add(HomeAddToCartEvent(
+                                  //     categoryResponseModel:
+                                  //         categoryResponseModel,
+                                  //   ));
+                                  // } else {
+                                  //   categoriesBloc?.add(
+                                  //     CategoriesAddToCartEvent(
+                                  //       categoryResponseModel:
+                                  //           categoryResponseModel,
+                                  //     ),
+                                  //   );
+                                  // }
                                 },
                                 child: const Icon(Icons.shopping_cart,
                                     size: 25, color: Colors.black),
@@ -188,7 +190,7 @@ class CategoryTileWidget extends StatelessWidget {
     if (price.toString().length > 5) {
       // Replace the last digit with "~"
       String truncatedPrice =
-          '${price.toString().substring(0, price.toString().length - 2)}~';
+          '${price.toString().substring(0, price.toString().length - 3)}~';
 
       return truncatedPrice;
     } else {

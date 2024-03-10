@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:grad/models/admin/my_admin.dart';
 import 'package:grad/models/category_response_model.dart';
+import 'package:grad/models/hot_deal_model.dart';
 import 'package:grad/models/user.dart';
 
 class FirebaseHelper {
@@ -139,5 +140,20 @@ class FirebaseHelper {
       products.add(product);
     }
     return products;
+  }
+
+  Future<List<HotDealModel>> getHotDealsCollection() async {
+    try {
+      CollectionReference hotDealsCollection =
+          FirebaseFirestore.instance.collection('hot_deals');
+      QuerySnapshot querySnapshot = await hotDealsCollection.get();
+      List<HotDealModel> hotDealsList = querySnapshot.docs
+          .map((DocumentSnapshot doc) =>
+              HotDealModel.fromJson(doc.data() as Map<String, dynamic>))
+          .toList();
+      return hotDealsList;
+    } catch (error) {
+      return [];
+    }
   }
 }

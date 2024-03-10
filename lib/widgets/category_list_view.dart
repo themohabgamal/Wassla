@@ -34,6 +34,7 @@ class CategoryListView extends StatelessWidget {
         } else if (snapshot.hasData) {
           return ListView.builder(
               shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
               scrollDirection: Axis.horizontal,
               itemCount: snapshot.data!.length,
               itemBuilder: (context, index) {

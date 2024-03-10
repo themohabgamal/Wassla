@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:grad/models/category_response_model.dart';
+import 'package:grad/models/hot_deal_model.dart';
 import 'package:grad/presentation/cart/cart_screen.dart';
 import 'package:meta/meta.dart';
 
@@ -20,7 +21,7 @@ class CategoriesBloc extends Bloc<CategoriesEvent, CategoriesState> {
       CategoriesNavigateToSingleProductPageEvent event,
       Emitter<CategoriesState> emit) {
     emit(CategoriesNavigateToSingleProductState(
-        categoryResponseModel: event.categoryResponseModel));
+        categoryResponseModel: event.categoryResponseModel!));
   }
 
   FutureOr<void> categoriesNavigateBackEvent(

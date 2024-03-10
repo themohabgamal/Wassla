@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:grad/models/category_response_model.dart';
+import 'package:grad/models/hot_deal_model.dart';
 import 'package:grad/presentation/cart/cart_screen.dart';
 import 'package:grad/presentation/wishlist/wish_list_screen.dart';
 import 'package:grad/repositories/home_category_repo.dart';
@@ -30,7 +31,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   FutureOr<void> navigateToSingleProductEvent(
       NavigateToSingleProductEvent event, Emitter<HomeState> emit) {
     emit(NavigateToSingleProductState(
-        categoryResponseModel: event.categoryResponseModel));
+        categoryResponseModel: event.categoryResponseModel!));
   }
 
   FutureOr<void> navigateToHotDealsEvent(

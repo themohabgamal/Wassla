@@ -8,9 +8,10 @@ abstract class CategoriesEvent {}
 class CartInitialEvent extends CategoriesEvent {}
 
 class CategoriesNavigateToSingleProductPageEvent extends CategoriesEvent {
-  CategoryResponseModel categoryResponseModel;
+  CategoryResponseModel? categoryResponseModel;
+  HotDealModel? hotDealModel;
   CategoriesNavigateToSingleProductPageEvent(
-      {required this.categoryResponseModel});
+      {this.hotDealModel, this.categoryResponseModel});
 }
 
 class CategoriesAddToCartEvent extends CategoriesEvent {
