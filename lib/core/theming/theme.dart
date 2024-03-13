@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 class MyTheme {
   static const mainColor = Color.fromARGB(255, 57, 2, 223);
+  static const navBarItemColor = Color.fromARGB(255, 82, 99, 128);
   static const lightGreyColor = Color(0xFFF5F5F5);
   static const darkGreyColor = Color(0xFF222324);
   static const lighterColor = Color.fromARGB(255, 229, 229, 229);

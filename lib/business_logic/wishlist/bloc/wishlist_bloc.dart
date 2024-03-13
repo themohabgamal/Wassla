@@ -16,7 +16,6 @@ class WishlistBloc extends Bloc<WishlistEvent, WishlistState> {
     on<WishlistNavigateBackEvent>(wishlistNavigateBackEvent);
     on<WishlistNavigateToSingleProductEvent>(
         wishlistNavigateToSingleProductEvent);
-    on<WishlistAddToCartEvent>(wishlistAddToCartEvent);
   }
 
   FutureOr<void> wishlistRemoveItemEvent(
@@ -39,11 +38,5 @@ class WishlistBloc extends Bloc<WishlistEvent, WishlistState> {
       WishlistNavigateToSingleProductEvent event, Emitter<WishlistState> emit) {
     emit(WishlistNavigateToSingleProductState(
         categoryResponseModel: event.categoryResponseModel));
-  }
-
-  FutureOr<void> wishlistAddToCartEvent(
-      WishlistAddToCartEvent event, Emitter<WishlistState> emit) {
-    CartScreen.cartList.add(event.categoryResponseModel);
-    emit(WishlistAddToCartState());
   }
 }

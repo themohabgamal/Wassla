@@ -57,7 +57,6 @@ class MapSampleState extends State<MapSample> {
                     backgroundColor:
                         MaterialStateProperty.all(MyTheme.mainColor)),
                 onPressed: () {
-                  CartScreen.cartList.clear();
                   Navigator.pop(context);
                   Alert.showAlert(
                       isLoading: false,

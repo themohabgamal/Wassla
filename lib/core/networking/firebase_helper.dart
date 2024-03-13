@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:grad/models/admin/my_admin.dart';
@@ -22,7 +20,6 @@ class FirebaseHelper {
     };
     //* Add user data to Firestore collection
     firebaseFirestore.collection('users').doc(user.userId).set(userData);
-    log('User data saved successfully');
   }
 
   Future<void> saveAdminData(MyAdmin admin) async {
@@ -34,7 +31,6 @@ class FirebaseHelper {
     };
     //* Add user data to Firestore collection
     firebaseFirestore.collection('admins').doc(admin.adminId).set(adminData);
-    log('admin data saved successfully');
   }
 
   logout() async {
@@ -73,7 +69,6 @@ class FirebaseHelper {
       }
     } catch (e) {
       // Error occurred while fetching user data
-      log('Error fetching user data: $e');
       return null;
     }
   }
@@ -90,7 +85,6 @@ class FirebaseHelper {
         String imageUrl = data['imageUrl'];
         bannerUrls.add(imageUrl);
       }
-      log(bannerUrls.toString());
       return bannerUrls;
     } catch (error) {
       print('Error getting banner images: $error');
@@ -106,7 +100,6 @@ class FirebaseHelper {
           await getCategoryProducts(category);
       allProducts.addAll(categoryProducts);
     }
-    log("FirebaseHelper got all prods : ${allProducts.length}");
 
     return allProducts;
   }
@@ -155,5 +148,22 @@ class FirebaseHelper {
     } catch (error) {
       return [];
     }
+  }
+
+  Future<void> updateUserProfile({
+    required String userId,
+    required String firstName,
+    required String lastName,
+    required String email,
+    required String phoneNumber,
+  }) async {
+    final CollectionReference usersCollection =
+        FirebaseFirestore.instance.collection('users');
+    await usersCollection.doc(userId).update({
+      'firstName': firstName,
+      'lastName': lastName,
+      'email': email,
+      'phoneNumber': phoneNumber,
+    });
   }
 }

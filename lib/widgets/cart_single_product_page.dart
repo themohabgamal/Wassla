@@ -1,4 +1,3 @@
-import 'package:grad/business_logic/cart/bloc/cart_bloc.dart';
 import 'package:grad/business_logic/wishlist/bloc/wishlist_bloc.dart';
 import 'package:grad/core/theming/theme.dart';
 import 'package:grad/widgets/cart_single_product_args.dart';
@@ -21,11 +20,7 @@ class CartSingleProductPage extends StatelessWidget {
           icon: Icon(IconlyLight.arrow_left_2,
               color: Theme.of(context).textTheme.titleLarge?.color),
           onPressed: () {
-            if (args.wishlistBloc != null) {
-              args.wishlistBloc?.add(WishlistNavigateBackEvent());
-            } else {
-              args.cartBloc?.add(NavigateBackEvent());
-            }
+            Navigator.pop(context);
           },
         ),
       ),

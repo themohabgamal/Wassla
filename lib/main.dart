@@ -1,28 +1,14 @@
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:grad/business_logic/theming/cubit/theming_cubit.dart';
 import 'package:grad/core/DI/dependency_injection.dart';
-import 'package:grad/firebase_options.dart';
-import 'package:grad/home_or_auth.dart';
-import 'package:grad/nav_switcher.dart';
-import 'package:grad/presentation/about_us.dart';
-import 'package:grad/presentation/auth/auth_page.dart';
-import 'package:grad/presentation/auth/forgot_password_screen.dart';
-
-import 'package:grad/presentation/boarding/on_boarding_screen.dart';
-import 'package:grad/presentation/home/home_screen.dart';
-import 'package:grad/presentation/home/hot_deals_page.dart';
-import 'package:grad/presentation/home_checker.dart';
-import 'package:grad/presentation/map/g_map.dart';
-import 'package:grad/presentation/settings/edit_profile_screen.dart';
-import 'package:grad/presentation/wishlist/wish_list_screen.dart';
+import 'package:grad/core/routing/route_generator.dart';
 import 'package:grad/core/theming/theme.dart';
-import 'package:grad/widgets/cart_single_product_page.dart';
-import 'package:grad/widgets/categories_single_product_page.dart';
-import 'package:grad/widgets/single_product_page.dart';
+import 'package:grad/firebase_options.dart';
+
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:grad/home_or_auth.dart';
+import 'package:grad/presentation/boarding/on_boarding_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 int? isViewed;
@@ -38,10 +24,7 @@ Future<void> main() async {
   isViewed = prefs.getInt('onBoard');
   await prefs.setInt('onBoard', 1);
   setupDependencyInjection();
-  runApp(BlocProvider(
-    create: (context) => ThemingCubit(),
-    child: const MyApp(),
-  ));
+  runApp(const MyApp());
 }
 
 final navigatorKey = GlobalKey<NavigatorState>();
@@ -51,8 +34,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ThemingCubit themingCubit =
-        BlocProvider.of<ThemingCubit>(context, listen: true);
     return ScreenUtilInit(
       designSize: const Size(360, 690),
       minTextAdapt: true,
@@ -61,26 +42,8 @@ class MyApp extends StatelessWidget {
         navigatorKey: navigatorKey,
         debugShowCheckedModeBanner: false,
         title: 'Wassla',
-        theme: themingCubit.isDark ? MyTheme.darkTheme : MyTheme.lightTheme,
-        routes: {
-          HomeScreen.routeName: (context) => const HomeScreen(),
-          NavSwitcher.routeName: (context) => const NavSwitcher(),
-          AuthPage.routeName: (context) => const AuthPage(),
-          HomeOrAuth.routeName: (context) => const HomeOrAuth(),
-          SingleProductPage.routeName: (context) => const SingleProductPage(),
-          CartSingleProductPage.routeName: (context) =>
-              const CartSingleProductPage(),
-          HotDealsPage.routeName: (context) => const HotDealsPage(),
-          WishListScreen.routeName: (context) => WishListScreen(),
-          CategoriesSingleProductPage.routeName: (context) =>
-              const CategoriesSingleProductPage(),
-          OnBoardingScreen.routeName: (context) => const OnBoardingScreen(),
-          HomeChecker.routeName: (context) => const HomeChecker(),
-          AboutUsScreen.routeName: (context) => AboutUsScreen(),
-          MapSample.routeName: (context) => const MapSample(),
-          ForgotPasswordScreen.routeName: (context) => ForgotPasswordScreen(),
-          EditProfileScreen.routeName: (context) => const EditProfileScreen(),
-        },
+        theme: MyTheme.lightTheme,
+        onGenerateRoute: RouteGenerator.generateRoute,
         // initialRoute: OnBoardingScreen.routeName,
         initialRoute: isViewed == 0 || isViewed == null
             ? OnBoardingScreen.routeName

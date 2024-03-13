@@ -1,166 +1,121 @@
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:grad/core/theming/theme.dart';
+import 'package:grad/core/DI/dependency_injection.dart';
+import 'package:grad/core/helpers/constants/fonts/font_helper.dart';
+import 'package:grad/core/networking/firebase_helper.dart';
+import 'package:grad/core/widgets/my_button.dart';
+import 'package:grad/widgets/alert.dart';
 
-import '../../core/helpers/constants/fonts/font_helper.dart';
-
-class EditProfileScreen extends StatelessWidget {
+class EditProfileScreen extends StatefulWidget {
   static const String routeName = 'edit_profile';
-
-  final String name = 'ahmed';
-  final String username = 'ahmed123';
-  final String userId = '1';
-  final String email = 'email';
-  final String phoneNumber = 'phone number';
 
   const EditProfileScreen({super.key});
 
   @override
+  _EditProfileScreenState createState() => _EditProfileScreenState();
+}
+
+class _EditProfileScreenState extends State<EditProfileScreen> {
+  final TextEditingController _firstNameController = TextEditingController();
+  final TextEditingController _lastNameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _phoneController = TextEditingController();
+  @override
+  void initState() {
+    getIt<FirebaseHelper>().getCurrentUserData().then((user) {
+      if (user != null) {
+        setState(() {
+          _firstNameController.text = user.firstName;
+          _lastNameController.text = user.lastName;
+          _emailController.text = user.email;
+          _phoneController.text = user.phone;
+        });
+      }
+    });
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
       appBar: AppBar(
-        title: const Text('Edit Profile'),
+        title: Text(
+          'Edit Profile',
+          style: FontHelper.poppins20Bold(),
+        ),
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            // Profile avatar
-            Center(
-              child: GestureDetector(
-                onTap: () {
-                  // Handle avatar editing
-                },
-                child: Stack(
-                  children: [
-                    const CircleAvatar(
-                      backgroundImage: AssetImage('assets/images/auth.png'),
-                      radius: 80,
-                    ),
-                    Positioned(
-                        right: 0,
-                        bottom: 0,
-                        child: Icon(Icons.edit, size: 30.sp)),
-                  ],
-                ),
-              ),
+            TextField(
+              controller: _firstNameController,
+              decoration: const InputDecoration(labelText: 'First Name'),
             ),
-            const SizedBox(height: 16),
-            // Profile information
-            const Text(
-              'Profile Information',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            const SizedBox(height: 16.0),
+            TextField(
+              controller: _lastNameController,
+              decoration: const InputDecoration(labelText: 'Last Name'),
             ),
-            SizedBox(height: 16.h),
-            TextFormField(
-              decoration: InputDecoration(
-                labelText: 'Name',
-                hintText: 'Enter your name',
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                  borderSide: const BorderSide(color: MyTheme.mainColor),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                ),
-                labelStyle: FontHelper.poppins18Bold(color: MyTheme.mainColor),
-              ),
-              initialValue: name, // Show the current user data
+            const SizedBox(height: 16.0),
+            TextField(
+              controller: _emailController,
+              decoration: const InputDecoration(labelText: 'Email'),
             ),
-            SizedBox(height: 16.h), // SizedBox with height 16
-            TextFormField(
-              decoration: InputDecoration(
-                labelText: 'Username',
-                hintText: 'Enter your username',
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                  borderSide: const BorderSide(color: MyTheme.mainColor),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                ),
-                labelStyle: FontHelper.poppins18Bold(color: MyTheme.mainColor),
-              ),
-              initialValue: username, // Show the current user data
+            const SizedBox(height: 16.0),
+            TextField(
+              controller: _phoneController,
+              decoration: const InputDecoration(labelText: 'Phone Number'),
             ),
-            SizedBox(height: 16.h), // SizedBox with height 16
-            // Personal information
-            const SizedBox(height: 16),
-            const Text(
-              'Personal Information',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-            SizedBox(height: 16.h),
-            TextFormField(
-              decoration: InputDecoration(
-                labelText: 'User ID',
-                hintText: 'Enter your user ID',
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                  borderSide: const BorderSide(color: MyTheme.mainColor),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                ),
-                labelStyle: FontHelper.poppins18Bold(color: MyTheme.mainColor),
-              ),
-              initialValue: userId, // Show the current user data
-            ),
-            SizedBox(height: 16.h), // SizedBox with height 16
-            TextFormField(
-              decoration: InputDecoration(
-                labelText: 'Email',
-                hintText: 'Enter your email',
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                  borderSide: const BorderSide(color: MyTheme.mainColor),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                ),
-                labelStyle: FontHelper.poppins18Bold(color: MyTheme.mainColor),
-              ),
-              initialValue: email, // Show the current user data
-            ),
-            SizedBox(height: 16.h), // SizedBox with height 16
-            TextFormField(
-              decoration: InputDecoration(
-                labelText: 'Phone Number',
-                hintText: 'Enter your phone number',
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                  borderSide: const BorderSide(color: MyTheme.mainColor),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                ),
-                labelStyle: FontHelper.poppins18Bold(color: MyTheme.mainColor),
-              ),
-              initialValue: phoneNumber, // Show the current user data
-            ),
-            // Delete account button
-            SizedBox(height: 18.h),
-            ElevatedButton(
-              onPressed: () {
-                // Add logic to delete the account
-              },
-              style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  backgroundColor: MyTheme.mainColor,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(40.0),
-                  )),
-              child: Text(
-                'Delete Account',
-                style: FontHelper.poppins18Regular(color: Colors.white),
+            const SizedBox(height: 16.0),
+            MyButton(
+              text: 'Update Profile',
+              onPressed: () => updateUserProfile(
+                firstName: _firstNameController.text,
+                lastName: _lastNameController.text,
+                email: _emailController.text,
+                phoneNumber: _phoneController.text,
               ),
             ),
           ],
         ),
       ),
     );
+  }
+
+  void updateUserProfile(
+      {required String firstName,
+      required String lastName,
+      required String email,
+      required String phoneNumber}) async {
+    try {
+      Alert.showAlert(
+          isLoading: true,
+          context: context,
+          animation: "assets/animations/loading.json",
+          text: "Updating...");
+      await getIt<FirebaseHelper>().updateUserProfile(
+        userId: FirebaseAuth
+            .instance.currentUser!.uid, // Replace with the actual user ID
+        firstName: firstName,
+        lastName: lastName,
+        email: email,
+        phoneNumber: phoneNumber,
+      );
+      Navigator.pop(context);
+      Alert.showAlert(
+          isLoading: false,
+          context: context,
+          animation: "assets/animations/success.json",
+          text: "Profile updated successfully");
+    } catch (e) {
+      AwesomeSnackbarContent(
+        title: 'Error',
+        message: 'Failed to update user profile',
+        contentType: ContentType.failure,
+      );
+    }
   }
 }

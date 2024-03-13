@@ -4,6 +4,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:grad/business_logic/cart/bloc/bloc/cart_bloc.dart';
+import 'package:grad/core/DI/dependency_injection.dart';
 import 'package:grad/core/theming/theme.dart';
 import 'package:grad/nav_switcher.dart';
 
@@ -35,6 +37,8 @@ class _HomeOrAuthState extends State<HomeOrAuth> {
           if (user == null) {
             return const AuthPage(); // Show the authentication page
           } else {
+            getIt<CartBloc>()
+                .updateUserAndFetchCart(FirebaseAuth.instance.currentUser?.uid);
             return const NavSwitcher(); // Redirect to home page
           }
         } else {

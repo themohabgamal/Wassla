@@ -10,16 +10,15 @@ import 'package:grad/presentation/home/widgets/my_search_widget.dart';
 import 'package:grad/presentation/wishlist/wish_list_screen.dart';
 import 'package:grad/core/theming/theme.dart';
 import 'package:grad/repos/category/category_repo.dart';
-import 'package:grad/widgets/category_list_view.dart';
 import 'package:grad/widgets/customized_api_home_widget.dart';
 import 'package:grad/widgets/home_single_product_args.dart';
 import 'package:grad/widgets/hot_deal_grid_view.dart';
 import 'package:grad/widgets/single_product_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:iconly/iconly.dart';
 import '../../business_logic/home/bloc/home_bloc.dart';
 import '../../models/category/category_model.dart';
+import '../../widgets/header_widget.dart';
 
 class HomeScreen extends StatefulWidget {
   static const String routeName = 'Home';
@@ -41,24 +40,20 @@ class _HomeScreenState extends State<HomeScreen> {
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
       GlobalKey<RefreshIndicatorState>();
   getAllCategories() async {
-    categoriesList = await getIt<CategoryRepo>().getAllCategories();
+    try {
+      List<CategoryModel> updatedCategoriesList =
+          await getIt<CategoryRepo>().getAllCategories();
+      setState(() {
+        categoriesList = updatedCategoriesList;
+      });
+    } catch (error) {
+      // Handle errors, log them, or display an error message
+      print('Error fetching categories: $error');
+    }
   }
 
   Future<void> refresh() async {
-    // Use a small delay to allow the pop animation to complete
-    await Future.delayed(const Duration(milliseconds: 10));
-
-    Navigator.pushReplacement(
-      context,
-      PageRouteBuilder(
-        pageBuilder: (context, animation, secondaryAnimation) =>
-            const HomeScreen(),
-        transitionsBuilder: (context, animation, secondaryAnimation, child) {
-          return const HomeScreen();
-        },
-        transitionDuration: const Duration(seconds: 0),
-      ),
-    );
+    await getAllCategories();
   }
 
   @override
@@ -230,7 +225,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                         .textTheme
                                         .headlineSmall,
                                   ),
-                                  SizedBox(height: 20.h),
                                   SizedBox(
                                       child: CustomizedApiHomeWidget(
                                           homeBloc: homeBloc,
@@ -305,51 +299,6 @@ class HotDealsSection extends StatelessWidget {
             ],
           ),
         ),
-      ],
-    );
-  }
-}
-
-class HeaderWidget extends StatelessWidget {
-  final String firstName;
-  final String lastName;
-  const HeaderWidget({
-    super.key,
-    required this.firstName,
-    required this.lastName,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text("Good day for shopping",
-                style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w400,
-                    color: Colors.white)),
-            Text(
-                firstName == ''
-                    ? ""
-                    : "${firstName[0].toUpperCase() + firstName.substring(1)} $lastName",
-                style: const TextStyle(
-                    fontSize: 22,
-                    fontWeight: FontWeight.w800,
-                    color: Colors.white)),
-          ],
-        ),
-        IconButton(
-          icon: const Icon(
-            IconlyLight.bag,
-            color: Colors.white,
-            size: 30,
-          ),
-          onPressed: () {},
-        )
       ],
     );
   }

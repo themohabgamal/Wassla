@@ -3,11 +3,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:grad/business_logic/cart/bloc/bloc/cart_bloc.dart';
 import 'package:grad/business_logic/categories/bloc/categories_bloc.dart';
 import 'package:grad/business_logic/home/bloc/home_bloc.dart';
+import 'package:grad/core/DI/dependency_injection.dart';
 import 'package:grad/core/helpers/constants/fonts/font_helper.dart';
 import 'package:grad/core/theming/theme.dart';
 import 'package:grad/models/hot_deal_model.dart';
+import 'package:grad/presentation/cart/widgets/cart_product.dart';
+import 'package:grad/presentation/cart/widgets/product.dart';
 import 'package:iconly/iconly.dart';
 
 class HotDealTileWidget extends StatelessWidget {
@@ -148,19 +152,7 @@ class HotDealTileWidget extends StatelessWidget {
                               SizedBox(width: 5.w),
                               GestureDetector(
                                 onTap: () {
-                                  // if (homeBloc != null) {
-                                  //   homeBloc?.add(HomeAddToCartEvent(
-                                  //     categoryResponseModel:
-                                  //         categoryResponseModel,
-                                  //   ));
-                                  // } else {
-                                  //   categoriesBloc?.add(
-                                  //     CategoriesAddToCartEvent(
-                                  //       categoryResponseModel:
-                                  //           categoryResponseModel,
-                                  //     ),
-                                  //   );
-                                  // }
+                                  addToCart(context, hotDealModel);
                                 },
                                 child: const Icon(Icons.shopping_cart,
                                     size: 25, color: Colors.black),
@@ -198,4 +190,22 @@ class HotDealTileWidget extends StatelessWidget {
       return price.toString();
     }
   }
+}
+
+void addToCart(BuildContext context, HotDealModel hotDealModel) {
+  final cartBloc = getIt<CartBloc>();
+  Product productToAdd = Product(
+    imageUrl: hotDealModel.image,
+    name: hotDealModel.title,
+    price: hotDealModel.discountedPrice,
+  );
+  CartProduct cartProduct = CartProduct(product: productToAdd, quantity: 1);
+  cartBloc.addToCart(cartProduct);
+  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      backgroundColor: MyTheme.mainColor,
+      duration: const Duration(seconds: 1),
+      content: Text(
+        "Product was added to cart",
+        style: FontHelper.poppins16Bold().copyWith(color: Colors.white),
+      )));
 }

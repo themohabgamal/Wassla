@@ -19,7 +19,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     on<GoBackEvent>(goBackEvent);
     on<HotDealsLoadedEvent>(hotDealsLoadedEvent);
     on<NavigateToWishlistEvent>(navigateToWishlistEvent);
-    on<HomeAddToCartEvent>(addToCartEvent);
     on<HomeAddToWishlistEvent>(addToWishlistEvent);
   }
 
@@ -53,12 +52,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   FutureOr<void> navigateToWishlistEvent(
       NavigateToWishlistEvent event, Emitter<HomeState> emit) {
     emit(NavigateToWishlistState());
-  }
-
-  FutureOr<void> addToCartEvent(
-      HomeAddToCartEvent event, Emitter<HomeState> emit) {
-    CartScreen.cartList.add(event.categoryResponseModel);
-    emit(AddToCartState());
   }
 
   FutureOr<void> addToWishlistEvent(
