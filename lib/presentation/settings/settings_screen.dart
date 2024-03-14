@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:grad/core/helpers/constants/fonts/font_helper.dart';
 import 'package:grad/core/networking/firebase_helper.dart';
 import 'package:grad/presentation/settings/edit_profile_screen.dart';
+import 'package:grad/presentation/settings/address/my_addresses_screen.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -99,7 +100,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   leading: const Icon(Icons.home),
                   title: const Text('My Addresses'),
                   onTap: () {
-                    // Navigate to my addresses screen
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const MyAddressesScreen()));
                   },
                 ),
                 ListTile(

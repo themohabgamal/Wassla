@@ -7,6 +7,7 @@ import 'package:grad/core/helpers/constants/fonts/font_helper.dart';
 import 'package:grad/core/widgets/my_button.dart';
 import 'package:grad/presentation/cart/widgets/cart_product.dart';
 import 'package:grad/presentation/cart/widgets/cart_product_tile.dart';
+import 'package:grad/presentation/settings/address/my_addresses_screen.dart';
 
 class CartScreen extends StatelessWidget {
   static const routeName = '/cart';
@@ -69,7 +70,15 @@ class CartScreen extends StatelessWidget {
             ],
           ),
           SizedBox(height: 25.h),
-          MyButton(text: 'Proceed To Checkout', onPressed: () {})
+          MyButton(
+              text: 'Continue',
+              onPressed: () {
+                showModalBottomSheet(
+                    context: context,
+                    builder: (context) {
+                      return const MyAddressesScreen();
+                    });
+              })
         ],
       ),
     );
