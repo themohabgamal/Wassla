@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:grad/business_logic/cart/bloc/bloc/cart_bloc.dart';
 import 'package:grad/core/DI/dependency_injection.dart';
 import 'package:grad/home_or_auth.dart';
+import 'package:grad/models/category_response_model.dart';
 import 'package:grad/nav_switcher.dart';
 import 'package:grad/presentation/about_us.dart';
 import 'package:grad/presentation/auth/auth_page.dart';
@@ -37,8 +38,11 @@ class RouteGenerator {
       case HomeOrAuth.routeName:
         return MaterialPageRoute(builder: (context) => const HomeOrAuth());
       case SingleProductPage.routeName:
+        final args = settings.arguments as CategoryResponseModel;
         return MaterialPageRoute(
-            builder: (context) => const SingleProductPage());
+            builder: (context) => SingleProductPage(
+                  categoryResponseModel: args,
+                ));
       case CartSingleProductPage.routeName:
         return MaterialPageRoute(
             builder: (context) => const CartSingleProductPage());

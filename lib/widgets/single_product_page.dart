@@ -1,23 +1,20 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:grad/business_logic/home/bloc/home_bloc.dart';
-import 'package:grad/business_logic/theming/cubit/theming_cubit.dart';
+import 'package:grad/core/DI/dependency_injection.dart';
 import 'package:grad/core/helpers/constants/fonts/font_helper.dart';
-import 'package:grad/presentation/cart/cart_screen.dart';
+import 'package:grad/models/category_response_model.dart';
 import 'package:grad/core/theming/theme.dart';
-import 'package:grad/widgets/home_single_product_args.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconly/iconly.dart';
 import 'package:readmore/readmore.dart';
 
 class SingleProductPage extends StatelessWidget {
   static const String routeName = 'singleProdPage';
-  const SingleProductPage({super.key});
+  final CategoryResponseModel categoryResponseModel;
+  const SingleProductPage({super.key, required this.categoryResponseModel});
 
   @override
   Widget build(BuildContext context) {
-    final args =
-        ModalRoute.of(context)?.settings.arguments as HomeToSingleProductArgs;
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -37,29 +34,29 @@ class SingleProductPage extends StatelessWidget {
             children: [
               const SizedBox(height: 20),
               Text(
-                "${args.categoryResponseModel?.title}",
+                "${categoryResponseModel.title}",
                 style: FontHelper.poppins24Bold().copyWith(fontSize: 27),
               ),
               const SizedBox(height: 10),
               Text(
-                "${args.categoryResponseModel?.category}",
+                "${categoryResponseModel.category}",
                 style: FontHelper.poppins18Regular(),
               ),
               const SizedBox(height: 10),
               CachedNetworkImage(
-                imageUrl: "${args.categoryResponseModel?.image}",
+                imageUrl: "${categoryResponseModel.image}",
                 width: double.infinity,
                 height: 300,
                 fit: BoxFit.contain,
               ),
               const SizedBox(height: 10),
               Text(
-                "\$ ${args.categoryResponseModel?.price}",
+                "\$ ${categoryResponseModel.price}",
                 style: FontHelper.poppins24Bold().copyWith(fontSize: 30),
               ),
               const SizedBox(height: 10),
               ReadMoreText(
-                "${args.categoryResponseModel?.description}",
+                "${categoryResponseModel.description}",
                 style: Theme.of(context).textTheme.titleMedium,
                 trimLines: 4,
                 colorClickableText: MyTheme.mainColor,
@@ -107,8 +104,8 @@ class SingleProductPage extends StatelessWidget {
                 ),
                 GestureDetector(
                   onTap: () {
-                    args.homeBloc.add(HomeAddToCartEvent(
-                        categoryResponseModel: args.categoryResponseModel!));
+                    getIt<HomeBloc>().add(HomeAddToCartEvent(
+                        categoryResponseModel: categoryResponseModel));
                   },
                   child: Container(
                       width: 200,

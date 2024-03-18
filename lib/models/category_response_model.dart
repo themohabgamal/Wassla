@@ -13,7 +13,7 @@ class CategoryResponseModel {
 
   CategoryResponseModel.fromJson(dynamic json) {
     id = json['id'];
-    id = json['quantity'];
+    quantity = json['quantity'];
     title = json['title'];
     price = json['price'];
     description = json['description'];

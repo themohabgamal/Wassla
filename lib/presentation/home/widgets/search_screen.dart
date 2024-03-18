@@ -1,11 +1,11 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:grad/core/helpers/constants/fonts/font_helper.dart';
-import 'package:grad/presentation/cart/widgets/product.dart';
-import 'package:grad/presentation/home/widgets/product_details.dart';
-import 'package:grad/presentation/home/widgets/search_product.dart';
+import 'package:grad/models/category_response_model.dart';
+import 'package:grad/widgets/category_tile_widget.dart';
 import 'package:grad/widgets/single_product_page.dart';
+import 'package:iconly/iconly.dart';
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({super.key});
@@ -28,7 +28,11 @@ class _SearchScreenState extends State<SearchScreen> {
             });
           },
           decoration: const InputDecoration(
-            hintText: 'Search',
+            hintText: 'Enter Product Name',
+            suffixIcon: Icon(Icons.search), // Icon before the input field
+            focusedBorder: InputBorder.none,
+            contentPadding: EdgeInsets.symmetric(
+                vertical: 15.0, horizontal: 10.0), // Padding inside the field
           ),
         ),
       ),
@@ -50,9 +54,23 @@ class _SearchScreenState extends State<SearchScreen> {
           // Check if search text is empty
           if (searchText.isEmpty) {
             return Center(
-              child: Text(
-                "Start searching for products",
-                style: FontHelper.poppins18Regular(),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Icon(
+                    IconlyLight.search,
+                    size: 50,
+                    color: Colors.grey,
+                  ),
+                  SizedBox(
+                    height: 20.h,
+                  ),
+                  Text(
+                    "Start searching for products",
+                    style: FontHelper.poppins18Regular()
+                        .copyWith(color: Colors.grey),
+                  ),
+                ],
               ),
             );
           }
@@ -69,106 +87,31 @@ class _SearchScreenState extends State<SearchScreen> {
             return title.toLowerCase().contains(searchText.toLowerCase());
           }).toList();
 
-          return ListView(
+          return GridView.builder(
             padding: const EdgeInsets.all(15),
-            children: filteredDocs.map((doc) {
-              final data = doc.data() as Map<String, dynamic>;
-              final product = SearchProduct.fromMap(
-                  data); // Assuming you have a Product model
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2, // You can adjust the number of columns here
+              crossAxisSpacing: 10,
+              mainAxisSpacing: 10,
+              childAspectRatio: 6 / 9,
+            ),
+            itemCount: filteredDocs.length,
+            itemBuilder: (context, index) {
+              final data = filteredDocs[index].data() as Map<String, dynamic>;
 
               return GestureDetector(
                 onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) =>
-                          ProductDetailsScreen(product: product),
-                    ),
-                  );
+                  print("navigate");
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => SingleProductPage(
+                          categoryResponseModel:
+                              CategoryResponseModel.fromJson(data))));
                 },
-                child: Card(
-                  color: Colors.white,
-                  elevation: 1,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: ListTile(
-                    contentPadding: const EdgeInsets.all(16),
-                    leading: Container(
-                      width: 100,
-                      height: 100,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(8),
-                        child: CachedNetworkImage(
-                          imageUrl: product.imageUrl,
-                          placeholder: (context, url) =>
-                              const CircularProgressIndicator(),
-                          errorWidget: (context, url, error) =>
-                              const Icon(Icons.error),
-                          fit: BoxFit.contain,
-                        ),
-                      ),
-                    ),
-                    title: Text(
-                      product.title,
-                      style: const TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    subtitle: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const SizedBox(height: 8),
-                        Text(
-                          'Description: ${product.description}',
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: Colors.grey[600],
-                          ),
-                        ),
-                        const SizedBox(height: 4),
-                        Text(
-                          'Price: \$${product.price}',
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: Colors.grey[600],
-                          ),
-                        ),
-                        const SizedBox(height: 4),
-                        Text(
-                          'Quantity: ${product.quantity}',
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: Colors.grey[600],
-                          ),
-                        ),
-                        const SizedBox(height: 4),
-                        Text(
-                          'Category: ${product.category}',
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: Colors.grey[600],
-                          ),
-                        ),
-                      ],
-                    ),
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              ProductDetailsScreen(product: product),
-                        ),
-                      );
-                    },
-                  ),
+                child: CategoryTileWidget(
+                  categoryResponseModel: CategoryResponseModel.fromJson(data),
                 ),
               );
-            }).toList(),
+            },
           );
         },
       ),

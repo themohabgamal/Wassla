@@ -1,11 +1,7 @@
-import 'dart:developer';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:grad/business_logic/cart/bloc/bloc/cart_bloc.dart';
-import 'package:grad/business_logic/cart/bloc/bloc/cart_event.dart';
 import 'package:grad/business_logic/categories/bloc/categories_bloc.dart';
 import 'package:grad/business_logic/home/bloc/home_bloc.dart';
 import 'package:grad/core/DI/dependency_injection.dart';
@@ -14,6 +10,7 @@ import 'package:grad/core/theming/theme.dart';
 import 'package:grad/models/category_response_model.dart';
 import 'package:grad/presentation/cart/widgets/cart_product.dart';
 import 'package:grad/presentation/cart/widgets/product.dart';
+import 'package:grad/widgets/single_product_page.dart';
 import 'package:iconly/iconly.dart';
 
 class CategoryTileWidget extends StatelessWidget {
@@ -32,13 +29,11 @@ class CategoryTileWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        if (homeBloc != null) {
-          homeBloc?.add(NavigateToSingleProductEvent(
-              categoryResponseModel: categoryResponseModel));
-        } else {
-          categoriesBloc?.add(CategoriesNavigateToSingleProductPageEvent(
-              categoryResponseModel: categoryResponseModel));
-        }
+        Navigator.push(context, MaterialPageRoute(builder: (context) {
+          return SingleProductPage(
+            categoryResponseModel: categoryResponseModel,
+          );
+        }));
       },
       child: Container(
         padding: const EdgeInsets.all(1),
