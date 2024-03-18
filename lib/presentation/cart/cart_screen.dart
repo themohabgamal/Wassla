@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:grad/business_logic/cart/bloc/bloc/cart_bloc.dart';
 import 'package:grad/core/DI/dependency_injection.dart';
 import 'package:grad/core/helpers/constants/fonts/font_helper.dart';
+import 'package:grad/core/paymob/paymob_manager.dart';
 import 'package:grad/core/widgets/my_button.dart';
 import 'package:grad/presentation/cart/widgets/cart_product.dart';
 import 'package:grad/presentation/cart/widgets/cart_product_tile.dart';
@@ -76,7 +77,9 @@ class CartScreen extends StatelessWidget {
                 showModalBottomSheet(
                     context: context,
                     builder: (context) {
-                      return const MyAddressesScreen();
+                      return MyAddressesScreen(
+                        totalPrice: totalPrice,
+                      );
                     });
               })
         ],

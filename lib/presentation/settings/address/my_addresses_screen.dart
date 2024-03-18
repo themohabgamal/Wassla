@@ -1,13 +1,18 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:grad/core/helpers/constants/fonts/font_helper.dart';
+import 'package:grad/core/paymob/paymob_manager.dart';
 import 'package:grad/core/theming/theme.dart';
 import 'package:grad/presentation/settings/address/add_address_screen.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class MyAddressesScreen extends StatefulWidget {
-  const MyAddressesScreen({super.key});
+  final num totalPrice;
+  const MyAddressesScreen({super.key, required this.totalPrice});
 
   @override
   _MyAddressesScreenState createState() => _MyAddressesScreenState();
@@ -22,6 +27,16 @@ class _MyAddressesScreenState extends State<MyAddressesScreen> {
     super.initState();
     _currentUserId = FirebaseAuth.instance.currentUser!.uid;
     _fetchUserAddresses();
+  }
+
+  Future<void> pay() async {
+    //TODO handle Payment if success or fail to make order
+    PaymobManager()
+        .getPaymentKey(widget.totalPrice.toInt())
+        .then((String paymentKey) async {
+      await launchUrl(Uri.parse(
+          "https://accept.paymob.com/api/acceptance/iframes/832300?payment_token=$paymentKey"));
+    });
   }
 
   Future<void> _fetchUserAddresses() async {
@@ -90,6 +105,7 @@ class _MyAddressesScreenState extends State<MyAddressesScreen> {
         ),
       );
       Navigator.pop(context);
+      pay();
     } catch (error) {
       // Show an error message to the user
       ScaffoldMessenger.of(context).showSnackBar(

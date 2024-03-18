@@ -97,16 +97,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 ListTile(
-                  leading: const Icon(Icons.home),
-                  title: const Text('My Addresses'),
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const MyAddressesScreen()));
-                  },
-                ),
-                ListTile(
                   leading: const Icon(Icons.shopping_cart),
                   title: const Text('My Cart'),
                   onTap: () {
