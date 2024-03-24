@@ -10,6 +10,7 @@ import 'package:grad/core/theming/theme.dart';
 import 'package:grad/models/category_response_model.dart';
 import 'package:grad/presentation/cart/widgets/cart_product.dart';
 import 'package:grad/presentation/cart/widgets/product.dart';
+import 'package:grad/presentation/recommendation/analytics_service.dart';
 import 'package:grad/widgets/single_product_page.dart';
 import 'package:iconly/iconly.dart';
 
@@ -137,6 +138,8 @@ class CategoryTileWidget extends StatelessWidget {
                                       ),
                                     );
                                   }
+                                  AnalyticsService.logLikedProduct(
+                                      '2', "hambola1");
                                 },
                                 child: const Icon(
                                   IconlyLight.heart,

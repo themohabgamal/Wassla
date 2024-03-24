@@ -10,7 +10,6 @@ final getIt = GetIt.instance;
 setupDependencyInjection() {
   getIt.registerLazySingleton<FirebaseHelper>(() => FirebaseHelper());
   getIt.registerLazySingleton<HomeBloc>(() => HomeBloc());
-  print(FirebaseAuth.instance.currentUser!.uid);
   getIt.registerLazySingleton<CartBloc>(
       () => CartBloc(FirebaseAuth.instance.currentUser!.uid));
   getIt.registerSingleton<CategoryRepo>(CategoryRepo());

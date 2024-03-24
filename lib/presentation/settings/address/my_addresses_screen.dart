@@ -1,10 +1,9 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:grad/core/helpers/constants/fonts/font_helper.dart';
+import 'package:grad/core/paymob/payment_gateway.dart';
 import 'package:grad/core/paymob/paymob_manager.dart';
 import 'package:grad/core/theming/theme.dart';
 import 'package:grad/presentation/settings/address/add_address_screen.dart';
@@ -21,22 +20,13 @@ class MyAddressesScreen extends StatefulWidget {
 class _MyAddressesScreenState extends State<MyAddressesScreen> {
   late String _currentUserId;
   List<UserAddress> _userAddresses = [];
+  UserAddress? _selectedAddress;
 
   @override
   void initState() {
     super.initState();
     _currentUserId = FirebaseAuth.instance.currentUser!.uid;
     _fetchUserAddresses();
-  }
-
-  Future<void> pay() async {
-    //TODO handle Payment if success or fail to make order
-    PaymobManager()
-        .getPaymentKey(widget.totalPrice.toInt())
-        .then((String paymentKey) async {
-      await launchUrl(Uri.parse(
-          "https://accept.paymob.com/api/acceptance/iframes/832300?payment_token=$paymentKey"));
-    });
   }
 
   Future<void> _fetchUserAddresses() async {
@@ -58,6 +48,39 @@ class _MyAddressesScreenState extends State<MyAddressesScreen> {
     }
   }
 
+  void _selectAddress(UserAddress selectedAddress) {
+    setState(() {
+      _selectedAddress = selectedAddress;
+    });
+  }
+
+  void _continueToPayment() {
+    if (_selectedAddress != null) {
+      PaymobManager()
+          .getPaymentKey(widget.totalPrice.toInt())
+          .then((paymentKey) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => PaymentGateway(
+              paymentToken: paymentKey,
+              address: _selectedAddress!,
+            ),
+          ),
+        );
+      });
+    } else {
+      // Show a message to select an address before continuing to payment
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content:
+              Text('Please select an address before continuing to payment.'),
+          duration: Duration(seconds: 2),
+        ),
+      );
+    }
+  }
+
   void _addNewAddress() {
     Navigator.push(
       context,
@@ -72,51 +95,6 @@ class _MyAddressesScreenState extends State<MyAddressesScreen> {
     });
   }
 
-  void _selectAddress(UserAddress selectedAddress) async {
-    try {
-      final CollectionReference userAddressesRef = FirebaseFirestore.instance
-          .collection('addresses')
-          .doc(_currentUserId)
-          .collection('user_addresses');
-
-      // Fetch all user addresses
-      final userAddressesSnapshot = await userAddressesRef.get();
-
-      // Update the selected address status to "selected" in Firestore
-      await userAddressesRef
-          .doc(selectedAddress.address)
-          .update({'status': 'selected'});
-
-      // Update status of other addresses to "false"
-      for (final doc in userAddressesSnapshot.docs) {
-        if (doc.id != selectedAddress.address) {
-          await userAddressesRef.doc(doc.id).update({'status': 'false'});
-        }
-      }
-      // Show a confirmation message to the user
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          backgroundColor: MyTheme.mainColor,
-          content: Text(
-            'Address selected successfully',
-            style: FontHelper.poppins16Regular().copyWith(color: Colors.white),
-          ),
-          duration: const Duration(seconds: 2),
-        ),
-      );
-      Navigator.pop(context);
-      pay();
-    } catch (error) {
-      // Show an error message to the user
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Failed to select address. Please try again.'),
-          duration: Duration(seconds: 2),
-        ),
-      );
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -128,7 +106,9 @@ class _MyAddressesScreenState extends State<MyAddressesScreen> {
         itemBuilder: (BuildContext context, int index) {
           final userAddress = _userAddresses[index];
           return Container(
-            color: Colors.grey[200],
+            color: _selectedAddress == userAddress
+                ? MyTheme.mainColor
+                : Colors.grey[200],
             margin: EdgeInsets.symmetric(horizontal: 20.w, vertical: 5.h),
             child: ListTile(
               leading: const Icon(Icons.location_on),
@@ -141,16 +121,40 @@ class _MyAddressesScreenState extends State<MyAddressesScreen> {
           );
         },
       ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: MyTheme.mainColor,
-        onPressed: () {
-          _addNewAddress();
-        },
-        child: const Icon(
-          Icons.add,
-          color: Colors.white,
-        ),
-      ),
+      floatingActionButton: _selectedAddress != null
+          ? SizedBox(
+              width: 100, // Adjust the width according to your preference
+              child: FloatingActionButton(
+                backgroundColor: MyTheme.mainColor,
+                onPressed: () {
+                  _continueToPayment();
+                },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      "Pay",
+                      style: FontHelper.poppins18Bold()
+                          .copyWith(color: Colors.white),
+                    ),
+                    SizedBox(
+                      width: 10.w,
+                    ),
+                    const Icon(Icons.arrow_forward, color: Colors.white),
+                  ],
+                ),
+              ),
+            )
+          : FloatingActionButton(
+              backgroundColor: MyTheme.mainColor,
+              onPressed: () {
+                _addNewAddress();
+              },
+              child: const Icon(
+                Icons.add,
+                color: Colors.white,
+              ),
+            ),
     );
   }
 }

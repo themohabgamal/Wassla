@@ -22,6 +22,7 @@ class _CarouselSliderBuilderState extends State<CarouselSliderBuilder> {
       child: FutureBuilder<List<String>>(
         future: FirebaseHelper.getBannerImages(),
         builder: (context, snapshot) {
+          print("carousel ${snapshot.data}");
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Shimmer.fromColors(
               baseColor: Colors.grey[300]!,

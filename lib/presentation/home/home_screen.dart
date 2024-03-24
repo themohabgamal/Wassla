@@ -228,7 +228,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   SizedBox(
                                       child: CustomizedApiHomeWidget(
                                           homeBloc: homeBloc,
-                                          category: "Clothes")),
+                                          category: "clothes")),
                                   const SizedBox(height: 20),
                                 ],
                               ),
