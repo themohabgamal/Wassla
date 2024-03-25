@@ -1,7 +1,4 @@
-import 'dart:developer';
-
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_offline/flutter_offline.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -21,11 +18,13 @@ class HomeOrAuth extends StatefulWidget {
 
 class _HomeOrAuthState extends State<HomeOrAuth> {
   late User? _user;
+  bool _authChecked = false;
 
   @override
   void initState() {
     super.initState();
     _user = FirebaseAuth.instance.currentUser;
+    _authChecked = true;
   }
 
   @override
@@ -37,7 +36,11 @@ class _HomeOrAuthState extends State<HomeOrAuth> {
         Widget child,
       ) {
         final bool connected = connectivity != ConnectivityResult.none;
-        return connected ? _buildAuthStateWidget() : _buildNoInternetScreen();
+        if (!connected) {
+          return _buildNoInternetScreen();
+        } else {
+          return _authChecked ? _buildAuthStateWidget() : _buildLoadingScreen();
+        }
       },
       child: const Text(''), // Placeholder child
     );
@@ -56,15 +59,19 @@ class _HomeOrAuthState extends State<HomeOrAuth> {
             return const NavSwitcher(); // Redirect to home page
           }
         } else {
-          return const Scaffold(
-            body: Center(
-              child: SpinKitChasingDots(
-                color: MyTheme.mainColor,
-              ),
-            ),
-          );
+          return _buildLoadingScreen();
         }
       },
+    );
+  }
+
+  Widget _buildLoadingScreen() {
+    return const Scaffold(
+      body: Center(
+        child: SpinKitChasingDots(
+          color: MyTheme.mainColor,
+        ),
+      ),
     );
   }
 

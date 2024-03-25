@@ -95,7 +95,7 @@ class WishListScreen extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Image.asset(
-                      "assets/images/box.png",
+                      "assets/images/empty.png",
                       width: 200,
                     ),
                     Padding(

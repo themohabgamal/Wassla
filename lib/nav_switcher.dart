@@ -19,7 +19,7 @@ class _NavSwitcherState extends State<NavSwitcher> {
   int selectedIndex = 0;
   List<Widget> screens = [
     const HomeScreen(),
-    const BotScreen(),
+    const CartScreen(),
     WishListScreen(),
     const SettingsScreen(),
   ];
@@ -33,30 +33,25 @@ class _NavSwitcherState extends State<NavSwitcher> {
         body: screens[selectedIndex],
         floatingActionButton: GestureDetector(
           onTap: () => Navigator.push(context,
-              MaterialPageRoute(builder: (context) => const CartScreen())),
+              MaterialPageRoute(builder: (context) => const BotScreen())),
           child: const CircleAvatar(
             radius: 30,
             backgroundColor: MyTheme.mainColor,
             child: Icon(
-              Icons.shopping_cart,
+              IconlyBold.chat,
               color: Colors.white,
             ),
           ),
         ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         bottomNavigationBar: BottomAppBar(
-          shape: const CircularNotchedRectangle(),
           elevation: 5,
-          notchMargin: 8,
           height: 70,
           color: Colors.white,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
               _buildNavBarItem(0, IconlyBold.home, 'Home'),
-              _buildNavBarItem(1, IconlyBold.chat, 'Bot'),
-              const SizedBox(
-                  width: 48.0), // Empty space for the rounded center button
+              _buildNavBarItem(1, IconlyBold.bag, 'Cart'),
               _buildNavBarItem(2, IconlyBold.heart, 'Wishlist'),
               _buildNavBarItem(3, IconlyBold.profile, 'Profile'),
             ],
@@ -73,6 +68,9 @@ class _NavSwitcherState extends State<NavSwitcher> {
   }
 
   Widget _buildNavBarItem(int index, IconData icon, String label) {
+    final isSelected = index == selectedIndex;
+    final color = isSelected ? MyTheme.mainColor : MyTheme.navBarItemColor;
+
     return GestureDetector(
       onTap: () {
         _onItemTapped(index);
@@ -83,14 +81,14 @@ class _NavSwitcherState extends State<NavSwitcher> {
           Icon(
             icon,
             size: 25,
-            color: MyTheme.navBarItemColor,
+            color: color,
           ),
           const SizedBox(height: 4),
           Text(
             label,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 12,
-              color: MyTheme.navBarItemColor,
+              color: color,
             ),
           ),
         ],

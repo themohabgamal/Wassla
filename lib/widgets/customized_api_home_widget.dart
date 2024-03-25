@@ -30,12 +30,7 @@ class _CustomizedApiHomeWidgetState extends State<CustomizedApiHomeWidget> {
     return FutureBuilder<List<CategoryResponseModel>>(
       future: getIt<FirebaseHelper>().getCategoryProducts(widget.category),
       builder: (context, snapshot) {
-        if (snapshot.hasError) {
-          return Center(
-            child: Text(
-                "Error fetching data from server ${snapshot.error.toString()}"),
-          );
-        } else if (snapshot.connectionState == ConnectionState.waiting) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
           return GridView.builder(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
@@ -49,6 +44,11 @@ class _CustomizedApiHomeWidgetState extends State<CustomizedApiHomeWidget> {
             itemBuilder: (context, index) {
               return const ProductLoadingTileWidget();
             },
+          );
+        } else if (snapshot.hasError) {
+          return Center(
+            child: Text(
+                "Error fetching data from server ${snapshot.error.toString()}"),
           );
         } else if (snapshot.hasData) {
           if (snapshot.data!.isEmpty) {
@@ -76,7 +76,11 @@ class _CustomizedApiHomeWidgetState extends State<CustomizedApiHomeWidget> {
               GridView.builder(
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
-                itemCount: viewAll ? snapshot.data!.length : 2,
+                itemCount: viewAll
+                    ? snapshot.data!.length
+                    : snapshot.hasData && snapshot.data!.length > 1
+                        ? 2
+                        : 1,
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
                   childAspectRatio: 0.7,

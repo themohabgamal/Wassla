@@ -20,7 +20,7 @@ class _BotScreenState extends State<BotScreen> {
   final _bot = ChatUser(id: '2', firstName: "Broxi");
   List<ChatMessage> messages = <ChatMessage>[];
   final _openAI = OpenAI.instance.build(
-      token: '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',
+      token: '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',
       baseOption: HttpSetup(
         receiveTimeout: const Duration(seconds: 5),
       ),

@@ -101,26 +101,34 @@ class _MyAddressesScreenState extends State<MyAddressesScreen> {
       appBar: AppBar(
         title: const Text('My Addresses'),
       ),
-      body: ListView.builder(
-        itemCount: _userAddresses.length,
-        itemBuilder: (BuildContext context, int index) {
-          final userAddress = _userAddresses[index];
-          return Container(
-            color: _selectedAddress == userAddress
-                ? MyTheme.mainColor
-                : Colors.grey[200],
-            margin: EdgeInsets.symmetric(horizontal: 20.w, vertical: 5.h),
-            child: ListTile(
-              leading: const Icon(Icons.location_on),
-              title: Text(userAddress.address),
-              subtitle: Text('${userAddress.city}, ${userAddress.state}'),
-              onTap: () {
-                _selectAddress(userAddress);
+      body: _userAddresses.isEmpty
+          ? Center(
+              child: Text(
+                'No addresses found. Please add a new address.',
+                style: FontHelper.poppins18Regular(),
+                textAlign: TextAlign.center,
+              ),
+            )
+          : ListView.builder(
+              itemCount: _userAddresses.length,
+              itemBuilder: (BuildContext context, int index) {
+                final userAddress = _userAddresses[index];
+                return Container(
+                  color: _selectedAddress == userAddress
+                      ? MyTheme.mainColor
+                      : Colors.grey[200],
+                  margin: EdgeInsets.symmetric(horizontal: 20.w, vertical: 5.h),
+                  child: ListTile(
+                    leading: const Icon(Icons.location_on),
+                    title: Text(userAddress.address),
+                    subtitle: Text('${userAddress.city}, ${userAddress.state}'),
+                    onTap: () {
+                      _selectAddress(userAddress);
+                    },
+                  ),
+                );
               },
             ),
-          );
-        },
-      ),
       floatingActionButton: _selectedAddress != null
           ? SizedBox(
               width: 100, // Adjust the width according to your preference

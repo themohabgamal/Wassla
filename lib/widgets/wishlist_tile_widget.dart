@@ -1,4 +1,5 @@
 // ignore_for_file: must_be_immutable
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:grad/business_logic/wishlist/bloc/wishlist_bloc.dart';
 import 'package:grad/core/helpers/constants/fonts/font_helper.dart';
@@ -21,57 +22,50 @@ class WishlistTileWidget extends StatefulWidget {
 class _WishlistTileWidget extends State<WishlistTileWidget> {
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        widget.wishlistBloc.add(WishlistNavigateToSingleProductEvent(
-            categoryResponseModel: widget.categoryResponseModel));
-      },
-      child: Container(
-        padding: const EdgeInsets.all(10),
-        width: 220,
-        height: 100.h,
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(15),
-            color: Theme.of(context).canvasColor),
-        child: Row(
-          children: [
-            Image.network(
-              "${widget.categoryResponseModel.image}",
-              width: 80,
-              fit: BoxFit.contain,
-            ),
-            const SizedBox(width: 10),
-            Expanded(
-                child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                const SizedBox(height: 10),
-                Container(
-                  child: Text(
-                    "${categoryTitleBuilder(widget.categoryResponseModel.title)}",
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: FontHelper.poppins16Bold().copyWith(
-                        fontWeight: FontWeight.w600,
-                        color: Theme.of(context).textTheme.titleLarge?.color),
-                  ),
+    return Container(
+      padding: const EdgeInsets.all(10),
+      width: 220,
+      height: 100.h,
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(15), color: Colors.grey.shade200),
+      child: Row(
+        children: [
+          CachedNetworkImage(
+            imageUrl: "${widget.categoryResponseModel.image}",
+            width: 80,
+            fit: BoxFit.contain,
+          ),
+          const SizedBox(width: 10),
+          Expanded(
+              child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              const SizedBox(height: 10),
+              Container(
+                child: Text(
+                  "${categoryTitleBuilder(widget.categoryResponseModel.title)}",
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: FontHelper.poppins16Bold().copyWith(
+                      fontWeight: FontWeight.w600,
+                      color: Theme.of(context).textTheme.titleLarge?.color),
                 ),
-                const SizedBox(height: 10),
-                Expanded(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        "\$ ${widget.categoryResponseModel.price.toString()}",
-                        style: FontHelper.poppins20Regular(),
-                      ),
-                    ],
-                  ),
+              ),
+              const SizedBox(height: 10),
+              Expanded(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "\$ ${widget.categoryResponseModel.price.toString()}",
+                      style: FontHelper.poppins20Regular(),
+                    ),
+                  ],
                 ),
-              ],
-            ))
-          ],
-        ),
+              ),
+            ],
+          ))
+        ],
       ),
     );
   }

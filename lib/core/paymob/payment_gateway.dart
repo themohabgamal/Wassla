@@ -87,7 +87,7 @@ class _PaymentGatewayState extends State<PaymentGateway> {
         context: context,
         isLoading: false,
         text: 'Order placed successfully!',
-        animation: 'asset/animations/order-placed.json',
+        animation: 'assets/animations/order-placed.json',
         onContinue: () {
           Navigator.pop(context);
           Navigator.pop(context);
@@ -100,7 +100,7 @@ class _PaymentGatewayState extends State<PaymentGateway> {
           context: context,
           isLoading: false,
           text: 'Could not place order. Please try again.',
-          animation: 'asset/animations/error.json',
+          animation: 'assets/animations/error.json',
           onContinue: () {
             Navigator.pop(context);
             Navigator.pop(context);

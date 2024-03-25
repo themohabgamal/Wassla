@@ -95,7 +95,17 @@ class SingleProductPage extends StatelessWidget {
                           ?.withAlpha(20),
                       borderRadius: BorderRadius.circular(50)),
                   child: IconButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        getIt<HomeBloc>().add(HomeAddToWishlistEvent(
+                          categoryResponseModel: categoryResponseModel,
+                        ));
+                        ScaffoldMessenger.of(context)
+                            .showSnackBar(const SnackBar(
+                          content: Text("Added to wishlist"),
+                          backgroundColor: MyTheme.mainColor,
+                          duration: Duration(seconds: 1),
+                        ));
+                      },
                       icon: Icon(
                         IconlyLight.heart,
                         size: 30,

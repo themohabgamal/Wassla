@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:grad/core/widgets/my_button.dart';
 
 class AddAddressScreen extends StatefulWidget {
   const AddAddressScreen({super.key});
@@ -94,10 +95,7 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
               decoration: const InputDecoration(labelText: 'State'),
             ),
             const SizedBox(height: 16.0),
-            ElevatedButton(
-              onPressed: _saveAddress,
-              child: const Text('Save Address'),
-            ),
+            MyButton(text: 'Save', onPressed: _saveAddress),
           ],
         ),
       ),
