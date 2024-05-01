@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -7,17 +9,17 @@ import 'package:grad/core/paymob/payment_gateway.dart';
 import 'package:grad/core/paymob/paymob_manager.dart';
 import 'package:grad/core/theming/theme.dart';
 import 'package:grad/presentation/settings/address/add_address_screen.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:iconly/iconly.dart';
 
 class MyAddressesScreen extends StatefulWidget {
   final num totalPrice;
   const MyAddressesScreen({super.key, required this.totalPrice});
 
   @override
-  _MyAddressesScreenState createState() => _MyAddressesScreenState();
+  MyAddressesScreenState createState() => MyAddressesScreenState();
 }
 
-class _MyAddressesScreenState extends State<MyAddressesScreen> {
+class MyAddressesScreenState extends State<MyAddressesScreen> {
   late String _currentUserId;
   List<UserAddress> _userAddresses = [];
   UserAddress? _selectedAddress;
@@ -43,7 +45,7 @@ class _MyAddressesScreenState extends State<MyAddressesScreen> {
         }).toList();
       });
     } catch (error) {
-      print('Error fetching user addresses: $error');
+      log(error.toString());
       // Handle error fetching user addresses
     }
   }
@@ -99,14 +101,23 @@ class _MyAddressesScreenState extends State<MyAddressesScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('My Addresses'),
+        title: Text(
+          'My Addresses',
+          style: FontHelper.poppins16Bold(),
+        ),
       ),
       body: _userAddresses.isEmpty
           ? Center(
-              child: Text(
-                'No addresses found. Please add a new address.',
-                style: FontHelper.poppins18Regular(),
-                textAlign: TextAlign.center,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Icon(IconlyLight.discount, size: 60),
+                  Text(
+                    'No addresses found \n Please add a new address.',
+                    style: FontHelper.poppins16Regular(),
+                    textAlign: TextAlign.center,
+                  ),
+                ],
               ),
             )
           : ListView.builder(
@@ -121,7 +132,8 @@ class _MyAddressesScreenState extends State<MyAddressesScreen> {
                   child: ListTile(
                     leading: const Icon(Icons.location_on),
                     title: Text(userAddress.address),
-                    subtitle: Text('${userAddress.city}, ${userAddress.state}'),
+                    subtitle:
+                        Text('${userAddress.city}, ${userAddress.governorate}'),
                     onTap: () {
                       _selectAddress(userAddress);
                     },
@@ -169,20 +181,20 @@ class _MyAddressesScreenState extends State<MyAddressesScreen> {
 
 class UserAddress {
   final String address;
+  final String governorate;
   final String city;
-  final String state;
 
   UserAddress({
     required this.address,
+    required this.governorate,
     required this.city,
-    required this.state,
   });
 
   factory UserAddress.fromMap(Map<String, dynamic> map) {
     return UserAddress(
-      address: map['address'],
-      city: map['city'],
-      state: map['state'],
+      address: map['address'] ?? '',
+      governorate: map['governorate'] ?? '',
+      city: map['city'] ?? '',
     );
   }
 }

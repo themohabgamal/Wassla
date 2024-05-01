@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:dio/dio.dart';
 import 'package:grad/core/networking/firebase_helper.dart';
 import 'package:grad/core/paymob/constants.dart';
@@ -20,29 +18,7 @@ class PaymobManager {
       );
       return paymentKey;
     } catch (error) {
-      print("Exc==============================");
-      print(error.toString());
       rethrow;
-    }
-  }
-
-  Future<void> handleTransactionResponse(String authToken, int orderId) async {
-    try {
-      Response response = await dio.post(
-        'https://accept.paymobsolutions.com/api/acceptance/post_pay',
-        data: {
-          "auth_token": authToken,
-          "order_id": orderId,
-          // Add any other required parameters for the callback
-        },
-      );
-      // Handle the response here, if needed
-      print('Transaction response callback handled successfully');
-      print('Response status code: ${response.statusCode}');
-      print('Response data: ${response.data}');
-    } catch (error) {
-      print('Error handling transaction response callback: $error');
-      // Handle the error here
     }
   }
 
@@ -50,7 +26,7 @@ class PaymobManager {
     try {
       Response response = await dio.post(
         'https://accept.paymob.com/api/auth/tokens',
-        data: {"api_key": Constants.api_key},
+        data: {"api_key": Constants.apiKey},
       );
 
       return response.data['token'];
@@ -115,7 +91,6 @@ class PaymobManager {
 
       return response.data['token'];
     } catch (error) {
-      print('Error: $error');
       rethrow;
     }
   }

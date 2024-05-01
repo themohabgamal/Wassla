@@ -1,10 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:grad/core/networking/firebase_helper.dart';
-import 'package:grad/core/theming/theme.dart';
 import 'package:shimmer/shimmer.dart';
 
 class CarouselSliderBuilder extends StatefulWidget {
@@ -22,7 +19,6 @@ class _CarouselSliderBuilderState extends State<CarouselSliderBuilder> {
       child: FutureBuilder<List<String>>(
         future: FirebaseHelper.getBannerImages(),
         builder: (context, snapshot) {
-          print("carousel ${snapshot.data}");
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Shimmer.fromColors(
               baseColor: Colors.grey[300]!,

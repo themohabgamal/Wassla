@@ -3,31 +3,25 @@ import 'package:grad/core/DI/dependency_injection.dart';
 import 'package:grad/core/routing/route_generator.dart';
 import 'package:grad/core/theming/theme.dart';
 import 'package:grad/firebase_options.dart';
-
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/services.dart';
 import 'package:grad/home_or_auth.dart';
 import 'package:grad/presentation/boarding/on_boarding_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 int? isViewed;
 Future<void> main() async {
-  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-    statusBarColor: Colors.transparent,
-  ));
-
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.android);
-  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   SharedPreferences prefs = await SharedPreferences.getInstance();
   isViewed = prefs.getInt('onBoard');
   await prefs.setInt('onBoard', 1);
   setupDependencyInjection();
+
   runApp(const MyApp());
 }
 
-final navigatorKey = GlobalKey<NavigatorState>();
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});

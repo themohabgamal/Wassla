@@ -1,12 +1,8 @@
 import 'package:chat_gpt_sdk/chat_gpt_sdk.dart';
 import 'package:dash_chat_2/dash_chat_2.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:grad/core/DI/dependency_injection.dart';
 import 'package:grad/core/helpers/constants/fonts/font_helper.dart';
-import 'package:grad/core/networking/firebase_helper.dart';
 import 'package:grad/core/theming/theme.dart';
-import 'package:grad/models/user.dart';
 
 class BotScreen extends StatefulWidget {
   const BotScreen({super.key});
@@ -34,16 +30,19 @@ class _BotScreenState extends State<BotScreen> {
           style: FontHelper.poppins24Bold(),
         ),
       ),
-      body: DashChat(
-        messageOptions: MessageOptions(
-          currentUserContainerColor: MyTheme.mainColor,
-          containerColor: Colors.grey.shade300,
+      body: Padding(
+        padding: const EdgeInsets.only(left: 8.0, right: 8.0, bottom: 8.0),
+        child: DashChat(
+          messageOptions: MessageOptions(
+            currentUserContainerColor: MyTheme.mainColor,
+            containerColor: Colors.grey.shade300,
+          ),
+          currentUser: _currentUser,
+          onSend: (message) {
+            getChatResponse(message);
+          },
+          messages: messages,
         ),
-        currentUser: _currentUser,
-        onSend: (message) {
-          getChatResponse(message);
-        },
-        messages: messages,
       ),
     );
   }
@@ -71,7 +70,6 @@ class _BotScreenState extends State<BotScreen> {
         model: GptTurbo0631Model(), messages: messagesHistory, maxToken: 200);
     final response = await _openAI.onChatCompletion(request: request);
     for (var element in response!.choices) {
-      print(element.message!.content);
       if (element.message != null) {
         setState(() {
           messages.insert(

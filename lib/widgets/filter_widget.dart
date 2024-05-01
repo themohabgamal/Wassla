@@ -11,7 +11,7 @@ class FilterWidget extends StatelessWidget {
       width: 55,
       height: 55,
       decoration: BoxDecoration(
-          boxShadow: [],
+          boxShadow: const [],
           borderRadius: BorderRadius.circular(50),
           color: Colors.indigo),
       child: IconButton(

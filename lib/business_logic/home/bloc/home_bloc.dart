@@ -1,12 +1,11 @@
 import 'dart:async';
 
-import 'package:bloc/bloc.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:grad/models/category_response_model.dart';
 import 'package:grad/models/hot_deal_model.dart';
-import 'package:grad/presentation/cart/cart_screen.dart';
-import 'package:grad/presentation/wishlist/wish_list_screen.dart';
 import 'package:grad/repositories/home_category_repo.dart';
-import 'package:meta/meta.dart';
 
 part 'home_event.dart';
 part 'home_state.dart';
@@ -20,6 +19,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     on<HotDealsLoadedEvent>(hotDealsLoadedEvent);
     on<NavigateToWishlistEvent>(navigateToWishlistEvent);
     on<HomeAddToWishlistEvent>(addToWishlistEvent);
+    on<HomeAddToCartEvent>(addToCartEvent);
+    on<NavigateToRecommendedEvent>(navigateToRecommendedEvent);
   }
 
   FutureOr<void> navigateToCartEvent(
@@ -54,9 +55,60 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     emit(NavigateToWishlistState());
   }
 
-  FutureOr<void> addToWishlistEvent(
-      HomeAddToWishlistEvent event, Emitter<HomeState> emit) {
-    WishListScreen.wishListList.add(event.categoryResponseModel);
-    emit(AddToWishlistState());
+  Future<void> addToWishlistEvent(
+      HomeAddToWishlistEvent event, Emitter<HomeState> emit) async {
+    try {
+      final user = FirebaseAuth.instance.currentUser;
+      if (user != null) {
+        final userId = user.uid;
+        final product = event.hotDealModel == null
+            ? event.categoryResponseModel!.toJson()
+            : event.hotDealModel!.toJson();
+
+        // Store the wishlist item in Firestore
+        await FirebaseFirestore.instance
+            .collection('wishlist')
+            .doc(userId)
+            .collection('items')
+            .add(product);
+
+        // Emit the state to indicate success
+        emit(AddToWishlistState());
+      } else {
+        throw Exception('User is not logged in');
+      }
+    } catch (error) {
+      // Handle the error
+      print('Error adding to wishlist: $error');
+      // Emit an error state if needed
+    }
+  }
+
+  FutureOr<void> navigateToRecommendedEvent(
+      NavigateToRecommendedEvent event, Emitter<HomeState> emit) {
+    emit(NavigateToRecommendedState());
+  }
+
+  FutureOr<void> addToCartEvent(
+      HomeAddToCartEvent event, Emitter<HomeState> emit) async {
+    try {
+      final user = FirebaseAuth.instance.currentUser;
+      if (user != null) {
+        final userId = user.uid;
+        final product = event.categoryResponseModel.toJson();
+        FirebaseFirestore.instance
+            .collection('carts')
+            .doc(userId)
+            .collection('products')
+            .add(product);
+        emit(AddToCartState());
+      } else {
+        throw Exception('User is not logged in');
+      }
+    } catch (error) {
+      // Handle the error
+      print('Error adding to wishlist: $error');
+      // Emit an error state if needed
+    }
   }
 }

@@ -4,26 +4,22 @@ import 'package:grad/core/DI/dependency_injection.dart';
 import 'package:grad/core/helpers/constants/fonts/font_helper.dart';
 import 'package:grad/core/networking/firebase_helper.dart';
 import 'package:grad/core/theming/theme.dart';
-import 'package:grad/models/category_response_model.dart';
 import 'package:grad/models/hot_deal_model.dart';
-import 'package:grad/widgets/category_tile_widget.dart';
 import 'package:grad/widgets/hot_deal_tile_widget.dart';
 import 'package:grad/widgets/product_loading_tile_widget.dart';
 
 class HotDealGridView extends StatefulWidget {
-  final String category;
   final HomeBloc homeBloc;
   const HotDealGridView({
     super.key,
-    required this.category,
     required this.homeBloc,
   });
 
   @override
-  _HotDealGridViewState createState() => _HotDealGridViewState();
+  HotDealGridViewState createState() => HotDealGridViewState();
 }
 
-class _HotDealGridViewState extends State<HotDealGridView> {
+class HotDealGridViewState extends State<HotDealGridView> {
   bool viewAll = false;
 
   @override
@@ -75,7 +71,7 @@ class _HotDealGridViewState extends State<HotDealGridView> {
                 itemCount: viewAll ? snapshot.data!.length : 2,
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
-                  childAspectRatio: 0.7,
+                  childAspectRatio: 2 / 3,
                   crossAxisSpacing: 1,
                   mainAxisSpacing: 2,
                 ),

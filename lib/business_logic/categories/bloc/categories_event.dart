@@ -2,7 +2,6 @@
 
 part of 'categories_bloc.dart';
 
-@immutable
 abstract class CategoriesEvent {}
 
 class CartInitialEvent extends CategoriesEvent {}
@@ -20,8 +19,9 @@ class CategoriesAddToCartEvent extends CategoriesEvent {
 }
 
 class CategoriesAddToWishlistEvent extends CategoriesEvent {
-  CategoryResponseModel categoryResponseModel;
-  CategoriesAddToWishlistEvent({required this.categoryResponseModel});
+  CategoryResponseModel? categoryResponseModel;
+  HotDealModel? hotDealModel;
+  CategoriesAddToWishlistEvent({this.categoryResponseModel, this.hotDealModel});
 }
 
 class CategoriesNavigateBackEvent extends CategoriesEvent {}

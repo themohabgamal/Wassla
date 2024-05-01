@@ -1,11 +1,9 @@
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:grad/nav_switcher.dart';
 import 'package:grad/core/theming/theme.dart';
 import 'package:flutter/material.dart';
+import 'package:grad/home_or_auth.dart';
 import 'package:iconly/iconly.dart';
 import 'package:introduction_screen/introduction_screen.dart';
-
-import '../auth/auth_page.dart';
 
 class OnBoardingScreen extends StatelessWidget {
   const OnBoardingScreen({super.key});
@@ -15,35 +13,38 @@ class OnBoardingScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: IntroductionScreen(
-        globalBackgroundColor: MyTheme.mainColor,
+        globalBackgroundColor: Colors.white,
         done: Container(
           width: 100,
           height: 50,
           alignment: Alignment.center,
           decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(50), color: Colors.white),
+              borderRadius: BorderRadius.circular(50),
+              color: MyTheme.mainColor),
           child: Text(
             "DONE",
             style: Theme.of(context)
                 .textTheme
                 .titleLarge
-                ?.copyWith(color: Colors.black),
+                ?.copyWith(color: Colors.white),
           ),
         ),
         onDone: () {
-          Navigator.pushReplacementNamed(context, AuthPage.routeName);
+          Navigator.pushNamedAndRemoveUntil(
+              context, HomeOrAuth.routeName, (route) => false);
         },
         animationDuration: 10,
-        dotsDecorator:
-            const DotsDecorator(activeColor: Colors.black, color: Colors.white),
+        dotsDecorator: const DotsDecorator(
+            activeColor: MyTheme.mainColor, color: Colors.black12),
         next: Container(
           width: 50,
           height: 50,
           decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(50), color: Colors.white),
+              borderRadius: BorderRadius.circular(50),
+              color: MyTheme.mainColor),
           child: const Icon(
             IconlyLight.arrow_right_2,
-            color: Colors.black,
+            color: Colors.white,
           ),
         ),
         pages: [
@@ -53,7 +54,7 @@ class OnBoardingScreen extends StatelessWidget {
                 titleTextStyle: Theme.of(context)
                     .textTheme
                     .headlineMedium!
-                    .copyWith(fontWeight: FontWeight.w700, color: Colors.white),
+                    .copyWith(fontWeight: FontWeight.w700, color: Colors.black),
                 bodyAlignment: Alignment.bottomCenter,
                 imageFlex: 2,
                 bodyTextStyle: Theme.of(context)
@@ -61,18 +62,18 @@ class OnBoardingScreen extends StatelessWidget {
                     .headlineMedium!
                     .copyWith(
                         fontWeight: FontWeight.w100,
-                        fontSize: 17.sp,
-                        color: Colors.white),
+                        fontSize: 14.sp,
+                        color: Colors.black45),
               ),
               body:
-                  "Dive into a seamless shopping experience, where each tap opens the door to a universe of quality products and unbeatable deals.",
+                  "Each tap opens the door to a universe of quality products and unbeatable deals.",
               image: Container(
                 alignment: Alignment.bottomCenter,
                 child: Padding(
                   padding: const EdgeInsets.all(12.0),
                   child: SafeArea(
                       child: Image.asset(
-                    "assets/images/boarding3.png",
+                    "assets/images/1.png",
                     width: 400,
                   )),
                 ),
@@ -84,7 +85,7 @@ class OnBoardingScreen extends StatelessWidget {
                 titleTextStyle: Theme.of(context)
                     .textTheme
                     .headlineMedium!
-                    .copyWith(fontWeight: FontWeight.w700, color: Colors.white),
+                    .copyWith(fontWeight: FontWeight.w700, color: Colors.black),
                 bodyAlignment: Alignment.bottomCenter,
                 imageFlex: 2,
                 bodyTextStyle: Theme.of(context)
@@ -92,11 +93,11 @@ class OnBoardingScreen extends StatelessWidget {
                     .headlineMedium!
                     .copyWith(
                         fontWeight: FontWeight.w100,
-                        fontSize: 17,
-                        color: Colors.white),
+                        fontSize: 14.sp,
+                        color: Colors.black45),
               ),
               body:
-                  "Upgrade your style and stay connected with the latest trends effortlessly",
+                  "Upgrade your style and stay connected with the latest trends effortlessly and pay online with our app",
               image: Container(
                 alignment: Alignment.bottomCenter,
                 child: Padding(
@@ -105,20 +106,20 @@ class OnBoardingScreen extends StatelessWidget {
                       child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Image.asset(
-                      "assets/images/boarding2.png",
+                      "assets/images/2.png",
                       width: 400,
                     ),
                   )),
                 ),
               ),
-              title: "All Products in One Place"),
+              title: "Easy Payments and Services"),
           PageViewModel(
               useScrollView: false,
               decoration: PageDecoration(
                 titleTextStyle: Theme.of(context)
                     .textTheme
                     .headlineMedium!
-                    .copyWith(fontWeight: FontWeight.w700, color: Colors.white),
+                    .copyWith(fontWeight: FontWeight.w700, color: Colors.black),
                 bodyAlignment: Alignment.bottomCenter,
                 imageFlex: 2,
                 bodyTextStyle: Theme.of(context)
@@ -126,8 +127,8 @@ class OnBoardingScreen extends StatelessWidget {
                     .headlineMedium!
                     .copyWith(
                         fontWeight: FontWeight.w100,
-                        fontSize: 17,
-                        color: Colors.white),
+                        fontSize: 14.sp,
+                        color: Colors.black45),
               ),
               body:
                   "Our app understands your preferences and curates a unique selection of products based on your interests.",
@@ -138,12 +139,12 @@ class OnBoardingScreen extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Image.asset(
-                    "assets/images/boarding1.png",
+                    "assets/images/3.png",
                     width: 400,
                   ),
                 ),
               ),
-              title: "Tailored Just for You"),
+              title: "Orders Made Easily"),
         ],
       ),
     );

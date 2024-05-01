@@ -15,14 +15,22 @@ class HotDealModel {
     required this.title,
   });
 
-  factory HotDealModel.fromJson(Map<String, dynamic> json) {
-    return HotDealModel(
-      description: json['description'] ?? '',
-      discountedPrice: (json['discounted_price'] ?? 0).toDouble(),
-      image: json['image'] ?? '',
-      originalPrice: (json['original_price'] ?? 0).toDouble(),
-      quantity: json['quantity'] ?? 0,
-      title: json['title'] ?? '',
-    );
+  HotDealModel.fromJson(dynamic json)
+      : description = json['description'] ?? '',
+        discountedPrice = (json['discounted_price'] ?? 0).toDouble(),
+        image = json['image'] ?? '',
+        originalPrice = (json['original_price'] ?? 0).toDouble(),
+        quantity = json['quantity'] ?? 0,
+        title = json['title'] ?? '';
+
+  Map<String, dynamic> toJson() {
+    return {
+      'description': description,
+      'discounted_price': discountedPrice,
+      'image': image,
+      'original_price': originalPrice,
+      'quantity': quantity,
+      'title': title,
+    };
   }
 }

@@ -34,7 +34,7 @@ class MySearchWidget extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(vertical: 10),
                   child: Text(
                     'Search for an item',
-                    style: FontHelper.poppins18Regular()
+                    style: FontHelper.poppins12Regular()
                         .copyWith(color: Colors.grey),
                   ),
                 ),

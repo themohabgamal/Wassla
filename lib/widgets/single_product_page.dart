@@ -1,17 +1,23 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:grad/business_logic/cart/bloc/bloc/cart_bloc.dart';
 import 'package:grad/business_logic/home/bloc/home_bloc.dart';
 import 'package:grad/core/DI/dependency_injection.dart';
 import 'package:grad/core/helpers/constants/fonts/font_helper.dart';
 import 'package:grad/models/category_response_model.dart';
 import 'package:grad/core/theming/theme.dart';
 import 'package:flutter/material.dart';
+import 'package:grad/models/hot_deal_model.dart';
+import 'package:grad/presentation/cart/widgets/cart_product.dart';
+import 'package:grad/presentation/cart/widgets/product.dart';
 import 'package:iconly/iconly.dart';
 import 'package:readmore/readmore.dart';
 
 class SingleProductPage extends StatelessWidget {
   static const String routeName = 'singleProdPage';
-  final CategoryResponseModel categoryResponseModel;
-  const SingleProductPage({super.key, required this.categoryResponseModel});
+  final CategoryResponseModel? categoryResponseModel;
+  final HotDealModel? hotDealModel;
+  const SingleProductPage(
+      {super.key, this.categoryResponseModel, this.hotDealModel});
 
   @override
   Widget build(BuildContext context) {
@@ -34,29 +40,33 @@ class SingleProductPage extends StatelessWidget {
             children: [
               const SizedBox(height: 20),
               Text(
-                "${categoryResponseModel.title}",
+                categoryResponseModel != null
+                    ? categoryResponseModel!.title!
+                    : hotDealModel!.title,
                 style: FontHelper.poppins24Bold().copyWith(fontSize: 27),
               ),
               const SizedBox(height: 10),
               Text(
-                "${categoryResponseModel.category}",
+                "${categoryResponseModel != null ? categoryResponseModel!.category : hotDealModel!.discountedPrice}",
                 style: FontHelper.poppins18Regular(),
               ),
               const SizedBox(height: 10),
               CachedNetworkImage(
-                imageUrl: "${categoryResponseModel.image}",
+                imageUrl: categoryResponseModel != null
+                    ? categoryResponseModel!.image!
+                    : hotDealModel!.image,
                 width: double.infinity,
                 height: 300,
                 fit: BoxFit.contain,
               ),
               const SizedBox(height: 10),
               Text(
-                "\$ ${categoryResponseModel.price}",
+                "\$ ${categoryResponseModel != null ? categoryResponseModel!.price : hotDealModel!.discountedPrice}",
                 style: FontHelper.poppins24Bold().copyWith(fontSize: 30),
               ),
               const SizedBox(height: 10),
               ReadMoreText(
-                "${categoryResponseModel.description}",
+                categoryResponseModel!.description ?? hotDealModel!.description,
                 style: Theme.of(context).textTheme.titleMedium,
                 trimLines: 4,
                 colorClickableText: MyTheme.mainColor,
@@ -97,7 +107,7 @@ class SingleProductPage extends StatelessWidget {
                   child: IconButton(
                       onPressed: () {
                         getIt<HomeBloc>().add(HomeAddToWishlistEvent(
-                          categoryResponseModel: categoryResponseModel,
+                          categoryResponseModel: categoryResponseModel!,
                         ));
                         ScaffoldMessenger.of(context)
                             .showSnackBar(const SnackBar(
@@ -114,8 +124,7 @@ class SingleProductPage extends StatelessWidget {
                 ),
                 GestureDetector(
                   onTap: () {
-                    getIt<HomeBloc>().add(HomeAddToCartEvent(
-                        categoryResponseModel: categoryResponseModel));
+                    addToCart(context, categoryResponseModel!);
                   },
                   child: Container(
                       width: 200,
@@ -141,6 +150,28 @@ class SingleProductPage extends StatelessWidget {
                 ),
               ],
             )),
+      ),
+    );
+  }
+
+  void addToCart(
+      BuildContext context, CategoryResponseModel categoryResponseModel) {
+    final cartBloc = getIt<CartBloc>();
+    Product productToAdd = Product(
+      imageUrl: categoryResponseModel.image!,
+      name: categoryResponseModel.title!,
+      price: categoryResponseModel.price!,
+    );
+    CartProduct cartProduct = CartProduct(product: productToAdd, quantity: 1);
+    cartBloc.addToCart(cartProduct);
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        backgroundColor: MyTheme.mainColor,
+        duration: const Duration(seconds: 1),
+        content: Text(
+          "Product was added to cart",
+          style: FontHelper.poppins16Bold().copyWith(color: Colors.white),
+        ),
       ),
     );
   }

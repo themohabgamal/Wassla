@@ -1,4 +1,4 @@
 class Constants {
-  static const String api_key =
+  static const String apiKey =
       "ZXlKaGJHY2lPaUpJVXpVeE1pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SmpiR0Z6Y3lJNklrMWxjbU5vWVc1MElpd2ljSEp2Wm1sc1pWOXdheUk2T1RZMU9ESTFMQ0p1WVcxbElqb2lhVzVwZEdsaGJDSjkuS1RUT0ZteldaMElwbmxHc0dnWUJfUW9qTTllUi1IcXdnOGl5SmFEdml4REFtSXFhWk9ibWVtR0RqNHY0Y1I4Q1VpMGYtUHprN3NOdmRtY3F4VE1iOFE=";
 }

@@ -1,12 +1,9 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:grad/core/networking/firebase_helper.dart';
 import 'package:grad/core/widgets/my_text_form_field.dart';
 import 'package:grad/main.dart';
 import 'package:grad/core/theming/theme.dart';
 import 'package:grad/models/user.dart';
-import 'package:grad/nav_switcher.dart';
 import 'package:grad/widgets/alert.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -29,11 +26,21 @@ class _SignupScreenState extends State<SignupScreen> {
   final passwordController = TextEditingController();
   final phoneController = TextEditingController();
   final passwordConfirmationController = TextEditingController();
+  @override
+  void dispose() {
+    emailController.dispose();
+    firstNameController.dispose();
+    lastNameController.dispose();
+    passwordController.dispose();
+    phoneController.dispose();
+    passwordConfirmationController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomInset: true,
       body: Padding(
         padding:
             EdgeInsets.only(left: 32.0.w, right: 32.w, bottom: 10.h, top: 90.h),
@@ -105,6 +112,11 @@ class _SignupScreenState extends State<SignupScreen> {
                         if (value!.isEmpty) {
                           return 'Email Can\'t be empty';
                         }
+                        final emailRegex =
+                            RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
+                        if (!emailRegex.hasMatch(value)) {
+                          return 'Enter a valid email';
+                        }
                         return null;
                       },
                       keyboardType: TextInputType.emailAddress,
@@ -135,8 +147,30 @@ class _SignupScreenState extends State<SignupScreen> {
                       controller: passwordController,
                       validator: (value) {
                         if (value!.isEmpty) {
-                          return 'This Field Can\'t be empty';
+                          return 'Password can\'t be empty';
                         }
+
+                        // Check if the password is at least 8 characters long
+                        if (value.length < 8) {
+                          return 'Password must be at least 8 characters long';
+                        }
+
+                        // Check if the password contains at least one uppercase letter
+                        if (!value.contains(RegExp(r'[A-Z]'))) {
+                          return 'Password must contain at least one uppercase letter';
+                        }
+
+                        // Check if the password contains at least one lowercase letter
+                        if (!value.contains(RegExp(r'[a-z]'))) {
+                          return 'Password must contain at least one lowercase letter';
+                        }
+
+                        // Check if the password contains at least one digit
+                        if (!value.contains(RegExp(r'[0-9]'))) {
+                          return 'Password must contain at least one digit';
+                        }
+
+                        // If all conditions are met, return null to indicate valid password
                         return null;
                       },
                       labelText: "Password",
@@ -150,6 +184,21 @@ class _SignupScreenState extends State<SignupScreen> {
                           return 'This Field Can\'t be empty';
                         } else if (value != passwordController.text) {
                           return 'Passwords do not match';
+                        }
+                        if (value.length < 8) {
+                          return 'Password must be at least 8 characters long';
+                        }
+                        // Check if the password contains at least one uppercase letter
+                        if (!value.contains(RegExp(r'[A-Z]'))) {
+                          return 'Password must contain at least one uppercase letter';
+                        }
+                        // Check if the password contains at least one lowercase letter
+                        if (!value.contains(RegExp(r'[a-z]'))) {
+                          return 'Password must contain at least one lowercase letter';
+                        }
+                        // Check if the password contains at least one digit
+                        if (!value.contains(RegExp(r'[0-9]'))) {
+                          return 'Password must contain at least one digit';
                         }
                         return null;
                       },

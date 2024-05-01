@@ -18,11 +18,10 @@ class CustomizedApiHomeWidget extends StatefulWidget {
   });
 
   @override
-  _CustomizedApiHomeWidgetState createState() =>
-      _CustomizedApiHomeWidgetState();
+  CustomizedApiHomeWidgetState createState() => CustomizedApiHomeWidgetState();
 }
 
-class _CustomizedApiHomeWidgetState extends State<CustomizedApiHomeWidget> {
+class CustomizedApiHomeWidgetState extends State<CustomizedApiHomeWidget> {
   bool viewAll = false;
 
   @override
@@ -83,7 +82,7 @@ class _CustomizedApiHomeWidgetState extends State<CustomizedApiHomeWidget> {
                         : 1,
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
-                  childAspectRatio: 0.7,
+                  childAspectRatio: 2 / 3,
                   crossAxisSpacing: 1,
                   mainAxisSpacing: 2,
                 ),

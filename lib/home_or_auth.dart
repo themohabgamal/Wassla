@@ -1,117 +1,36 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_offline/flutter_offline.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:grad/business_logic/cart/bloc/bloc/cart_bloc.dart';
 import 'package:grad/core/DI/dependency_injection.dart';
-import 'package:grad/core/theming/theme.dart';
 import 'package:grad/nav_switcher.dart';
+import 'package:lottie/lottie.dart';
 import 'presentation/auth/auth_page.dart';
 
-class HomeOrAuth extends StatefulWidget {
+class HomeOrAuth extends StatelessWidget {
   static const String routeName = 'home_or_auth';
   const HomeOrAuth({super.key});
 
   @override
-  _HomeOrAuthState createState() => _HomeOrAuthState();
-}
-
-class _HomeOrAuthState extends State<HomeOrAuth> {
-  late User? _user;
-  bool _authChecked = false;
-
-  @override
-  void initState() {
-    super.initState();
-    _user = FirebaseAuth.instance.currentUser;
-    _authChecked = true;
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return OfflineBuilder(
-      connectivityBuilder: (
-        BuildContext context,
-        ConnectivityResult connectivity,
-        Widget child,
-      ) {
-        final bool connected = connectivity != ConnectivityResult.none;
-        if (!connected) {
-          return _buildNoInternetScreen();
-        } else {
-          return _authChecked ? _buildAuthStateWidget() : _buildLoadingScreen();
-        }
-      },
-      child: const Text(''), // Placeholder child
-    );
-  }
-
-  Widget _buildAuthStateWidget() {
     return StreamBuilder<User?>(
       stream: FirebaseAuth.instance.authStateChanges(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.active) {
-          final User? user = snapshot.data;
-          if (user == null) {
-            return const AuthPage(); // Show the authentication page
-          } else {
-            _updateUserAndFetchCart(user.uid);
-            return const NavSwitcher(); // Redirect to home page
-          }
+      builder: (BuildContext context, AsyncSnapshot<User?> snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Scaffold(
+            body: Center(
+              child: Lottie.asset('assets/animations/loading.json'),
+            ),
+          );
+        }
+        if (snapshot.hasData && snapshot.data != null) {
+          // User is authenticated, proceed with authenticated flow
+          getIt<CartBloc>().updateUserAndFetchCart(snapshot.data!.uid);
+          return const NavSwitcher();
         } else {
-          return _buildLoadingScreen();
+          // User is not authenticated, show authentication page
+          return const AuthPage();
         }
       },
     );
-  }
-
-  Widget _buildLoadingScreen() {
-    return const Scaffold(
-      body: Center(
-        child: SpinKitChasingDots(
-          color: MyTheme.mainColor,
-        ),
-      ),
-    );
-  }
-
-  Widget _buildNoInternetScreen() {
-    return Scaffold(
-      body: Container(
-        color: Colors.black,
-        child: const Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(
-                Icons.wifi_off,
-                size: 100,
-                color: Colors.white,
-              ),
-              SizedBox(height: 20),
-              Text(
-                'No Internet Connection',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 20,
-                ),
-              ),
-              SizedBox(height: 10),
-              Text(
-                'Please check your connection and try again',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 16,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  void _updateUserAndFetchCart(String? userId) {
-    getIt<CartBloc>().updateUserAndFetchCart(userId);
   }
 }

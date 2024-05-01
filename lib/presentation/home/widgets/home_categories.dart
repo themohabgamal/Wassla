@@ -26,7 +26,7 @@ class HomeCategories extends StatelessWidget {
           alignment: Alignment.bottomLeft,
           child: Text(
             "Popular Categories",
-            style: FontHelper.poppins18Regular()
+            style: FontHelper.poppins14Regular()
                 .copyWith(fontWeight: FontWeight.w600, color: Colors.white),
           ),
         ),

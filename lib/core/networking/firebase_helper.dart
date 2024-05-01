@@ -87,7 +87,6 @@ class FirebaseHelper {
       }
       return bannerUrls;
     } catch (error) {
-      print('Error getting banner images: $error');
       return [];
     }
   }

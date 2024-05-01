@@ -11,10 +11,10 @@ class SearchScreen extends StatefulWidget {
   const SearchScreen({super.key});
 
   @override
-  _SearchScreenState createState() => _SearchScreenState();
+  SearchScreenState createState() => SearchScreenState();
 }
 
-class _SearchScreenState extends State<SearchScreen> {
+class SearchScreenState extends State<SearchScreen> {
   String searchText = '';
 
   @override
@@ -41,7 +41,6 @@ class _SearchScreenState extends State<SearchScreen> {
             FirebaseFirestore.instance.collectionGroup('products').snapshots(),
         builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.hasError) {
-            print("Error: ${snapshot.error}");
             return Text("Error: ${snapshot.error}");
           }
 
@@ -101,7 +100,6 @@ class _SearchScreenState extends State<SearchScreen> {
 
               return GestureDetector(
                 onTap: () {
-                  print("navigate");
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => SingleProductPage(
                           categoryResponseModel:

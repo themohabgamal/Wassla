@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/material.dart';
+import 'package:grad/core/helpers/constants/fonts/font_helper.dart';
 
 // ignore: must_be_immutable
 class CategoryNameWidget extends StatelessWidget {
@@ -36,8 +36,7 @@ class CategoryNameWidget extends StatelessWidget {
           width: 80,
           child: Text(
             "$name  ",
-            style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                fontSize: 16, color: Colors.white, fontWeight: FontWeight.w600),
+            style: FontHelper.poppins12Regular().copyWith(color: Colors.white),
             textAlign: TextAlign.center,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,

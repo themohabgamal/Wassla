@@ -2,7 +2,6 @@
 
 part of 'wishlist_bloc.dart';
 
-@immutable
 abstract class WishlistState {}
 
 abstract class WishlistActionState extends WishlistState {}

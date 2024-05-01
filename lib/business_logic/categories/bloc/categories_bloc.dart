@@ -1,11 +1,7 @@
 import 'dart:async';
-
-import 'package:bloc/bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:grad/models/category_response_model.dart';
 import 'package:grad/models/hot_deal_model.dart';
-import 'package:grad/presentation/cart/cart_screen.dart';
-import 'package:meta/meta.dart';
-
 part 'categories_event.dart';
 part 'categories_state.dart';
 

@@ -10,7 +10,6 @@ import 'package:grad/core/theming/theme.dart';
 import 'package:grad/models/category_response_model.dart';
 import 'package:grad/presentation/cart/widgets/cart_product.dart';
 import 'package:grad/presentation/cart/widgets/product.dart';
-import 'package:grad/presentation/recommendation/analytics_service.dart';
 import 'package:grad/widgets/single_product_page.dart';
 import 'package:iconly/iconly.dart';
 
@@ -37,7 +36,7 @@ class CategoryTileWidget extends StatelessWidget {
         }));
       },
       child: Container(
-        padding: const EdgeInsets.all(1),
+        padding: const EdgeInsets.only(left: 3, right: 3, bottom: 7),
         margin: const EdgeInsets.all(7),
         decoration: BoxDecoration(
           boxShadow: [
@@ -117,7 +116,7 @@ class CategoryTileWidget extends StatelessWidget {
                         children: [
                           Text(
                             "${formatPrice(categoryResponseModel.price!)} EGP",
-                            style: FontHelper.poppins20Bold(),
+                            style: FontHelper.poppins16Bold(),
                             maxLines: 1,
                           ),
                           Row(
@@ -138,8 +137,6 @@ class CategoryTileWidget extends StatelessWidget {
                                       ),
                                     );
                                   }
-                                  AnalyticsService.logLikedProduct(
-                                      '2', "hambola1");
                                 },
                                 child: const Icon(
                                   IconlyLight.heart,
@@ -200,11 +197,14 @@ void addToCart(
   );
   CartProduct cartProduct = CartProduct(product: productToAdd, quantity: 1);
   cartBloc.addToCart(cartProduct);
-  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
       backgroundColor: MyTheme.mainColor,
       duration: const Duration(seconds: 1),
       content: Text(
         "Product was added to cart",
         style: FontHelper.poppins16Bold().copyWith(color: Colors.white),
-      )));
+      ),
+    ),
+  );
 }

@@ -2,7 +2,6 @@
 
 part of 'home_bloc.dart';
 
-@immutable
 abstract class HomeEvent {}
 
 class NavigateToCartEvent extends HomeEvent {}
@@ -17,6 +16,8 @@ class NavigateToSingleProductEvent extends HomeEvent {
 
 class NavigateToHotDealsEvent extends HomeEvent {}
 
+class NavigateToRecommendedEvent extends HomeEvent {}
+
 class GoBackEvent extends HomeEvent {}
 
 class HomeAddToCartEvent extends HomeEvent {
@@ -25,8 +26,9 @@ class HomeAddToCartEvent extends HomeEvent {
 }
 
 class HomeAddToWishlistEvent extends HomeEvent {
-  CategoryResponseModel categoryResponseModel;
-  HomeAddToWishlistEvent({required this.categoryResponseModel});
+  CategoryResponseModel? categoryResponseModel;
+  HotDealModel? hotDealModel;
+  HomeAddToWishlistEvent({this.categoryResponseModel, this.hotDealModel});
 }
 
 class HotDealsLoadedEvent extends HomeEvent {}

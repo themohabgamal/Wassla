@@ -1,4 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:grad/presentation/cart/cart_screen.dart';
 import 'package:grad/presentation/home/home_screen.dart';
 import 'package:grad/presentation/settings/settings_screen.dart';
@@ -17,45 +19,70 @@ class NavSwitcher extends StatefulWidget {
 
 class _NavSwitcherState extends State<NavSwitcher> {
   int selectedIndex = 0;
-  List<Widget> screens = [
+  final List<Widget> screens = [
     const HomeScreen(),
     const CartScreen(),
-    WishListScreen(),
+    WishListScreen(
+      userId: FirebaseAuth.instance.currentUser!.uid,
+    ),
     const SettingsScreen(),
   ];
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        resizeToAvoidBottomInset:
-            false, // Set to false to prevent FAB from moving
-        body: screens[selectedIndex],
-        floatingActionButton: GestureDetector(
-          onTap: () => Navigator.push(context,
-              MaterialPageRoute(builder: (context) => const BotScreen())),
-          child: const CircleAvatar(
-            radius: 30,
-            backgroundColor: MyTheme.mainColor,
-            child: Icon(
-              IconlyBold.chat,
-              color: Colors.white,
+    return Scaffold(
+      body: screens[selectedIndex],
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: BottomNavigationBar(
+          elevation: 0,
+          showSelectedLabels: true,
+          type: BottomNavigationBarType.fixed,
+          showUnselectedLabels: true,
+          selectedItemColor: MyTheme.mainColor,
+          unselectedItemColor: Colors.grey,
+          currentIndex: selectedIndex,
+          onTap: _onItemTapped,
+          iconSize: 20,
+          selectedFontSize: 10.sp,
+          unselectedFontSize: 10.sp,
+          items: const [
+            BottomNavigationBarItem(
+              icon: Icon(
+                IconlyBold.home,
+              ),
+              label: 'Home',
             ),
-          ),
+            BottomNavigationBarItem(
+              icon: Icon(
+                IconlyBold.bag,
+              ),
+              label: 'Cart',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(
+                IconlyBold.heart,
+              ),
+              label: 'Wishlist',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(
+                IconlyBold.profile,
+              ),
+              label: 'Profile',
+            ),
+          ],
         ),
-        bottomNavigationBar: BottomAppBar(
-          elevation: 5,
-          height: 70,
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => const BotScreen()));
+        },
+        backgroundColor: MyTheme.mainColor,
+        child: const Icon(
+          IconlyBold.chat,
           color: Colors.white,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: <Widget>[
-              _buildNavBarItem(0, IconlyBold.home, 'Home'),
-              _buildNavBarItem(1, IconlyBold.bag, 'Cart'),
-              _buildNavBarItem(2, IconlyBold.heart, 'Wishlist'),
-              _buildNavBarItem(3, IconlyBold.profile, 'Profile'),
-            ],
-          ),
         ),
       ),
     );
@@ -65,34 +92,5 @@ class _NavSwitcherState extends State<NavSwitcher> {
     setState(() {
       selectedIndex = index;
     });
-  }
-
-  Widget _buildNavBarItem(int index, IconData icon, String label) {
-    final isSelected = index == selectedIndex;
-    final color = isSelected ? MyTheme.mainColor : MyTheme.navBarItemColor;
-
-    return GestureDetector(
-      onTap: () {
-        _onItemTapped(index);
-      },
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(
-            icon,
-            size: 25,
-            color: color,
-          ),
-          const SizedBox(height: 4),
-          Text(
-            label,
-            style: TextStyle(
-              fontSize: 12,
-              color: color,
-            ),
-          ),
-        ],
-      ),
-    );
   }
 }

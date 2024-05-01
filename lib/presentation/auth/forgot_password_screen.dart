@@ -1,15 +1,14 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:grad/core/networking/firebase_helper.dart';
 import 'package:grad/core/theming/theme.dart';
 import 'package:grad/main.dart';
-import 'package:grad/presentation/auth/auth_page.dart';
 import 'package:grad/widgets/alert.dart';
 import 'package:iconly/iconly.dart';
 
+// ignore: must_be_immutable
 class ForgotPasswordScreen extends StatelessWidget {
   static const String routeName = 'forgot_password';
 
@@ -37,37 +36,35 @@ class ForgotPasswordScreen extends StatelessWidget {
             Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                Container(
-                  child: Column(
-                    children: <Widget>[
-                      SizedBox(
-                        width: 200,
-                        height: 200,
-                        child: Image.asset("assets/images/forgot-password.png"),
+                Column(
+                  children: <Widget>[
+                    SizedBox(
+                      width: 200,
+                      height: 200,
+                      child: Image.asset("assets/images/password.png"),
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    const Text(
+                      "Forgot Password?",
+                      style: TextStyle(
+                        fontSize: 32,
+                        fontWeight: FontWeight.w500,
                       ),
-                      const SizedBox(
-                        height: 20,
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    const Text(
+                      " Enter your email and we will send \nyou a link to reset your password",
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w400,
                       ),
-                      const Text(
-                        "Forgot Password?",
-                        style: TextStyle(
-                          fontSize: 32,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      const Text(
-                        " Enter your email and we will send \nyou a link to reset your password",
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400,
-                        ),
-                        textAlign: TextAlign.center,
-                      )
-                    ],
-                  ),
+                      textAlign: TextAlign.center,
+                    )
+                  ],
                 ),
                 SizedBox(
                   height: 15.h,

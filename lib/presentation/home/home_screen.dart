@@ -3,10 +3,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:grad/core/DI/dependency_injection.dart';
 import 'package:grad/core/networking/firebase_helper.dart';
 import 'package:grad/presentation/cart/cart_screen.dart';
-import 'package:grad/presentation/home/hot_deals_page.dart';
+import 'package:grad/presentation/home/furniture_page.dart';
+import 'package:grad/presentation/home/recommended_page.dart';
 import 'package:grad/presentation/home/widgets/carousel_slider_widget.dart';
+import 'package:grad/presentation/home/widgets/furniture_section.dart';
 import 'package:grad/presentation/home/widgets/home_categories.dart';
 import 'package:grad/presentation/home/widgets/my_search_widget.dart';
+import 'package:grad/presentation/home/widgets/recommended_section.dart';
 import 'package:grad/presentation/wishlist/wish_list_screen.dart';
 import 'package:grad/core/theming/theme.dart';
 import 'package:grad/repos/category/category_repo.dart';
@@ -48,7 +51,6 @@ class _HomeScreenState extends State<HomeScreen> {
       });
     } catch (error) {
       // Handle errors, log them, or display an error message
-      print('Error fetching categories: $error');
     }
   }
 
@@ -86,7 +88,11 @@ class _HomeScreenState extends State<HomeScreen> {
                   categoryResponseModel: state.categoryResponseModel,
                   homeBloc: homeBloc));
         } else if (state is NavigateToHotDealsState) {
-          Navigator.pushNamed(context, HotDealsPage.routeName,
+          Navigator.pushNamed(context, FurniturePage.routeName,
+              arguments: homeBloc);
+          homeBloc.add(HotDealsLoadedEvent());
+        } else if (state is NavigateToRecommendedState) {
+          Navigator.pushNamed(context, RecommendedPage.routeName,
               arguments: homeBloc);
           homeBloc.add(HotDealsLoadedEvent());
         } else if (state is NavigateToWishlistState) {
@@ -192,30 +198,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                             .textTheme
                                             .headlineSmall,
                                       ),
-
-                                      // TextButton(
-                                      //   onPressed: () {
-                                      //     homeBloc
-                                      //         .add(NavigateToHotDealsEvent());
-                                      //   },
-                                      //   child: Text(
-                                      //     "View all",
-                                      //     style: Theme.of(context)
-                                      //         .textTheme
-                                      //         .titleMedium
-                                      //         ?.copyWith(
-                                      //             fontWeight: FontWeight.w600,
-                                      //             color: MyTheme.mainColor),
-                                      //   ),
-                                      // )
                                     ],
                                   ),
                                   SizedBox(
-                                      child: HotDealGridView(
-                                          category: "Clothes",
-                                          homeBloc: homeBloc)),
+                                      child:
+                                          HotDealGridView(homeBloc: homeBloc)),
                                   SizedBox(height: 20.h),
-                                  HotDealsSection(
+                                  FurnitureSection(
                                     homeBloc: homeBloc,
                                   ),
                                   SizedBox(height: 20.h),
@@ -228,8 +217,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                   SizedBox(
                                       child: CustomizedApiHomeWidget(
                                           homeBloc: homeBloc,
-                                          category: "clothes")),
-                                  const SizedBox(height: 20),
+                                          category: "Clothes")),
+                                  SizedBox(height: 20.h),
+                                  RecommendedSection(
+                                    homeBloc: homeBloc,
+                                  )
                                 ],
                               ),
                             ),
@@ -242,64 +234,6 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         );
       },
-    );
-  }
-}
-
-class HotDealsSection extends StatelessWidget {
-  final HomeBloc? homeBloc;
-  const HotDealsSection({super.key, this.homeBloc});
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              "Hot Deals",
-              style: Theme.of(context).textTheme.headlineSmall,
-            ),
-            TextButton(
-              onPressed: () {
-                homeBloc?.add(NavigateToHotDealsEvent());
-              },
-              //fake commit
-              child: Text(
-                "View all",
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.w600, color: MyTheme.mainColor),
-              ),
-            )
-          ],
-        ),
-        const SizedBox(height: 5),
-        SizedBox(
-          width: double.infinity,
-          child: Stack(
-            alignment: Alignment.center,
-            children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(12),
-                child: Image.asset(
-                  "assets/images/pattern.jpg",
-                  height: 100,
-                  fit: BoxFit.cover,
-                  width: double.infinity,
-                ),
-              ),
-              const Text(
-                "50% off",
-                style: TextStyle(
-                    fontWeight: FontWeight.w700,
-                    fontSize: 50,
-                    color: Colors.white),
-              )
-            ],
-          ),
-        ),
-      ],
     );
   }
 }

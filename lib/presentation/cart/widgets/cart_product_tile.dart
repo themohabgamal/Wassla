@@ -1,6 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:grad/business_logic/cart/bloc/bloc/cart_bloc.dart';
 import 'package:grad/core/DI/dependency_injection.dart';
 import 'package:grad/presentation/cart/widgets/cart_product.dart';
@@ -15,10 +15,14 @@ class CartProductTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      leading: CachedNetworkImage(
-        imageUrl: cartProduct.product.imageUrl,
-        progressIndicatorBuilder: (context, url, progress) =>
-            LoadingAnimationWidget.hexagonDots(color: Colors.black, size: 30),
+      leading: SizedBox(
+        width: 50.w, // Adjust the width as needed
+        height: 50, // Adjust the height as needed
+        child: CachedNetworkImage(
+          imageUrl: cartProduct.product.imageUrl,
+          progressIndicatorBuilder: (context, url, progress) =>
+              LoadingAnimationWidget.hexagonDots(color: Colors.black, size: 30),
+        ),
       ),
       title: Text(cartProduct.product.name),
       subtitle: Text('\$${cartProduct.product.price}'),

@@ -1,10 +1,10 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:grad/core/helpers/constants/fonts/font_helper.dart';
 import 'package:grad/core/networking/firebase_helper.dart';
+import 'package:grad/presentation/settings/about_us.dart';
 import 'package:grad/presentation/settings/edit_profile_screen.dart';
-import 'package:grad/presentation/settings/address/my_addresses_screen.dart';
+import 'package:grad/presentation/settings/my_orders_screen.dart';
+import 'package:iconly/iconly.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -97,49 +97,30 @@ class _SettingsScreenState extends State<SettingsScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 ListTile(
-                  leading: const Icon(Icons.shopping_cart),
-                  title: const Text('My Cart'),
-                  onTap: () {
-                    // Navigate to my cart screen
-                  },
-                ),
-                ListTile(
-                  leading: const Icon(Icons.assignment),
+                  leading: const Icon(
+                    IconlyBold.discount,
+                    size: 28,
+                  ),
                   title: const Text('My Orders'),
                   onTap: () {
-                    // Navigate to my orders screen
+                    Navigator.pushNamed(context, MyOrdersScreen.routeName);
                   },
                 ),
                 ListTile(
-                  leading: const Icon(Icons.account_balance),
-                  title: const Text('Bank Account'),
+                  leading: const Icon(
+                    Icons.info,
+                    size: 28,
+                  ),
+                  title: const Text('About Us'),
                   onTap: () {
-                    // Navigate to bank account screen
+                    Navigator.pushNamed(context, AboutUsScreen.routeName);
                   },
                 ),
                 ListTile(
-                  leading: const Icon(Icons.card_giftcard),
-                  title: const Text('My Coupons'),
-                  onTap: () {
-                    // Navigate to my coupons screen
-                  },
-                ),
-                ListTile(
-                  leading: const Icon(Icons.notifications),
-                  title: const Text('Notifications'),
-                  onTap: () {
-                    // Navigate to notifications screen
-                  },
-                ),
-                ListTile(
-                  leading: const Icon(Icons.lock),
-                  title: const Text('Account Privacy'),
-                  onTap: () {
-                    // Navigate to account privacy screen
-                  },
-                ),
-                ListTile(
-                  leading: const Icon(Icons.logout),
+                  leading: const Icon(
+                    IconlyBold.logout,
+                    size: 28,
+                  ),
                   title: const Text('Logout'),
                   onTap: () {
                     firebaseHelper.logout();

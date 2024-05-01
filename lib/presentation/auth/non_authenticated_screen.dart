@@ -1,4 +1,4 @@
-import 'package:grad/presentation/about_us.dart';
+import 'package:grad/presentation/settings/about_us.dart';
 import 'package:grad/presentation/home_checker.dart';
 import 'package:flutter/material.dart';
 

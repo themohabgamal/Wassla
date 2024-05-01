@@ -14,13 +14,11 @@ class CartBloc extends Cubit<List<CartProduct>> {
 
   // Method to update the user ID and fetch the cart data
   void updateUserAndFetchCart(String? userId) {
-    // Fetch cart data for the new user
     _fetchInitialCartData(userId);
   }
 
   void _fetchInitialCartData(String? userId) async {
     try {
-      log("Current user ID: $userId");
       final cartDoc = await FirebaseFirestore.instance
           .collection('carts')
           .doc(userId)
@@ -49,7 +47,6 @@ class CartBloc extends Cubit<List<CartProduct>> {
       }
     } catch (error) {
       // Handle error fetching cart data from Firestore
-      print('Error fetching cart data: $error');
     }
   }
 

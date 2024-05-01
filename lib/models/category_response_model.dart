@@ -1,5 +1,3 @@
-import 'package:grad/models/category_response_rating.dart';
-
 class CategoryResponseModel {
   CategoryResponseModel({
     this.id,
@@ -15,7 +13,7 @@ class CategoryResponseModel {
     id = json['id'];
     quantity = json['quantity'];
     title = json['title'];
-    price = json['price'];
+    price = json['price'] ?? 0;
     description = json['description'];
     category = json['category'];
     image = json['image'];

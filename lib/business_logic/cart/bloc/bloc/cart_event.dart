@@ -18,8 +18,7 @@ class UpdateProductQuantityEvent extends CartEvent {
     required this.quantity,
   });
 
-  @override
-  List<Object> get props => [productId, quantity];
+ 
 }
 
 class RemoveFromCartEvent extends CartEvent {

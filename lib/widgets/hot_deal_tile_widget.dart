@@ -1,7 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:grad/business_logic/cart/bloc/bloc/cart_bloc.dart';
 import 'package:grad/business_logic/categories/bloc/categories_bloc.dart';
@@ -12,6 +10,7 @@ import 'package:grad/core/theming/theme.dart';
 import 'package:grad/models/hot_deal_model.dart';
 import 'package:grad/presentation/cart/widgets/cart_product.dart';
 import 'package:grad/presentation/cart/widgets/product.dart';
+import 'package:grad/widgets/single_product_page.dart';
 import 'package:iconly/iconly.dart';
 
 class HotDealTileWidget extends StatelessWidget {
@@ -30,16 +29,14 @@ class HotDealTileWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        if (homeBloc != null) {
-          homeBloc
-              ?.add(NavigateToSingleProductEvent(hotDealModel: hotDealModel));
-        } else {
-          categoriesBloc?.add(CategoriesNavigateToSingleProductPageEvent(
-              hotDealModel: hotDealModel));
-        }
+        Navigator.push(context, MaterialPageRoute(builder: (context) {
+          return SingleProductPage(
+            hotDealModel: hotDealModel,
+          );
+        }));
       },
       child: Container(
-        padding: const EdgeInsets.all(1),
+        padding: const EdgeInsets.only(left: 3, right: 3, bottom: 7),
         margin: const EdgeInsets.all(7),
         decoration: BoxDecoration(
           boxShadow: [
@@ -107,21 +104,20 @@ class HotDealTileWidget extends StatelessWidget {
                               fontWeight: FontWeight.w400,
                               fontSize: 18,
                               color: Colors.black,
-                              decorationThickness: 2,
+                              decorationThickness: 3,
                               decorationColor: Colors.red,
                               decoration: TextDecoration.lineThrough),
                         ),
                       ],
                     ),
                   ),
-                  SizedBox(height: 10.h),
                   Flexible(
                     child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
                           Text(
                             "${formatPrice(hotDealModel.discountedPrice)} EGP",
-                            style: FontHelper.poppins20Bold(),
+                            style: FontHelper.poppins16Bold(),
                             maxLines: 1,
                           ),
                           Row(
@@ -129,19 +125,17 @@ class HotDealTileWidget extends StatelessWidget {
                             children: [
                               GestureDetector(
                                 onTap: () {
-                                  // if (homeBloc != null) {
-                                  //   homeBloc?.add(HomeAddToWishlistEvent(
-                                  //     categoryResponseModel:
-                                  //         categoryResponseModel,
-                                  //   ));
-                                  // } else {
-                                  //   categoriesBloc?.add(
-                                  //     CategoriesAddToWishlistEvent(
-                                  //       categoryResponseModel:
-                                  //           categoryResponseModel,
-                                  //     ),
-                                  //   );
-                                  // }
+                                  if (homeBloc != null) {
+                                    homeBloc?.add(HomeAddToWishlistEvent(
+                                      hotDealModel: hotDealModel,
+                                    ));
+                                  } else {
+                                    categoriesBloc?.add(
+                                      CategoriesAddToWishlistEvent(
+                                        hotDealModel: hotDealModel,
+                                      ),
+                                    );
+                                  }
                                 },
                                 child: const Icon(
                                   IconlyLight.heart,

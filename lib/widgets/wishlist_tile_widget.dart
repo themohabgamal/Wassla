@@ -41,15 +41,13 @@ class _WishlistTileWidget extends State<WishlistTileWidget> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               const SizedBox(height: 10),
-              Container(
-                child: Text(
-                  "${categoryTitleBuilder(widget.categoryResponseModel.title)}",
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: FontHelper.poppins16Bold().copyWith(
-                      fontWeight: FontWeight.w600,
-                      color: Theme.of(context).textTheme.titleLarge?.color),
-                ),
+              Text(
+                "${categoryTitleBuilder(widget.categoryResponseModel.title)}",
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: FontHelper.poppins16Bold().copyWith(
+                    fontWeight: FontWeight.w600,
+                    color: Theme.of(context).textTheme.titleLarge?.color),
               ),
               const SizedBox(height: 10),
               Expanded(

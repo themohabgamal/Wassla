@@ -4,12 +4,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:grad/business_logic/cart/bloc/bloc/cart_bloc.dart';
 import 'package:grad/core/DI/dependency_injection.dart';
 import 'package:grad/core/helpers/constants/fonts/font_helper.dart';
-import 'package:grad/core/paymob/paymob_manager.dart';
 import 'package:grad/core/theming/theme.dart';
 import 'package:grad/core/widgets/my_button.dart';
 import 'package:grad/presentation/cart/widgets/cart_product.dart';
 import 'package:grad/presentation/cart/widgets/cart_product_tile.dart';
 import 'package:grad/presentation/settings/address/my_addresses_screen.dart';
+import 'package:lottie/lottie.dart';
 
 class CartScreen extends StatelessWidget {
   static const routeName = '/cart';
@@ -19,7 +19,10 @@ class CartScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Shopping Cart'),
+        title: Text(
+          'Cart',
+          style: FontHelper.poppins24Bold(),
+        ),
       ),
       body: BlocBuilder<CartBloc, List<CartProduct>>(
         bloc: getIt<CartBloc>(),
@@ -53,22 +56,18 @@ class CartScreen extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Icon(
-            Icons.shopping_cart,
-            size: 100,
-            color: MyTheme.mainColor,
-          ),
-          const SizedBox(height: 20),
+          LottieBuilder.asset('assets/animations/cart.json'),
+          SizedBox(height: 20.h),
           Text(
             'Your cart is empty',
-            style: FontHelper.poppins18Bold(),
+            style: FontHelper.poppins14Regular(),
           ),
           const SizedBox(height: 10),
-          MyButton(
-              text: "Start shopping",
-              onPressed: () {
-                Navigator.pop(context);
-              }),
+          Text(
+            'Start shopping to fill your cart',
+            style: FontHelper.poppins14Regular(),
+          ),
+          const SizedBox(height: 10),
         ],
       ),
     );

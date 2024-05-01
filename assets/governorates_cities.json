@@ -1,0 +1,113 @@
+{
+    "governorates": [
+      {
+        "name": "Ad Daqahliyah",
+        "cities": ["Mansoura", "Mit Ghamr", "Talkha", "Aga"]
+      },
+      {
+        "name": "Al Bahr al Ahmar",
+        "cities": ["Hurghada", "Ras Gharib", "Safaga"]
+      },
+      {
+        "name": "Al Buhayrah",
+        "cities": ["Damanhur", "Kafr El Dawar", "Rosetta (Rashid)"]
+      },
+      {
+        "name": "Al Fayyum",
+        "cities": ["Fayyum City"]
+      },
+      {
+        "name": "Al Gharbiyah",
+        "cities": ["Tanta", "Kafr El Zayat", "Mahalla El Kubra"]
+      },
+      {
+        "name": "Al Iskandariyah (Alexandria)",
+        "cities": ["Alexandria (Iskandariyah)"]
+      },
+      {
+        "name": "Al Isma'iliyah",
+        "cities": ["Ismailia"]
+      },
+      {
+        "name": "Al Jizah (Giza)",
+        "cities": ["Giza", "6th of October City"]
+      },
+      {
+        "name": "Al Minufiyah",
+        "cities": ["Shibin El Kom", "Ashmoun"]
+      },
+      {
+        "name": "Al Minya",
+        "cities": ["Minya", "Mallawi"]
+      },
+      {
+        "name": "Al Qahirah (Cairo)",
+        "cities": ["Cairo (Al Qahirah)"]
+      },
+      {
+        "name": "Al Qalyubiyah",
+        "cities": ["Banha", "Qalyub"]
+      },
+      {
+        "name": "Al Wadi al Jadid",
+        "cities": ["Al Kharga", "Dakhla"]
+      },
+      {
+        "name": "As Suways (Suez)",
+        "cities": ["Suez"]
+      },
+      {
+        "name": "Ash Sharqiyah",
+        "cities": ["Zagazig", "Bilbeis", "El Qantara"]
+      },
+      {
+        "name": "Aswan",
+        "cities": ["Aswan City"]
+      },
+      {
+        "name": "Asyut",
+        "cities": ["Asyut", "Sohag"]
+      },
+      {
+        "name": "Bani Suwayf",
+        "cities": ["Beni Suef"]
+      },
+      {
+        "name": "Bur Sa'id (Port Said)",
+        "cities": ["Port Said"]
+      },
+      {
+        "name": "Dumyat (Damietta)",
+        "cities": ["Damietta"]
+      },
+      {
+        "name": "Janub Sina' (South Sinai)",
+        "cities": ["Sharm El Sheikh", "Dahab", "Nuweiba"]
+      },
+      {
+        "name": "Kafr ash Shaykh",
+        "cities": ["Kafr El Sheikh"]
+      },
+      {
+        "name": "Matruh",
+        "cities": ["Mersa Matruh"]
+      },
+      {
+        "name": "Qina",
+        "cities": ["Qena", "Luxor"]
+      },
+      {
+        "name": "Shamal Sina' (North Sinai)",
+        "cities": ["Arish", "Rafah"]
+      },
+      {
+        "name": "Suhaj",
+        "cities": ["Sohag"]
+      },
+      {
+        "name": "6th of October (6th of October City)",
+        "cities": ["6th of October City"]
+      }
+    ]
+  }
+  

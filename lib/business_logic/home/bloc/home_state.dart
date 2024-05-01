@@ -2,7 +2,6 @@
 
 part of 'home_bloc.dart';
 
-@immutable
 abstract class HomeState {}
 
 abstract class HomeActionState extends HomeState {}
@@ -20,6 +19,8 @@ class NavigateToCartState extends HomeActionState {}
 class NavigateToWishlistState extends HomeActionState {}
 
 class NavigateToHotDealsState extends HomeActionState {}
+
+class NavigateToRecommendedState extends HomeActionState {}
 
 class AddToCartState extends HomeActionState {}
 

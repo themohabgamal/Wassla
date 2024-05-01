@@ -1,8 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:grad/business_logic/cart/bloc/bloc/cart_bloc.dart';
-import 'package:grad/core/DI/dependency_injection.dart';
 import 'package:grad/presentation/home/widgets/search_product.dart';
 
 class ProductDetailsScreen extends StatelessWidget {

@@ -1,5 +1,4 @@
-/// rate : 4.6
-/// count : 400
+library;
 
 class Rating {
   Rating({

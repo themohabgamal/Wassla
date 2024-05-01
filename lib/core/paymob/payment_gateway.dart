@@ -1,8 +1,9 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
-import 'package:grad/core/helpers/constants/fonts/font_helper.dart';
 import 'package:grad/presentation/settings/address/my_addresses_screen.dart';
 import 'package:grad/widgets/alert.dart';
 import 'package:intl/intl.dart';
@@ -75,7 +76,7 @@ class _PaymentGatewayState extends State<PaymentGateway> {
         'phone': userSnapshot['phone'],
         'items': cartSnapshot.data()!['products'],
         'address':
-            '${widget.address.address}, ${widget.address.city}, ${widget.address.state}',
+            '${widget.address.address}, ${widget.address.city}, ${widget.address.governorate}',
         'timestamp': formattedDateTime(DateTime.now()),
       });
 
@@ -94,7 +95,6 @@ class _PaymentGatewayState extends State<PaymentGateway> {
           Navigator.pop(context);
         },
       );
-      print('Order placed successfully!');
     } catch (error) {
       Alert.showAlert(
           context: context,
@@ -106,7 +106,6 @@ class _PaymentGatewayState extends State<PaymentGateway> {
             Navigator.pop(context);
             Navigator.pop(context);
           });
-      print('Error handling payment success: $error');
     }
   }
 
@@ -130,13 +129,22 @@ class _PaymentGatewayState extends State<PaymentGateway> {
               url.queryParameters.containsKey('success') &&
               url.queryParameters['success'] == 'true') {
             // Payment success logic
-            print("success");
+            log("payment success");
             handlePaymentSuccess();
           } else if (url != null &&
               url.queryParameters.containsKey('success') &&
               url.queryParameters['success'] == 'false') {
-            // Payment failed logic
-            print("failed");
+            Alert.showAlert(
+                context: context,
+                isLoading: false,
+                text:
+                    'Could not place order.\n Check your details and try again',
+                animation: 'assets/animations/error.json',
+                onContinue: () {
+                  Navigator.pop(context);
+                  Navigator.pop(context);
+                  Navigator.pop(context);
+                });
           }
         },
       ),

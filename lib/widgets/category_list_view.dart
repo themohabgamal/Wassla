@@ -1,6 +1,5 @@
 // ignore_for_file: must_be_immutable
 
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:grad/business_logic/home/bloc/home_bloc.dart';
 import 'package:grad/core/DI/dependency_injection.dart';
 import 'package:grad/core/networking/firebase_helper.dart';
@@ -44,7 +43,6 @@ class CategoryListView extends StatelessWidget {
                 );
               });
         } else {
-          print("wewwewwaa");
           return const SizedBox();
         }
       },

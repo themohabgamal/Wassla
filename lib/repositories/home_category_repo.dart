@@ -24,7 +24,6 @@ class HomeCategoryRepo {
 
       return products;
     } catch (error) {
-      print(error);
       return null;
     }
   }
@@ -33,7 +32,7 @@ class HomeCategoryRepo {
     try {
       await firebaseHelper.getAllProducts();
     } catch (error) {
-      print(error);
+      log(error.toString());
     }
     return null;
   }
