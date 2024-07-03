@@ -1,6 +1,8 @@
 # Wassla - E-commerce Application
 
 Wassla is a comprehensive e-commerce application that enhances the shopping experience with advanced features like a recommendation system, an AI chatbot, and a secure payment gateway using Paymob.
+![2](https://github.com/themohabgamal/Wassla/assets/104150116/7d54d27a-7a1b-402f-b3a9-9e5fe2df580d)
+![1](https://github.com/themohabgamal/Wassla/assets/104150116/c45bba5a-7bb4-4b3d-aff3-480674d9e212)
 
 ## Features
 
